@@ -13,7 +13,7 @@ const About = () => {
             I try to focus on <span className="text-tokyo-cyan font-semibold">clean architecture</span> and writing code that I won't hate looking at 6 months from now. I care a lot about performance, but I care just as much about building things that actually feel good to use.
           </p>
           <p>
-            When I'm not studying or deep into a project, I'm usually messing around with some new framework, contributing to open-source stuff, or spending way too much time tweaking my Neovim config.
+            When I'm not studying or deep into a project, I'm usually messing around with some new framework or spending way too much time tweaking my Neovim config.
           </p>
         </div>
         <div className="flex-1 hyprland-border bg-tokyo-surface p-0 flex flex-col h-full border border-transparent shadow-[0_10px_30px_-15px_rgba(187,154,247,0.3)]">
