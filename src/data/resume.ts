@@ -24,10 +24,10 @@ export const experience = [
     company: "Population Health Research Institute (PHRI)",
     date: "May 2024 – Apr 2025",
     bullets: [
-      "Fixed a bunch of critical bugs across our .NET and ASP.NET Core apps, which directly cut down on support tickets and made life easier for our medical researchers.",
-      "Got our SQL queries running about 40% faster by optimizing some clunky stored procedures.",
-      "Led the jump from Bootstrap 3 to 5 on the frontend. It fixed a lot of annoying mobile layout issues and set up some UI standards that the rest of the team actually ended up using.",
-      "Cleaned up our deployment scripts so new devs wouldn't have to spend hours setting up their environments."
+      "Resolved critical infrastructure bugs across .NET and ASP.NET Core applications, which directly reduced support tickets and improved system reliability for medical researchers.",
+      "Optimized legacy SQL stored procedures, reducing average query execution time by roughly 40%.",
+      "Led the frontend migration from Bootstrap 3 to 5. This resolved several mobile layout issues and established new UI component standards that the rest of the team adopted.",
+      "Cleaned up and standardized our deployment scripts, drastically cutting down project setup time for new engineers."
     ]
   },
   {
@@ -35,7 +35,7 @@ export const experience = [
     company: "Staples Canada",
     date: "Aug 2021 – Present",
     bullets: [
-      "Handled POS systems, kept track of inventory, and spent a lot of time helping customers figure out technical issues with their tech."
+      "Managed POS systems and inventory logistics while providing technical support and troubleshooting assistance to customers."
     ]
   }
 ];
@@ -45,12 +45,12 @@ export const projects = [
     title: "Blip - Production-Grade Text Editor",
     tech: ["C++", "SDL2", "CMake"],
     date: "Present",
-    description: "I wanted to understand how text editors actually work, so I built my own GUI editor from scratch in C++. It's been a massive learning experience in memory management and rendering.",
+    description: "A modular, immediate-mode GUI text editor built from scratch in C++ to explore memory management, rendering pipelines, and OS-specific abstractions.",
     bullets: [
-      "Wrote a custom Piece Table from scratch so that inserting and deleting text is instant, even if the file is massive (and yes, undo/redo actually works).",
-      "Built a super lightweight event loop that doesn't hog the CPU, plus a file watcher so the editor can hot-reload its config instantly.",
-      "Had to dive deep into native C APIs to get cross-platform font rendering working with Fontconfig (Linux) and CoreText (macOS).",
-      "Currently messing around with Tree-sitter so the editor can understand the actual syntax tree of the code for precise highlighting."
+      "Designed a custom Piece Table data structure from scratch to ensure O(1) amortized text insertion and deletion, even for massive files, complete with a working undo/redo stack.",
+      "Built a highly efficient, low-CPU event loop paired with a custom file watcher to enable instant hot-reloading of the editor's configuration.",
+      "Integrated Fontconfig (Linux) and CoreText (macOS) via native C APIs to build a cross-platform font rendering engine.",
+      "Currently integrating Tree-sitter to parse and traverse Abstract Syntax Trees (ASTs) in real time for precise semantic syntax highlighting."
     ],
     github: "https://github.com/juderozario08/blip", // Example
     color: "tokyo-blue"
@@ -59,12 +59,12 @@ export const projects = [
     title: "Radius - Cross-Platform Mobile App",
     tech: ["React Native", "Go", "PostgreSQL", "Redis"],
     date: "Present",
-    description: "A full-stack retail management app I'm building to handle everything from inventory tracking to employee sessions.",
+    description: "A full-stack retail management platform built to handle inventory tracking, employee sessions, and store logistics.",
     bullets: [
-      "Designed the entire PostgreSQL database schema to handle product catalogs, multi-store stock transfers, and employee logins.",
-      "Wrote a custom authentication system from the ground up using Bcrypt and JWTs instead of relying on a bloated third-party service.",
-      "Set up an automated CI/CD pipeline so my Go backend deploys to the cloud the second I push to main.",
-      "Right now, I'm working on a native on-device barcode scanner using the camera and Google MLKit."
+      "Designed a normalized PostgreSQL database schema to efficiently handle product catalogs, multi-store stock transfers, and employee data.",
+      "Implemented a custom, zero-dependency authentication system using Bcrypt and JWTs for secure Role-Based Access Control.",
+      "Set up an automated CI/CD pipeline to deploy the Go backend seamlessly to the cloud upon pushing to the main branch.",
+      "Currently building a native, on-device barcode scanner utilizing native camera APIs and Google MLKit."
     ],
     github: "https://github.com/juderozario08/radius",
     color: "tokyo-purple"
@@ -73,10 +73,10 @@ export const projects = [
     title: "Data Parsing & Logic Engines",
     tech: ["Go"],
     date: "Mar 2024 – Oct 2024",
-    description: "Some fun experiments in Go dealing with parsing and evaluating logic.",
+    description: "Custom parsing and logic evaluation engines written entirely in Go.",
     bullets: [
-      "Built a custom JSON parser entirely from scratch using recursion. It converts raw JSON strings directly into Go structs and handles errors gracefully.",
-      "Wrote a Boolean algebra simulator that parses complex logic expressions and automatically spits out truth tables."
+      "Built a custom JSON parser from scratch using recursion. It converts raw JSON strings into strongly typed Go structs with robust error handling.",
+      "Developed a Boolean algebra simulator that parses complex logic expressions and automatically generates truth tables."
     ],
     github: "https://github.com/juderozario08",
     color: "tokyo-cyan"
@@ -85,10 +85,10 @@ export const projects = [
     title: "Boggle Solver & Automation Pipelines",
     tech: ["Rust", "Python"],
     date: "Jul 2023 – Mar 2024",
-    description: "A couple of older projects where I got to flex some algorithmic muscles.",
+    description: "Algorithmic implementations focused on performance and data automation.",
     bullets: [
-      "Wrote a crazy fast Boggle solver in Rust. It uses a DFS algorithm with hash-map lookups to instantly find every possible word on the board.",
-      "Threw together a Python script that takes messy, unstructured text and automatically turns them into actual Google Calendar events."
+      "Wrote a high-performance Boggle solver in Rust. It utilizes a Depth-First Search (DFS) algorithm with hash-map lookups for incredibly fast grid traversal.",
+      "Built a Python automation script that parses unstructured text data and systematically converts it into validated Google Calendar events."
     ],
     github: "https://github.com/juderozario08",
     color: "tokyo-blue"
@@ -101,7 +101,7 @@ export const leadership = [
     organization: "Neil McNeil Robotics",
     date: "Oct 2018 – 2023",
     bullets: [
-      "Wrote the control loops for our robot's sensors and vision systems so it wouldn't crash into things. Also spent a lot of time teaching the younger students how to wire things up and write code."
+      "Developed control loops for robotic sensors and vision systems to navigate dynamic environments, while mentoring junior students in coding and hardware integration."
     ]
   },
   {
@@ -109,7 +109,7 @@ export const leadership = [
     organization: "Practical Applications of Computer Science (PACS)",
     date: "Sep 2023 - Dec 2023",
     bullets: [
-      "Handled the budget for our student club and made sure we actually had money to run our computer science workshops and events."
+      "Managed the organization's budget and successfully allocated funds to support computer science workshops, applied initiatives, and community events."
     ]
   }
 ];
