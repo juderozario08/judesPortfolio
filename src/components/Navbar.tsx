@@ -4,28 +4,37 @@ import { personalInfo } from '../data/resume';
 const Navbar = () => {
   return (
     <motion.nav 
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+      initial={{ y: -100, x: "-50%" }}
+      animate={{ y: 0, x: "-50%" }}
       transition={{ ease: "easeOut", duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4 backdrop-blur-md bg-tokyo-surface/70 border-b border-tokyo-surface/50 shadow-lg"
+      className="fixed top-6 left-1/2 z-50 flex items-center justify-between w-[95%] max-w-6xl px-8 py-4 rounded-full backdrop-blur-md bg-tokyo-base/85 border border-tokyo-surface shadow-[0_5_20px_rgba(0,0,0,0.5)]"
     >
       <div className="text-2xl font-bold text-tokyo-purple tracking-tighter neon-text-purple">
         {"<Jude />"}
       </div>
-      <div className="hidden md:flex gap-6 text-sm font-mono text-tokyo-muted">
-        <a href="#home" className="hover:text-tokyo-cyan transition-colors">Home</a>
-        <a href="#about" className="hover:text-tokyo-cyan transition-colors">About</a>
-        <a href="#skills" className="hover:text-tokyo-cyan transition-colors">Skills</a>
-        <a href="#experience" className="hover:text-tokyo-cyan transition-colors">Experience</a>
-        <a href="#projects" className="hover:text-tokyo-cyan transition-colors">Projects</a>
-        <a href="#contact" className="hover:text-tokyo-cyan transition-colors">Contact</a>
+      <div className="hidden md:flex gap-2 text-base font-mono font-bold">
+        <a href="#home" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
+          <span className="text-tokyo-blue mr-2 opacity-70">1</span>Home
+        </a>
+        <a href="#about" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
+          <span className="text-tokyo-blue mr-2 opacity-70">2</span>About
+        </a>
+        <a href="#skills" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
+          <span className="text-tokyo-blue mr-2 opacity-70">3</span>Skills
+        </a>
+        <a href="#experience" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
+          <span className="text-tokyo-blue mr-2 opacity-70">4</span>Experience
+        </a>
+        <a href="#projects" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
+          <span className="text-tokyo-blue mr-2 opacity-70">5</span>Projects
+        </a>
       </div>
       <div className="hidden md:block">
         <a 
           href={personalInfo.github} 
           target="_blank" 
           rel="noreferrer"
-          className="px-4 py-2 rounded-md border border-tokyo-surface text-tokyo-muted hover:text-tokyo-cyan hover:border-tokyo-cyan transition-all text-sm font-mono"
+          className="px-5 py-2 rounded-full border border-tokyo-surface bg-tokyo-surface/50 text-tokyo-muted hover:text-tokyo-base hover:bg-tokyo-cyan hover:border-tokyo-cyan hover:shadow-[0_0_15px_rgba(125,207,255,0.4)] transition-all text-base font-mono font-bold"
         >
           GitHub
         </a>

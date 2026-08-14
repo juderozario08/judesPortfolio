@@ -7,13 +7,13 @@ const About = () => {
       <div className="flex flex-col md:flex-row gap-12">
         <div className="flex-1 text-tokyo-muted text-lg leading-relaxed space-y-6">
           <p>
-            I am a passionate Computer Science student at {personalInfo.university}, driven by a deep curiosity for how things work under the hood. I specialize in both systems-level programming and full-stack development, always looking to bridge the gap between low-level performance and high-level design.
+            I'm a Computer Science student at {personalInfo.university} who just really likes figuring out how things work. Whether it's digging into memory management in C++ or building a slick frontend in React, I love the whole process of turning an idea into something real.
           </p>
           <p>
-            My approach to software engineering centers around <span className="text-tokyo-cyan font-semibold">clean architecture</span>, robust performance, and writing code that is as elegant as the user experiences it creates. Whether I'm tinkering with C++ or building fluid frontends in React, I strive for excellence in every line.
+            I try to focus on <span className="text-tokyo-cyan font-semibold">clean architecture</span> and writing code that I won't hate looking at 6 months from now. I care a lot about performance, but I care just as much about building things that actually feel good to use.
           </p>
           <p>
-            When I'm not studying or coding, you can find me exploring new technologies, contributing to open-source, or endlessly optimizing my Neovim config.
+            When I'm not studying or deep into a project, I'm usually messing around with some new framework, contributing to open-source stuff, or spending way too much time tweaking my Neovim config.
           </p>
         </div>
         

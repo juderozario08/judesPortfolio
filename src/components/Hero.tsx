@@ -4,7 +4,7 @@ import { personalInfo } from '../data/resume';
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center">
       {/* Background gradients */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
