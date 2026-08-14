@@ -3,9 +3,9 @@ import { Section } from './ui/Section';
 
 import { 
   SiCplusplus, SiRust, SiGo, SiC, SiLinux, SiCmake, SiVim,
-  SiDotnet, SiNodedotjs, SiExpress, SiMongodb, SiPython,
-  SiReact, SiTypescript, SiJavascript, SiTailwindcss, SiBootstrap, SiHtml5,
-  SiGit, SiGithub, SiMysql
+  SiDotnet, SiNodedotjs, SiMongodb, SiPython,
+  SiReact, SiTypescript, SiTailwindcss, SiBootstrap,
+  SiGit, SiMysql
 } from 'react-icons/si';
 import { FaJava, FaDatabase, FaCss3Alt } from 'react-icons/fa';
 import { VscAzure } from 'react-icons/vsc';
