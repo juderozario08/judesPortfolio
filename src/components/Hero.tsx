@@ -63,7 +63,7 @@ const Hero = () => {
         topNum = Math.random() * 90; // keep slightly away from edges
         leftNum = Math.random() * 90;
       } while (
-        leftNum > 20 && leftNum < 80 && 
+        leftNum > 20 && leftNum < 80 &&
         topNum > 15 && topNum < 85
       );
 
@@ -86,7 +86,7 @@ const Hero = () => {
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center">
       {/* Background gradients */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div 
+        <motion.div
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.2, 0.4, 0.2],
@@ -96,7 +96,7 @@ const Hero = () => {
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] bg-tokyo-purple/20 rounded-full blur-[80px] will-change-transform"
         />
-        <motion.div 
+        <motion.div
           animate={{
             scale: [1, 1.5, 1],
             opacity: [0.15, 0.3, 0.15],
@@ -110,18 +110,18 @@ const Hero = () => {
 
       {/* Random Background Floating Geometries */}
       {randomShapes.map((shape) => (
-        <motion.div 
+        <motion.div
           key={shape.id}
           animate={{ y: [-20, 20, -20], rotate: [0, 360 * shape.direction] }}
-          transition={{ 
-            y: { duration: shape.duration, repeat: Infinity, ease: "easeInOut" }, 
-            rotate: { duration: shape.rotationDuration, repeat: Infinity, ease: "linear" } 
+          transition={{
+            y: { duration: shape.duration, repeat: Infinity, ease: "easeInOut" },
+            rotate: { duration: shape.rotationDuration, repeat: Infinity, ease: "linear" }
           }}
           className={`absolute ${shape.color} opacity-30 pointer-events-none z-0`}
-          style={{ 
-            top: shape.top, 
-            left: shape.left, 
-            width: shape.size, 
+          style={{
+            top: shape.top,
+            left: shape.left,
+            width: shape.size,
             height: shape.size,
             filter: `drop-shadow(0 0 15px currentColor)`
           }}
@@ -131,12 +131,12 @@ const Hero = () => {
       ))}
 
       {/* Central Floating Tesseract */}
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           y: [-15, 15, -15],
           rotate: [0, 180, 360]
         }}
-        transition={{ 
+        transition={{
           y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
           rotate: { duration: 25, repeat: Infinity, ease: "linear" }
         }}
@@ -161,13 +161,13 @@ const Hero = () => {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-8 relative rounded-full p-1 bg-gradient-to-tr from-tokyo-purple via-tokyo-blue to-tokyo-cyan"
         >
-          <img 
-            src="/assets/images/jude.jpg" 
-            alt="Jude Rozario" 
+          <img
+            src="/assets/images/jude.jpg"
+            alt="Jude Rozario"
             className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-tokyo-base"
           />
         </motion.div>
-        
+
         <h1 className="text-5xl md:text-7xl font-bold mb-6 min-h-[90px] md:min-h-[110px] tracking-tight">
           <TypeAnimation
             sequence={[
@@ -181,14 +181,14 @@ const Hero = () => {
             repeat={1}
           />
         </h1>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, ease: "easeOut", duration: 0.6 }}
           className="text-lg md:text-2xl text-tokyo-muted mb-12 font-mono"
         >
-          {personalInfo.program.split(' ')[1]} {personalInfo.program.split(' ')[2]} | {personalInfo.cgpa.split(' ')[0]}
+          {personalInfo.program.split(' ')[1]} {personalInfo.program.split(' ')[2]}
         </motion.p>
 
         <motion.div
@@ -196,7 +196,7 @@ const Hero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.8, ease: "easeOut", duration: 0.6 }}
         >
-          <motion.a 
+          <motion.a
             href="#projects"
             whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(125, 207, 255, 0.5)" }}
             whileTap={{ scale: 0.95 }}
