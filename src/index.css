@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  body {
+  html, body {
     @apply bg-tokyo-base text-tokyo-fg;
     margin: 0;
     padding: 0;
