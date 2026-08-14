@@ -52,4 +52,38 @@
   .neon-text-cyan {
     text-shadow: 0 0 10px rgba(125, 207, 255, 0.5), 0 0 20px rgba(125, 207, 255, 0.3);
   }
+
+  /* Hyprland Animated Borders */
+  .hyprland-border {
+    position: relative;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .hyprland-border::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background: conic-gradient(from 0deg, transparent 70%, #bb9af7, #7dcfff, #7aa2f7);
+    z-index: -2;
+    animation: spin 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .hyprland-border:hover::before {
+    opacity: 1;
+  }
+  .hyprland-border::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: #16161e; /* tokyo-surface */
+    border-radius: 0.7rem;
+    z-index: -1;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

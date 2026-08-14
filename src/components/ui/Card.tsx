@@ -23,11 +23,22 @@ export const Card = ({ index, children, className = "", hoverColor = "tokyo-blue
       className="h-full z-10"
     >
       <motion.div
-        whileHover={{ scale: 1.02 }}
-        transition={{ ease: "easeOut", duration: 0.2 }}
-        className={`bg-tokyo-surface p-8 rounded-xl flex flex-col h-full border border-transparent relative group ${shadowClasses} ${className}`}
+        whileHover={{ scale: 1.02, y: -5 }}
+        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        className={`hyprland-border bg-tokyo-surface p-0 flex flex-col h-full border border-transparent shadow-lg ${shadowClasses} ${className}`}
       >
-        {children}
+        {/* Terminal / Window Title Bar */}
+        <div className="h-8 bg-tokyo-base/80 border-b border-tokyo-base flex items-center px-4 gap-2 z-10 relative">
+          <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+          <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-tokyo-muted text-xs font-mono opacity-50">
+            user@archlinux:~
+          </div>
+        </div>
+        <div className="p-8 flex flex-col h-full z-10 relative">
+          {children}
+        </div>
       </motion.div>
     </motion.div>
   );
