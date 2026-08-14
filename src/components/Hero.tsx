@@ -29,7 +29,36 @@ const Hero = () => {
         />
       </div>
 
-      {/* Floating geometric shape */}
+      {/* Background Floating Geometries */}
+      <motion.div 
+        animate={{ y: [-20, 20, -20], rotate: [0, -360] }}
+        transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" }, rotate: { duration: 40, repeat: Infinity, ease: "linear" } }}
+        className="absolute top-32 left-[15%] text-tokyo-purple opacity-40 drop-shadow-[0_0_15px_rgba(187,154,247,0.4)] pointer-events-none z-0"
+      >
+        <svg width="160" height="160" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+          <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" />
+          <line x1="50" y1="5" x2="50" y2="50" />
+          <line x1="10" y1="25" x2="50" y2="50" />
+          <line x1="90" y1="25" x2="50" y2="50" />
+          <line x1="50" y1="50" x2="50" y2="95" />
+          <circle cx="50" cy="50" r="3" fill="currentColor" />
+        </svg>
+      </motion.div>
+
+      <motion.div 
+        animate={{ y: [30, -30, 30], rotate: [0, 360] }}
+        transition={{ y: { duration: 8, repeat: Infinity, ease: "easeInOut" }, rotate: { duration: 35, repeat: Infinity, ease: "linear" } }}
+        className="absolute bottom-32 right-[15%] text-tokyo-blue opacity-30 drop-shadow-[0_0_15px_rgba(122,162,247,0.4)] pointer-events-none z-0"
+      >
+        <svg width="200" height="200" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+          <polygon points="50,10 90,50 50,90 10,50" />
+          <polygon points="50,10 70,50 50,90 30,50" />
+          <line x1="10" y1="50" x2="90" y2="50" />
+          <line x1="50" y1="10" x2="50" y2="90" />
+        </svg>
+      </motion.div>
+
+      {/* Central Floating geometric shape */}
       <motion.div 
         animate={{ 
           y: [-15, 15, -15],
@@ -39,17 +68,16 @@ const Hero = () => {
           y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
           rotate: { duration: 25, repeat: Infinity, ease: "linear" }
         }}
-        className="mb-12 text-tokyo-cyan opacity-80 drop-shadow-[0_0_15px_rgba(125,207,255,0.5)] will-change-transform"
+        className="mb-8 mt-12 text-tokyo-cyan opacity-80 drop-shadow-[0_0_15px_rgba(125,207,255,0.5)] will-change-transform z-10"
       >
-        <svg width="140" height="140" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
-          <circle cx="50" cy="50" r="48" />
-          <ellipse cx="50" cy="50" rx="48" ry="16" />
-          <ellipse cx="50" cy="50" rx="16" ry="48" />
-          <ellipse cx="50" cy="50" rx="48" ry="16" transform="rotate(45 50 50)" />
-          <ellipse cx="50" cy="50" rx="48" ry="16" transform="rotate(-45 50 50)" />
-          <line x1="2" y1="50" x2="98" y2="50" />
-          <line x1="50" y1="2" x2="50" y2="98" />
-          <circle cx="50" cy="50" r="4" fill="currentColor" opacity="0.5" />
+        <svg width="120" height="120" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.75">
+          <circle cx="50" cy="50" r="30" strokeDasharray="4 4" />
+          <circle cx="50" cy="50" r="45" opacity="0.3" />
+          <ellipse cx="50" cy="50" rx="45" ry="15" transform="rotate(30 50 50)" />
+          <ellipse cx="50" cy="50" rx="45" ry="15" transform="rotate(-30 50 50)" />
+          <ellipse cx="50" cy="50" rx="15" ry="45" opacity="0.5" />
+          <circle cx="50" cy="50" r="4" fill="currentColor" />
+          <path d="M 50 5 L 50 20 M 50 80 L 50 95 M 5 50 L 20 50 M 80 50 L 95 50" strokeWidth="1.5" opacity="0.5" />
         </svg>
       </motion.div>
 
