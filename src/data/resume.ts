@@ -57,13 +57,14 @@ export const projects = [
   },
   {
     title: "Radius - Cross-Platform Mobile App",
-    tech: ["React Native", "Go", "PostgreSQL", "Redis"],
+    tech: ["React Native/TypeScript", "Go (Gin)", "PostgreSQL", "Redis", "Docker"],
     date: "Present",
-    description: "A full-stack retail management platform built to handle inventory tracking, employee sessions, and store logistics.",
+    description: "Built a cross-platform inventory management system around a strict layered architecture (handlers, services, repositories) so every layer stays independently testable through interfaces.",
     bullets: [
-      "Designed a normalized PostgreSQL database schema to efficiently handle product catalogs, multi-store stock transfers, and employee data.",
-      "Implemented a custom, zero-dependency authentication system using Bcrypt and JWTs for secure Role-Based Access Control.",
-      "Set up an automated CI/CD pipeline to deploy the Go backend seamlessly to the cloud upon pushing to the main branch.",
+      "Containerized the backend with Docker for consistent local development and deployment, and wrote table-driven unit/integration tests with gomock to cover authentication, RBAC, and core API paths.",
+      "Designed a zero-dependency auth pipeline: Bcrypt password hashing plus JWT-based RBAC, giving retail associates and managers properly scoped permissions.",
+      "Added background workers that periodically clean up expired sessions across Postgres and Redis instead of relying on cron.",
+      "Managed schema changes across 25+ Postgres tables with golang-migrate, deployed through a Neon.tech-hosted pipeline.",
       "Currently building a native, on-device barcode scanner utilizing native camera APIs and Google MLKit."
     ],
     github: "https://github.com/juderozario08/radius",
