@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { personalInfo } from '../data/resume';
+import { scrollToSection } from '../utils/scrollTo';
 import { BookOpen } from 'lucide-react';
 
 interface NavbarProps {
@@ -24,24 +25,7 @@ const Navbar = ({ onOpenBlog }: NavbarProps) => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     closeMenu();
-
-    if (targetId === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      window.history.pushState(null, '', '#home');
-      return;
-    }
-
-    const element = document.getElementById(targetId);
-    if (element) {
-      const navOffset = 90;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navOffset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-      window.history.pushState(null, '', `#${targetId}`);
-    }
+    scrollToSection(targetId, { updateHash: true });
   };
 
   return (

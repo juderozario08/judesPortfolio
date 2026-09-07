@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { personalInfo } from '../data/resume';
+import { scrollToSection } from '../utils/scrollTo';
 
 const SHAPES = [
   // Wireframe Cube
@@ -200,14 +201,7 @@ const Hero = () => {
             href="#projects"
             onClick={(e) => {
               e.preventDefault();
-              const element = document.getElementById('projects');
-              if (element) {
-                const navOffset = 90;
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - navOffset;
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                window.history.pushState(null, '', '#projects');
-              }
+              scrollToSection('projects', { updateHash: true });
             }}
             whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(125, 207, 255, 0.5)" }}
             whileTap={{ scale: 0.95 }}

@@ -1,5 +1,6 @@
 import { personalInfo } from '../data/resume';
 import { Section } from './ui/Section';
+import { TerminalHeader } from './ui/TerminalHeader';
 
 const About = () => {
   return (
@@ -17,15 +18,7 @@ const About = () => {
           </p>
         </div>
         <div className="flex-1 hyprland-border bg-tokyo-surface p-0 flex flex-col h-full border border-transparent shadow-[0_10px_30px_-15px_rgba(187,154,247,0.3)]">
-          {/* Terminal / Window Title Bar */}
-          <div className="h-8 bg-tokyo-base/80 border-b border-tokyo-base flex items-center px-4 gap-2 z-10 relative">
-            <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-            <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-            <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-tokyo-muted text-xs font-mono opacity-50">
-              user@archlinux:~/education
-            </div>
-          </div>
+          <TerminalHeader title="user@archlinux:~/education" />
           
           <div className="p-8 z-10 relative">
           <h3 className="text-2xl font-bold text-tokyo-fg mb-6">Education</h3>
