@@ -18,7 +18,7 @@ const LinkedinIcon = ({ size }: { size: number }) => (
 
 const Contact = () => {
   return (
-    <section id="contact" className="min-h-[60vh] py-24 px-6 flex flex-col items-center justify-center bg-tokyo-base relative overflow-hidden">
+    <section id="contact" className="min-h-[60vh] py-24 px-6 flex flex-col items-center justify-center bg-transparent relative overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

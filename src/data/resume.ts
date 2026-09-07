@@ -42,6 +42,8 @@ export const experience = [
 
 export const projects = [
   {
+    id: "blip",
+    blogSlug: "blip-text-editor-piece-table",
     title: "Blip - Production-Grade Text Editor",
     tech: ["C++", "SDL2", "CMake"],
     date: "Present",
@@ -56,6 +58,8 @@ export const projects = [
     color: "tokyo-blue"
   },
   {
+    id: "radius",
+    blogSlug: "radius-system-architecture",
     title: "Radius - Cross-Platform Mobile App",
     tech: ["React Native/TypeScript", "Go (Gin)", "PostgreSQL", "Redis", "Docker"],
     date: "Present",
