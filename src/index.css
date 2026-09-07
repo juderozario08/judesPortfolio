@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
   html, body {
     @apply bg-tokyo-base text-tokyo-fg;
     margin: 0;
@@ -13,6 +18,7 @@
   /* Custom Tokyo Night Scrollbar */
   ::-webkit-scrollbar {
     width: 12px;
+    height: 12px;
   }
   ::-webkit-scrollbar-track {
     background: #1a1b26; /* tokyo-base */
@@ -24,6 +30,23 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #7aa2f7; /* tokyo-blue */
+  }
+
+  /* Custom Tokyo Night Scrollbar for inner components */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(26, 27, 38, 0.6);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #414868;
+    border-radius: 4px;
+    border: 2px solid #1a1b26;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #7aa2f7;
   }
   
   /* Selection styling */
@@ -87,3 +110,69 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Tokyo Night Syntax Highlighting for PrismJS */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #565f89;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #a9b1d6;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #f7768e;
+}
+
+.token.boolean,
+.token.number {
+  color: #ff9e64;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #9ece6a;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #89ddff;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #bb9af7;
+  font-weight: 600;
+}
+
+.token.function,
+.token.class-name {
+  color: #7aa2f7;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #e0af68;
+}
+
+.token.type-class {
+  color: #2ac3de;
+}
+

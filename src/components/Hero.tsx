@@ -198,10 +198,21 @@ const Hero = () => {
         >
           <motion.a
             href="#projects"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById('projects');
+              if (element) {
+                const navOffset = 90;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                window.history.pushState(null, '', '#projects');
+              }
+            }}
             whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(125, 207, 255, 0.5)" }}
             whileTap={{ scale: 0.95 }}
             transition={{ ease: "easeOut", duration: 0.2 }}
-            className="inline-block px-10 py-4 rounded-md border border-tokyo-cyan text-tokyo-cyan font-bold tracking-widest uppercase text-sm shadow-[0_0_10px_rgba(125,207,255,0.2)] bg-tokyo-surface/30 backdrop-blur-sm hover:bg-tokyo-cyan/10"
+            className="inline-block px-10 py-4 rounded-md border border-tokyo-cyan text-tokyo-cyan font-bold tracking-widest uppercase text-sm shadow-[0_0_10px_rgba(125,207,255,0.2)] bg-tokyo-surface/30 backdrop-blur-sm hover:bg-tokyo-cyan/10 cursor-pointer"
           >
             View My Work
           </motion.a>

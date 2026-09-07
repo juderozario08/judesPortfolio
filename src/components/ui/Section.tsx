@@ -16,7 +16,7 @@ export const Section = ({ id, number, title, children, color = "tokyo-blue" }: S
   }[color];
 
   return (
-    <section id={id} className="py-24 px-6 md:px-20 min-h-[80vh] bg-tokyo-base flex flex-col justify-center relative">
+    <section id={id} className="py-24 px-6 md:px-20 min-h-[80vh] bg-transparent flex flex-col justify-center relative">
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.98 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}

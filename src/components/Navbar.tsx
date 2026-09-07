@@ -1,44 +1,89 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { personalInfo } from '../data/resume';
+import { BookOpen } from 'lucide-react';
 
-const Navbar = () => {
+interface NavbarProps {
+  onOpenBlog?: (slug: string) => void;
+}
+
+const navItems = [
+  { id: 'home', label: 'Home', num: '1' },
+  { id: 'about', label: 'About', num: '2' },
+  { id: 'skills', label: 'Skills', num: '3' },
+  { id: 'experience', label: 'Experience', num: '4' },
+  { id: 'projects', label: 'Projects', num: '5' },
+];
+
+const Navbar = ({ onOpenBlog }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    closeMenu();
+
+    if (targetId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.history.pushState(null, '', '#home');
+      return;
+    }
+
+    const element = document.getElementById(targetId);
+    if (element) {
+      const navOffset = 90;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+      window.history.pushState(null, '', `#${targetId}`);
+    }
+  };
 
   return (
     <motion.nav 
       initial={{ y: -100, x: "-50%" }}
       animate={{ y: 0, x: "-50%" }}
       transition={{ ease: "easeOut", duration: 0.5 }}
-      className="fixed top-6 left-1/2 z-50 flex items-center justify-between w-[95%] max-w-6xl px-6 md:px-8 py-4 rounded-full backdrop-blur-md bg-tokyo-base/85 border border-tokyo-surface shadow-[0_5_20px_rgba(0,0,0,0.5)]"
+      className="fixed top-6 left-1/2 z-40 flex items-center justify-between w-[95%] max-w-6xl px-6 md:px-8 py-4 rounded-full backdrop-blur-md bg-tokyo-base/85 border border-tokyo-surface shadow-[0_5_20px_rgba(0,0,0,0.5)]"
     >
-      <div className="text-2xl font-bold text-tokyo-purple tracking-tighter neon-text-purple">
+      <a
+        href="#home"
+        onClick={(e) => handleNavClick(e, 'home')}
+        className="text-2xl font-bold text-tokyo-purple tracking-tighter neon-text-purple cursor-pointer transition-opacity hover:opacity-80 select-none"
+      >
         {"<Jude />"}
-      </div>
+      </a>
 
       {/* Desktop Menu */}
       <div className="hidden md:flex gap-2 text-base font-mono font-bold">
-        <a href="#home" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
-          <span className="text-tokyo-blue mr-2 opacity-70">1</span>Home
-        </a>
-        <a href="#about" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
-          <span className="text-tokyo-blue mr-2 opacity-70">2</span>About
-        </a>
-        <a href="#skills" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
-          <span className="text-tokyo-blue mr-2 opacity-70">3</span>Skills
-        </a>
-        <a href="#experience" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
-          <span className="text-tokyo-blue mr-2 opacity-70">4</span>Experience
-        </a>
-        <a href="#projects" className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all">
-          <span className="text-tokyo-blue mr-2 opacity-70">5</span>Projects
-        </a>
+        {navItems.map((item) => (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            onClick={(e) => handleNavClick(e, item.id)}
+            className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all"
+          >
+            <span className="text-tokyo-blue mr-2 opacity-70">{item.num}</span>
+            {item.label}
+          </a>
+        ))}
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden md:flex items-center gap-3">
+        <button
+          onClick={() => onOpenBlog?.('')}
+          className="px-4 py-2 rounded-full border border-tokyo-purple/50 bg-tokyo-purple/10 text-tokyo-purple hover:text-tokyo-base hover:bg-tokyo-purple transition-all text-sm font-mono font-bold flex items-center gap-1.5 shadow-[0_0_12px_rgba(187,154,247,0.25)]"
+          title="Read technical project case studies"
+        >
+          <BookOpen size={14} />
+          <span>Blog</span>
+        </button>
+
         <a 
           href={personalInfo.github} 
           target="_blank" 
@@ -51,7 +96,11 @@ const Navbar = () => {
 
       {/* Mobile Menu Toggle Button */}
       <div className="md:hidden flex items-center">
-        <button onClick={toggleMenu} className="text-tokyo-fg hover:text-tokyo-cyan focus:outline-none transition-colors p-2">
+        <button
+          onClick={toggleMenu}
+          className="text-tokyo-fg hover:text-tokyo-cyan focus:outline-none transition-colors p-2"
+          aria-label="Toggle Navigation Menu"
+        >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {isOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -72,22 +121,30 @@ const Navbar = () => {
             transition={{ duration: 0.2 }}
             className="absolute top-full left-0 right-0 mt-4 p-4 rounded-2xl bg-tokyo-base/95 backdrop-blur-xl border border-tokyo-surface shadow-2xl flex flex-col gap-2 md:hidden"
           >
-            <a href="#home" onClick={closeMenu} className="px-4 py-3 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all font-mono font-bold text-lg">
-              <span className="text-tokyo-blue mr-3 opacity-70">1</span>Home
-            </a>
-            <a href="#about" onClick={closeMenu} className="px-4 py-3 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all font-mono font-bold text-lg">
-              <span className="text-tokyo-blue mr-3 opacity-70">2</span>About
-            </a>
-            <a href="#skills" onClick={closeMenu} className="px-4 py-3 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all font-mono font-bold text-lg">
-              <span className="text-tokyo-blue mr-3 opacity-70">3</span>Skills
-            </a>
-            <a href="#experience" onClick={closeMenu} className="px-4 py-3 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all font-mono font-bold text-lg">
-              <span className="text-tokyo-blue mr-3 opacity-70">4</span>Experience
-            </a>
-            <a href="#projects" onClick={closeMenu} className="px-4 py-3 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all font-mono font-bold text-lg">
-              <span className="text-tokyo-blue mr-3 opacity-70">5</span>Projects
-            </a>
-            <div className="h-px bg-tokyo-surface my-2 mx-2"></div>
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className="px-4 py-3 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all font-mono font-bold text-lg"
+              >
+                <span className="text-tokyo-blue mr-3 opacity-70">{item.num}</span>
+                {item.label}
+              </a>
+            ))}
+
+            <button
+              onClick={() => {
+                closeMenu();
+                onOpenBlog?.('');
+              }}
+              className="px-4 py-3 rounded-md text-tokyo-purple hover:bg-tokyo-surface transition-all font-mono font-bold text-lg flex items-center gap-2 text-left"
+            >
+              <BookOpen size={18} />
+              <span>Engineering Blog</span>
+            </button>
+
+            <div className="h-px bg-tokyo-surface my-2 mx-2" />
             <a 
               href={personalInfo.github} 
               target="_blank" 
