@@ -8,31 +8,12 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import { BlogIndexPage } from './components/blog/BlogIndexPage';
 import { BlogPostPage } from './components/blog/BlogPostPage';
+import { scrollToSection } from './utils/scrollTo';
 
 type View =
   | { type: 'home' }
   | { type: 'blog-index' }
   | { type: 'blog-post'; slug: string };
-
-const scrollToSection = (targetId: string, smooth = true): boolean => {
-  if (!targetId || targetId === 'home') {
-    window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'instant' });
-    return true;
-  }
-
-  const element = document.getElementById(targetId);
-  if (element) {
-    const navOffset = 90;
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - navOffset;
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: smooth ? 'smooth' : 'instant',
-    });
-    return true;
-  }
-  return false;
-};
 
 function App() {
   const [view, setView] = useState<View>({ type: 'home' });

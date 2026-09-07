@@ -1,22 +1,20 @@
 import { projects } from '../data/resume';
 import { Section } from './ui/Section';
 import { Card } from './ui/Card';
+import { GithubIcon } from './ui/icons';
 import { FolderGit2, BookOpen } from 'lucide-react';
 
-const GithubIcon = ({ size }: { size: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-  </svg>
-);
+type ProjectItem = (typeof projects)[number];
 
 interface ProjectCardProps {
-  project: (typeof projects)[0] & { id?: string; blogSlug?: string };
+  project: ProjectItem;
   index: number;
   onOpenBlog?: (slug: string) => void;
 }
 
 const ProjectCard = ({ project, index, onOpenBlog }: ProjectCardProps) => {
-  const hasBlog = Boolean(project.blogSlug);
+  const blogSlug = 'blogSlug' in project ? project.blogSlug : undefined;
+  const hasBlog = Boolean(blogSlug);
 
   return (
     <Card index={index} hoverColor={project.color as "tokyo-blue" | "tokyo-purple" | "tokyo-cyan"}>
@@ -24,9 +22,9 @@ const ProjectCard = ({ project, index, onOpenBlog }: ProjectCardProps) => {
         <FolderGit2 size={36} className={`text-${project.color} group-hover:text-tokyo-cyan transition-colors`} />
         
         <div className="flex items-center gap-3">
-          {hasBlog && (
+          {hasBlog && blogSlug && (
             <button
-              onClick={() => onOpenBlog?.(project.blogSlug!)}
+              onClick={() => onOpenBlog?.(blogSlug)}
               className="px-3 py-1.5 rounded-lg border border-tokyo-purple/50 bg-tokyo-purple/15 text-tokyo-purple hover:bg-tokyo-purple hover:text-tokyo-base text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-sm hover:shadow-[0_0_12px_rgba(187,154,247,0.4)]"
               title="Read technical blog post"
             >
@@ -48,7 +46,7 @@ const ProjectCard = ({ project, index, onOpenBlog }: ProjectCardProps) => {
       </div>
       
       <h3 
-        onClick={() => hasBlog && onOpenBlog?.(project.blogSlug!)}
+        onClick={() => hasBlog && blogSlug && onOpenBlog?.(blogSlug)}
         className={`text-2xl font-bold text-tokyo-fg mb-3 group-hover:text-${project.color} transition-colors ${
           hasBlog ? "cursor-pointer hover:underline" : ""
         }`}
@@ -70,10 +68,10 @@ const ProjectCard = ({ project, index, onOpenBlog }: ProjectCardProps) => {
       </ul>
 
       {/* Prominent Blog Action Banner */}
-      {hasBlog && (
+      {hasBlog && blogSlug && (
         <div className="mb-4">
           <button
-            onClick={() => onOpenBlog?.(project.blogSlug!)}
+            onClick={() => onOpenBlog?.(blogSlug)}
             className="w-full py-2.5 px-4 rounded-xl border border-tokyo-purple/40 bg-tokyo-purple/10 hover:bg-tokyo-purple/20 text-tokyo-purple hover:text-tokyo-cyan font-mono text-xs font-bold transition-all flex items-center justify-between group/btn shadow-inner"
           >
             <span className="flex items-center gap-2">
@@ -107,7 +105,7 @@ const Projects = ({ onOpenBlog }: ProjectsProps) => {
         {projects.map((project, i) => (
           <ProjectCard 
             key={i} 
-            project={project as any} 
+            project={project} 
             index={i} 
             onOpenBlog={onOpenBlog}
           />

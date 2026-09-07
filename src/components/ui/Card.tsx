@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { TerminalHeader } from './TerminalHeader';
 
 type CardProps = {
   index: number;
@@ -27,15 +28,7 @@ export const Card = ({ index, children, className = "", hoverColor = "tokyo-blue
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
         className={`hyprland-border bg-tokyo-surface p-0 flex flex-col h-full border border-transparent shadow-lg ${shadowClasses} ${className}`}
       >
-        {/* Terminal / Window Title Bar */}
-        <div className="h-8 bg-tokyo-base/80 border-b border-tokyo-base flex items-center px-4 gap-2 z-10 relative">
-          <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-tokyo-muted text-xs font-mono opacity-50">
-            user@archlinux:~
-          </div>
-        </div>
+        <TerminalHeader title="user@archlinux:~" />
         <div className="p-8 flex flex-col h-full z-10 relative">
           {children}
         </div>

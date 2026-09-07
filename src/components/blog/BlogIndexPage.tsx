@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, ArrowRight, Search, Terminal } from 'lucide-react';
 import { blogPosts } from '../../data/blogs';
+import { Badge } from '../ui/Badge';
 
 interface BlogIndexPageProps {
   onNavigateHome: (targetSection?: string) => void;
@@ -191,12 +192,9 @@ export const BlogIndexPage = ({ onNavigateHome, onSelectPost }: BlogIndexPagePro
               <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 border-t border-tokyo-surface/70">
                 <div className="flex flex-wrap gap-1 sm:gap-1.5">
                   {post.tags.map((tag, tIdx) => (
-                    <span
-                      key={tIdx}
-                      className="text-[10px] sm:text-[11px] font-mono text-tokyo-cyan bg-tokyo-cyan/10 px-2 py-0.5 rounded border border-tokyo-cyan/20"
-                    >
+                    <Badge key={tIdx} variant="cyan">
                       #{tag}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
 
