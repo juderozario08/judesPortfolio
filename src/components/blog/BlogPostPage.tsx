@@ -21,6 +21,78 @@ interface BlogPostPageProps {
   onSelectPost: (slug: string) => void;
 }
 
+const renderFormattedText = (text: string) => {
+  // Parses inline code `code` and markdown bold **bold**
+  const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('`') && part.endsWith('`')) {
+      return (
+        <code
+          key={i}
+          className="font-mono text-tokyo-cyan bg-tokyo-surface/80 px-1.5 py-0.5 rounded text-[0.88em] border border-tokyo-surface/70"
+        >
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={i} className="font-bold text-tokyo-fg font-sans">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+};
+
+const renderParagraphContent = (p: string, pIdx: number) => {
+  // Check for bullet point starting with •, -, or *
+  const bulletMatch = p.match(/^([•\-\*]\s*)(.+)$/);
+  if (bulletMatch) {
+    const rawContent = bulletMatch[2];
+
+    // Check if there is a double-colon pattern like "Tier 1: Client Frontends (React Native & Expo SDK 54): ..."
+    // or "Part 8: Multi-Store Structure & Branch Management: ..."
+    const doubleColonMatch = rawContent.match(/^((?:Tier|Part)\s+\d+:\s+[^:]+):\s+(.+)$/i);
+    // General single colon pattern "Topic: Description"
+    const singleColonMatch = rawContent.match(/^([^:]+):\s+(.+)$/);
+
+    const colonMatch = doubleColonMatch || singleColonMatch;
+
+    if (colonMatch) {
+      const topic = colonMatch[1];
+      const description = colonMatch[2];
+      return (
+        <div key={pIdx} className="flex items-start gap-2.5 pl-1.5 sm:pl-3 my-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-tokyo-purple mt-2 sm:mt-2.5 shrink-0 shadow-sm" />
+          <div className="flex-1 leading-relaxed">
+            <strong className="font-bold text-tokyo-fg font-sans">
+              {renderFormattedText(topic)}:
+            </strong>{' '}
+            <span className="text-tokyo-fg/90">
+              {renderFormattedText(description)}
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    // Bullet without colon
+    return (
+      <div key={pIdx} className="flex items-start gap-2.5 pl-1.5 sm:pl-3 my-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-tokyo-purple mt-2 sm:mt-2.5 shrink-0 shadow-sm" />
+        <div className="flex-1 leading-relaxed text-tokyo-fg/90">
+          {renderFormattedText(rawContent)}
+        </div>
+      </div>
+    );
+  }
+
+  // Regular paragraph
+  return <p key={pIdx}>{renderFormattedText(p)}</p>;
+};
+
 export const BlogPostPage = ({
   slug,
   onNavigateHome,
@@ -236,9 +308,7 @@ export const BlogPostPage = ({
               </h2>
 
               <div className="space-y-3.5 sm:space-y-4 text-tokyo-fg/90 leading-relaxed font-sans text-xs sm:text-base break-words">
-                {section.content.map((p, pIdx) => (
-                  <p key={pIdx}>{p}</p>
-                ))}
+                {section.content.map((p, pIdx) => renderParagraphContent(p, pIdx))}
               </div>
 
               {section.id === 'part-1-system-architecture' || section.id === 'part-1-layered-architecture' ? (

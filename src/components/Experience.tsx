@@ -14,12 +14,26 @@ const ExperienceItem = ({ item, index }: { item: typeof experience[0] | typeof l
       </span>
     </div>
     <ul className="list-none space-y-3 text-tokyo-muted leading-relaxed">
-      {item.bullets.map((bullet: string, i: number) => (
-        <li key={i} className="flex items-start gap-3">
-          <span className="text-tokyo-purple font-mono font-bold mt-1 text-sm">{">"}</span>
-          <span>{bullet}</span>
-        </li>
-      ))}
+      {item.bullets.map((bullet: string, i: number) => {
+        const colonMatch = bullet.match(/^([^:]+):\s+(.+)$/);
+        return (
+          <li key={i} className="flex items-start gap-3">
+            <span className="text-tokyo-purple font-mono font-bold mt-1 text-sm shrink-0">{">"}</span>
+            <span>
+              {colonMatch ? (
+                <>
+                  <strong className="text-tokyo-fg font-bold font-sans">
+                    {colonMatch[1]}:
+                  </strong>{' '}
+                  {colonMatch[2]}
+                </>
+              ) : (
+                bullet
+              )}
+            </span>
+          </li>
+        );
+      })}
     </ul>
   </Card>
 );

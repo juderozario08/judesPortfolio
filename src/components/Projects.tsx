@@ -59,12 +59,26 @@ const ProjectCard = ({ project, index, onOpenBlog }: ProjectCardProps) => {
       </p>
       
       <ul className="list-none space-y-2 text-sm text-tokyo-muted mb-6">
-        {project.bullets.map((bullet, i) => (
-          <li key={i} className="flex items-start gap-2">
-            <span className={`text-${project.color} font-mono font-bold mt-0.5`}>{">"}</span>
-            <span>{bullet}</span>
-          </li>
-        ))}
+        {project.bullets.map((bullet, i) => {
+          const colonMatch = bullet.match(/^([^:]+):\s+(.+)$/);
+          return (
+            <li key={i} className="flex items-start gap-2 leading-relaxed">
+              <span className={`text-${project.color} font-mono font-bold mt-0.5 shrink-0`}>{">"}</span>
+              <span>
+                {colonMatch ? (
+                  <>
+                    <strong className="text-tokyo-fg font-bold font-sans">
+                      {colonMatch[1]}:
+                    </strong>{' '}
+                    {colonMatch[2]}
+                  </>
+                ) : (
+                  bullet
+                )}
+              </span>
+            </li>
+          );
+        })}
       </ul>
 
       {/* Prominent Blog Action Banner */}
