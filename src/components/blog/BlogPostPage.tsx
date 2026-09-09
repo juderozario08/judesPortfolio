@@ -6,6 +6,7 @@ import { CodeBlock } from './CodeBlock';
 import { TradeoffCard } from './TradeoffCard';
 import { CalloutBox } from './CalloutBox';
 import { ERDiagram } from './ERDiagram';
+import { SystemArchitectureDiagram } from './SystemArchitectureDiagram';
 import { BlogPostHeader } from './BlogPostHeader';
 import { BlogPostHero } from './BlogPostHero';
 import { InlineTableOfContents } from './InlineTableOfContents';
@@ -240,7 +241,9 @@ export const BlogPostPage = ({
                 ))}
               </div>
 
-              {section.id === 'part-1-database-pgx' ? (
+              {section.id === 'part-1-system-architecture' || section.id === 'part-1-layered-architecture' ? (
+                <SystemArchitectureDiagram />
+              ) : section.id === 'part-2-database-design' ? (
                 <ERDiagram />
               ) : section.image ? (
                 <div className="my-5 sm:my-6 rounded-xl overflow-hidden border border-tokyo-surface/80 bg-tokyo-base/60 p-2 sm:p-4 shadow-xl">

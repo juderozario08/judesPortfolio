@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import type { SchemaTable } from '../data/radiusSchema';
 
 interface UseCanvasPanZoomProps {
   canvasWidth: number;
@@ -38,11 +37,12 @@ export const useCanvasPanZoom = ({
     containerRef.current.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
   }, [canvasWidth, canvasHeight]);
 
-  // Center on a specific table
+  // Center on a specific node or table
   const centerOnTable = useCallback(
-    (table: SchemaTable) => {
+    (table: { x: number; y: number; width?: number }) => {
       if (containerRef.current) {
-        const targetX = table.x * zoom - containerRef.current.clientWidth / 2 + (table.width * zoom) / 2;
+        const itemWidth = table.width ?? 300;
+        const targetX = table.x * zoom - containerRef.current.clientWidth / 2 + (itemWidth * zoom) / 2;
         const targetY = table.y * zoom - containerRef.current.clientHeight / 2 + 150;
         containerRef.current.scrollTo({
           left: Math.max(0, targetX),

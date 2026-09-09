@@ -65,11 +65,11 @@ export const projects = [
     date: "Present",
     description: "Built a cross-platform inventory management system around a strict layered architecture (handlers, services, repositories) so every layer stays independently testable through interfaces.",
     bullets: [
-      "Containerized the backend with Docker for consistent local development and deployment, and wrote table-driven unit/integration tests with gomock to cover authentication, RBAC, and core API paths.",
-      "Designed a zero-dependency auth pipeline: Bcrypt password hashing plus JWT-based RBAC, giving retail associates and managers properly scoped permissions.",
-      "Added background workers that periodically clean up expired sessions across Postgres and Redis instead of relying on cron.",
-      "Managed schema changes across 25+ Postgres tables with golang-migrate, deployed through a Neon.tech-hosted pipeline.",
-      "Currently building a native, on-device barcode scanner utilizing native camera APIs and Google MLKit."
+      "Containerized the Go backend with multi-stage Docker and docker-compose, and wrote table-driven unit/integration tests with gomock to cover domain services, WebSockets, and core API paths.",
+      "Designed an IP-aware auth pipeline: Bcrypt password hashing plus JWT-based RBAC, single active session enforcement, and remote device revocation for shared retail hardware.",
+      "Engineered real-time retail workflows including concurrency-locked cycle counts, closed-loop replenishment linking POS sales to empty-shelf scans, and BOPIS fulfillment with background expiration workers.",
+      "Managed schema changes across 40 versioned migrations with golang-migrate, maintaining strict Up/Down rollbacks across a multi-store relational model.",
+      "Built a high-volume deterministic synthetic data generator with Python and Faker producing 70,000+ inventory records and 50,000 transactions across 7 store locations."
     ],
     github: "https://github.com/juderozario08/radius",
     color: "tokyo-purple"
