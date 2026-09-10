@@ -134,7 +134,7 @@ export const ARCH_NODES: ArchNode[] = [
   // =====================================================================
   {
     id: 'client-mobile-floor',
-    name: 'Sales Floor Terminal',
+    name: 'Sales Floor Mobile Device',
     subtitle: 'Expo SDK 54 • Barcode Camera',
     tier: 'client',
     tierNumber: 1,
@@ -203,7 +203,7 @@ export default function SalesFloorScanner() {
     inbound: 'Physical scan wedge, manual recount entries',
     outbound: 'POST /api/cycle-counts/:id/scan, POST /api/receiving/lpr',
     tags: ['Cycle Count', 'PO Receiving', 'LPR Pallets'],
-    metrics: 'Supports 1,200+ counts/hr per terminal',
+    metrics: 'Supports 1,200+ counts/hr per mobile device',
     codeSnippet: {
       language: 'typescript',
       code: `// radius-mobile/app/cycle-counts.tsx
@@ -221,8 +221,8 @@ export async function submitCycleCountItem(sheetId: number, upc: string, counted
   },
   {
     id: 'client-pos-desk',
-    name: 'POS Terminal & Service Desk',
-    subtitle: 'Multi-Tender Cash/Card/Gift',
+    name: 'Transaction Viewer Mobile',
+    subtitle: 'Audit Logs & Mock Test Viewer',
     tier: 'client',
     tierNumber: 1,
     tierName: 'Client Frontend',
@@ -231,26 +231,24 @@ export async function submitCycleCountItem(sheetId: number, upc: string, counted
     y: 100,
     width: 320,
     height: 165,
-    role: 'Point of Sale register client with split-tender support (Cash, Debit, Credit, Gift Card), provincial tax calculation, and print shop order tracker.',
-    badge: 'POS DESK',
+    role: 'Mobile interface for viewing real-time transaction logs, auditing stock changes, and monitoring regional tax data.',
+    badge: 'VIEWER',
     badgeColor: 'bg-emerald-400/20 text-emerald-400 border-emerald-400/40',
-    filePath: 'radius-mobile/app/pos.tsx',
-    description: 'Ensures zero penny discrepancies between split tenders and the computed gross total.',
-    safeguard: 'Strict transaction total validation; fails immediately if tender amounts do not exactly match order subtotal + provincial taxes.',
-    inbound: 'Cashier tender selections, barcode gun inputs',
-    outbound: 'POST /api/pos/transactions, GET /api/inventory/search',
-    tags: ['Multi-Tender', 'Split Payment', 'Tax Engine'],
-    metrics: 'Sub-cent rounding accuracy',
+    filePath: 'radius-mobile/app/transactions.tsx',
+    description: 'Polls central transaction history so employees can audit sales and deductions on their phones.',
+    safeguard: 'Strict read-only view validation; instantly syncs remote mock orders with local provincial taxes.',
+    inbound: 'Associate manual refresh, automated polling',
+    outbound: 'GET /api/pos/transactions/logs, GET /api/inventory/search',
+    tags: ['Read-Only', 'Audit Logs', 'Tax Viewer'],
+    metrics: 'Instantly renders 5,000+ log entries',
     codeSnippet: {
       language: 'typescript',
       code: `// radius-mobile/app/pos.tsx
-export async function checkoutPOSTransaction(cart: CartItem[], tenders: PaymentTender[]) {
+export async function fetchTransactionLogs(storeId: number) {
   const payload = {
-    cart_items: cart,
-    tenders: tenders,
-    store_id: getCurrentStoreId()
+    store_id: storeId
   };
-  return apiClient.post('/api/pos/transactions', payload);
+  return apiClient.get('/api/pos/transactions/logs', { params: payload });
 }`,
     },
     flowSteps: {},
@@ -350,12 +348,12 @@ func RateLimitMiddleware(limit int, burst int) gin.HandlerFunc {
     y: 370,
     width: 320,
     height: 145,
-    role: 'Extracts and cryptographically verifies Bearer JWTs, checks Redis revocation blacklist, and injects store_id/user_id into request context.',
+    role: 'Extracts and cryptographically verifies Bearer JWTs, checks Redis revocation blacklist, and injects `store_id`/`user_id` into request context.',
     badge: 'SECURITY',
     badgeColor: 'bg-tokyo-purple/20 text-tokyo-purple border-tokyo-purple/40',
     filePath: 'radius-backend/internal/middleware/auth.go',
     description: 'Enforces single active session per employee; prevents stale or hijacked tokens from executing store operations.',
-    safeguard: 'Instant remote session kill: if another terminal logs in, the previous token is blacklisted in Redis within 1 millisecond.',
+    safeguard: 'Instant remote session kill: if another device logs in, the previous token is blacklisted in Redis within 1 millisecond.',
     inbound: 'Authorized HTTPS requests',
     outbound: 'Redis session check, Gin context injection',
     tags: ['JWT Claims', 'RBAC', 'Redis Blacklist'],
@@ -386,7 +384,7 @@ func AuthMiddleware(secret []byte, redisClient *redis.Client) gin.HandlerFunc {
   {
     id: 'gateway-context',
     name: 'Context & Timeout Guardian',
-    subtitle: 'Transaction Cancellation Safety',
+    subtitle: 'Query Cancellation Safety',
     tier: 'gateway',
     tierNumber: 2,
     tierName: 'API Gateway & Security',
@@ -395,12 +393,12 @@ func AuthMiddleware(secret []byte, redisClient *redis.Client) gin.HandlerFunc {
     y: 370,
     width: 300,
     height: 145,
-    role: 'Attaches 5-second deadline context to all incoming HTTP transactions and propagates cancellation down through repository calls.',
+    role: 'Attaches 5-second deadline context to all incoming HTTP requests and propagates cancellation down through repository calls.',
     badge: 'TIMEOUT',
     badgeColor: 'bg-emerald-400/20 text-emerald-400 border-emerald-400/40',
     filePath: 'radius-backend/internal/middleware/context.go',
     description: 'Prevents orphan database connections and locked rows when mobile handhelds disconnect mid-request.',
-    safeguard: 'If a client drops connection, context.Done() signals pgx to immediately roll back pending SQL transactions.',
+    safeguard: 'If a client drops connection, context.Done() signals pgx to immediately roll back pending SQL operations.',
     inbound: 'Incoming HTTP requests',
     outbound: 'HTTP Handlers (Tier 3) with bound context.Context',
     tags: ['context.WithTimeout', 'Deadlock Protection', 'Graceful Cancel'],
@@ -590,7 +588,7 @@ func (h *CycleCountHandler) RecordCount(c *gin.Context) {
     y: 620,
     width: 290,
     height: 155,
-    role: 'Ingests IS4TC empty shelf scans and delivers optimized serpentine restock walk lists to mobile terminals.',
+    role: 'Ingests IS4TC empty shelf scans and delivers optimized serpentine restock walk lists to mobile devices.',
     badge: 'FILL DTO',
     badgeColor: 'bg-tokyo-cyan/20 text-tokyo-cyan border-tokyo-cyan/40',
     filePath: 'radius-backend/internal/handler/fill_report_handler.go',
@@ -617,8 +615,8 @@ func (h *FillReportHandler) IngestEmptyHole(c *gin.Context) {
   },
   {
     id: 'handler-pos',
-    name: 'POS Transaction Handler',
-    subtitle: '/api/pos/transactions',
+    name: 'Transaction Viewer Handler',
+    subtitle: '/api/pos/transactions/logs',
     tier: 'handler',
     tierNumber: 3,
     tierName: 'HTTP Handlers',
@@ -627,27 +625,23 @@ func (h *FillReportHandler) IngestEmptyHole(c *gin.Context) {
     y: 620,
     width: 290,
     height: 155,
-    role: 'Handles retail checkout transactions, payment tender breakdown verification, and tax calculations.',
-    badge: 'POS DTO',
+    role: 'Handles real-time transaction polling, mock log retrieval, and regional tax display calculations.',
+    badge: 'VIEWER API',
     badgeColor: 'bg-amber-400/20 text-amber-400 border-amber-400/40',
-    filePath: 'radius-backend/internal/handler/transaction_handler.go',
-    description: 'Exposes /api/pos/transactions, /api/pos/returns, and /api/pos/tax-calculate endpoints.',
-    safeguard: 'Verifies tender sum matches invoice grand total to the exact cent; rejects incomplete payment splits.',
-    inbound: 'POST /api/pos/transactions',
-    outbound: 'TransactionService.ProcessTransaction(ctx, ...)',
-    tags: ['POS', 'Split Tender', 'Tax Engine'],
-    metrics: '< 20ms end-to-end checkout commit',
+    filePath: 'radius-backend/internal/handler/transaction_viewer_handler.go',
+    description: 'Exposes /api/pos/transactions/logs and /api/pos/tax-calculate endpoints.',
+    safeguard: 'Rejects mock creation unless the authenticated token belongs to an Admin role.',
+    inbound: 'GET /api/pos/transactions/logs',
+    outbound: 'TransactionService.FetchLogs(ctx, ...)',
+    tags: ['Log Retrieval', 'Tax Engine', 'Admin Roles'],
+    metrics: 'Streams JSON payload in <5ms',
     codeSnippet: {
       language: 'go',
       code: `// radius-backend/internal/handler/transaction_handler.go
-func (h *TransactionHandler) ProcessSale(c *gin.Context) {
-	var txDTO CreateTransactionDTO
-	if err := c.ShouldBindJSON(&txDTO); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "malformed sale request"})
-		return
-	}
-	resp, err := h.txService.CreateTransaction(c.Request.Context(), txDTO)
-	c.JSON(http.StatusCreated, resp)
+func (h *TransactionHandler) GetLogs(c *gin.Context) {
+	storeId := c.Query("store_id")
+	// Delegate to business service to fetch logs
+	resp, err := h.txService.FetchLogs(c.Request.Context(), storeId)
 }`,
     },
     flowSteps: {},
@@ -713,7 +707,7 @@ func (h *WSHandler) ServeWS(c *gin.Context) {
     badgeColor: 'bg-tokyo-blue/20 text-tokyo-blue border-tokyo-blue/40',
     filePath: 'radius-backend/internal/service/auth_service.go',
     description: 'Decoupled from transport and persistence layers via Go interfaces.',
-    safeguard: 'If a user logs into Terminal B while Terminal A is active, emits TAKEOVER_PROMPT and revokes Terminal A in Redis.',
+    safeguard: 'If a user logs into Device B while Device A is active, emits TAKEOVER_PROMPT and revokes Device A in Redis.',
     inbound: 'AuthHandler',
     outbound: 'UserRepository, RedisSessionClient',
     tags: ['Bcrypt', 'Single Session', 'Session Takeover'],
@@ -851,8 +845,8 @@ func (s *FillReportService) GenerateRestockList(ctx context.Context, storeID int
   },
   {
     id: 'service-pos',
-    name: 'POS Transaction Engine',
-    subtitle: 'Split-Tender & Tax Calculation',
+    name: 'Transaction Viewer Service',
+    subtitle: 'Business Rules & Mock Admin Generator',
     tier: 'service',
     tierNumber: 4,
     tierName: 'Domain Services',
@@ -861,25 +855,26 @@ func (s *FillReportService) GenerateRestockList(ctx context.Context, storeID int
     y: 900,
     width: 290,
     height: 165,
-    role: 'Validates payment tender combinations (Cash, Card, Gift Card), computes Canadian provincial taxes (ON 13% HST, BC 12%), and adjusts sellable stock.',
+    role: 'Aggregates read-only views for general staff and allows admins to generate mock transactions for testing tax/inventory logic.',
     badge: 'TAX & LEDGER',
     badgeColor: 'bg-amber-400/20 text-amber-400 border-amber-400/40',
-    filePath: 'radius-backend/internal/service/transaction_service.go',
-    description: 'Dispatches immutable transaction ledger rows and updates sub-inventory counts.',
-    safeguard: 'Double-entry ledger integrity: total debits must exactly equal credits before database commit.',
+    filePath: 'radius-backend/internal/service/transaction_viewer_service.go',
+    description: 'Retrieves immutable transaction ledger rows and audits sub-inventory counts.',
+    safeguard: 'Double-entry ledger integrity enforced for admin mocks: total debits must exactly equal credits before mock commit.',
     inbound: 'TransactionHandler',
     outbound: 'TransactionRepo, InventoryRepo, LedgerRepo',
-    tags: ['Provincial Tax', 'Double-Entry', 'Atomic Checkout'],
-    metrics: 'Tested across 50,000+ synthetic transactions',
+    tags: ['Provincial Tax', 'Double-Entry', 'Atomic Audit'],
+    metrics: 'Tested across 50,000+ synthetic transaction log fetches',
     codeSnippet: {
       language: 'go',
       code: `// radius-backend/internal/service/transaction_service.go
-func (s *TransactionService) CreateTransaction(ctx context.Context, dto CreateTransactionDTO) (*Transaction, error) {
-	tax := calculateProvincialTax(dto.Province, dto.Subtotal)
-	if sumTenders(dto.Tenders) != dto.Subtotal + tax {
-		return nil, ErrTenderMismatch
+func (s *TransactionService) FetchLogs(ctx context.Context, storeId string) ([]*Transaction, error) {
+	// Returns a strict view of the transaction history
+	logs, err := s.txRepo.GetRecentLogs(ctx, storeId)
+	if err != nil {
+		return nil, err
 	}
-	return s.txRepo.ExecuteCheckout(ctx, dto, tax)
+	return logs, nil
 }`,
     },
     flowSteps: {},
@@ -896,11 +891,11 @@ func (s *TransactionService) CreateTransaction(ctx context.Context, dto CreateTr
     y: 900,
     width: 290,
     height: 165,
-    role: 'Central event broker maintaining isolated client connection pools per store: map[store_id]map[*Client]bool.',
+    role: 'Central event broker maintaining isolated client connection pools per store: `map[store_id]map[*Client]bool`.',
     badge: 'HUB CORE',
     badgeColor: 'bg-orange-400/20 text-orange-400 border-orange-400/40',
     filePath: 'radius-backend/internal/service/websocket_hub.go',
-    description: 'Dispatches real-time inventory events (ORDER_PICKED, COUNT_LOCKED) only to terminals within that store.',
+    description: 'Dispatches real-time inventory events (ORDER_PICKED, COUNT_LOCKED) only to mobile devices within that store.',
     safeguard: 'Non-blocking channel select drops unresponsive clients in warehouse dead-zones without blocking broadcast loop.',
     inbound: 'Domain Services emitting events',
     outbound: 'WebSocket Client write channels (Tier 1)',
@@ -947,7 +942,7 @@ func (h *Hub) BroadcastToStore(storeID int64, event []byte) {
     badge: 'IN-MEMORY',
     badgeColor: 'bg-rose-500/20 text-rose-400 border-rose-500/40',
     filePath: 'radius-backend/internal/cache/redis_client.go',
-    description: 'Keys include session:<id>, blacklist:<session_id>, and is4tc_session:<store_id>:<upc>.',
+    description: 'Keys include `session:<id>`, `blacklist:<session_id>`, and `is4tc_session:<store_id>:<upc>`.',
     safeguard: 'Configured with automatic TTL expiration; volatile keys drop cleanly without exhausting RAM.',
     inbound: 'AuthService, Ingress Middleware, FillReportService',
     outbound: 'In-memory fast retrieval',
@@ -989,7 +984,7 @@ func (c *RedisClient) RecordEmptyHole(ctx context.Context, storeID int64, upc st
     description: 'Handles high-concurrency inventory locks via pgx/v5 connection pool with 25 max open connections.',
     safeguard: 'Pessimistic SELECT ... FOR UPDATE prevents race conditions during simultaneous BOPIS order claims.',
     inbound: 'All Domain Repositories via pgx/v5',
-    outbound: 'ACID transaction commits',
+    outbound: 'ACID database operations',
     tags: ['PostgreSQL 16', 'jackc/pgx/v5', 'Pessimistic Lock', '40 Migrations'],
     metrics: '70,000+ synthetic inventory test scale',
     codeSnippet: {
@@ -1005,14 +1000,14 @@ func InitDBPool(connStr string) (*pgxpool.Pool, error) {
 }`,
     },
     flowSteps: {
-      bopis: { stepNumber: 5, action: 'Executes atomic transaction updating order status to READY_FOR_PICKUP' },
+      bopis: { stepNumber: 5, action: 'Executes atomic database operation updating order status to READY_FOR_PICKUP' },
       cycle: { stepNumber: 5, action: 'Updates physical counts and acquires count sheet row locks' },
     },
   },
   {
     id: 'storage-ledger',
     name: 'Immutable Inventory Ledger',
-    subtitle: 'Append-Only inventory_transactions',
+    subtitle: 'Append-Only `inventory_transactions`',
     tier: 'storage',
     tierNumber: 5,
     tierName: 'Persistence & Cache',
@@ -1024,9 +1019,9 @@ func InitDBPool(connStr string) (*pgxpool.Pool, error) {
     role: 'Tamper-evident audit ledger recording every quantity delta across sellable stock, BOPIS holds, cycle count variances, and returns.',
     badge: 'LEDGER',
     badgeColor: 'bg-emerald-400/20 text-emerald-400 border-emerald-400/40',
-    filePath: 'radius-backend/internal/repository/inventory_transaction_repo.go',
+    filePath: 'radius-backend/internal/repository/inventory_log_repo.go',
     description: 'Provides complete forensic traceability for inventory shrinkage and store audits.',
-    safeguard: 'Strictly append-only: UPDATE and DELETE operations are forbidden on the inventory_transactions table.',
+    safeguard: 'Strictly append-only: UPDATE and DELETE operations are forbidden on the `inventory_transactions` table.',
     inbound: 'BOPIS Service, POS Service, Cycle Count Service',
     outbound: 'Audit query aggregations',
     tags: ['Audit Ledger', 'Append-Only', 'Forensics', 'Zero Tampering'],
@@ -1064,7 +1059,7 @@ func (r *LedgerRepo) RecordDelta(ctx context.Context, tx pgx.Tx, delta LedgerEnt
     badgeColor: 'bg-orange-400/20 text-orange-400 border-orange-400/40',
     filePath: 'radius-backend/internal/worker/bopis_worker.go',
     description: 'Restores locked bopis_qty back to sellable new_qty without human intervention.',
-    safeguard: 'Runs within atomic transaction with SKIP LOCKED to avoid contending with live customer pick-ups.',
+    safeguard: 'Runs within atomic database lock with SKIP LOCKED to avoid contending with live customer pick-ups.',
     inbound: 'Go runtime time.Ticker interval',
     outbound: 'PostgreSQL DB, Inventory Ledger',
     tags: ['time.Ticker', 'Goroutine Worker', 'Auto-Release', 'SKIP LOCKED'],
@@ -1123,7 +1118,7 @@ export const ARCH_CONNECTIONS: ArchConnection[] = [
     type: 'https',
     flows: ['all'],
     color: '#7aa2f7',
-    description: 'POS register dispatches split-tender checkout transactions and return slips.',
+    description: 'Mobile device polls for transaction logs and admin mock events.',
   },
   {
     id: 'conn-device-to-ws-upgrader',
@@ -1158,7 +1153,7 @@ export const ARCH_CONNECTIONS: ArchConnection[] = [
     type: 'context',
     flows: ['all', 'bopis', 'replenish', 'cycle'],
     color: '#bb9af7',
-    description: 'Injects verified store_id, user_id, and 5-second deadline context into request pipeline.',
+    description: 'Injects verified `store_id`, `user_id`, and 5-second deadline context into request pipeline.',
   },
   {
     id: 'conn-authjwt-to-redis',
@@ -1224,7 +1219,7 @@ export const ARCH_CONNECTIONS: ArchConnection[] = [
     type: 'https',
     flows: ['all'],
     color: '#7dcfff',
-    description: 'Routes POS checkout and return transactions to TransactionHandler.',
+    description: 'Routes transaction log polling to TransactionHandler.',
   },
   {
     id: 'conn-wsupgrader-to-wshandler',
@@ -1287,12 +1282,12 @@ export const ARCH_CONNECTIONS: ArchConnection[] = [
     id: 'conn-hpos-to-spos',
     fromNode: 'handler-pos',
     toNode: 'service-pos',
-    label: 'TransactionService Contract',
+    label: 'Transaction Viewer Contract',
     protocol: 'GO-IFACE',
     type: 'contract',
     flows: ['all'],
     color: '#9ece6a',
-    description: 'TransactionHandler invokes TransactionService.CreateTransaction for checkout.',
+    description: 'TransactionHandler invokes TransactionService.FetchLogs for viewing.',
   },
   {
     id: 'conn-hwshandler-to-wshub',
@@ -1379,12 +1374,12 @@ export const ARCH_CONNECTIONS: ArchConnection[] = [
     id: 'conn-spos-to-postgres',
     fromNode: 'service-pos',
     toNode: 'storage-postgres',
-    label: 'Insert POS Transaction',
+    label: 'Query POS Logs',
     protocol: 'PGX-POOL',
     type: 'sql',
     flows: ['all'],
     color: '#7aa2f7',
-    description: 'Writes sales header, split payment tender records, and updates sellable stock.',
+    description: 'Fetches read-only transaction history or executes admin mock inserts.',
   },
   {
     id: 'conn-sbopis-to-ledger',
@@ -1406,7 +1401,7 @@ export const ARCH_CONNECTIONS: ArchConnection[] = [
     type: 'sql',
     flows: ['all', 'cycle'],
     color: '#9ece6a',
-    description: 'Appends permanent shrinkage delta to inventory_transactions ledger.',
+    description: 'Appends permanent shrinkage delta to `inventory_transactions` ledger.',
   },
   {
     id: 'conn-spos-to-ledger',

@@ -69,7 +69,7 @@ export const projects = [
       "Designed an IP-aware auth pipeline: Bcrypt password hashing plus JWT-based RBAC, single active session enforcement, and remote device revocation for shared retail hardware.",
       "Engineered real-time retail workflows including concurrency-locked cycle counts, closed-loop replenishment linking POS sales to empty-shelf scans, and BOPIS fulfillment with background expiration workers.",
       "Managed schema changes across 40 versioned migrations with golang-migrate, maintaining strict Up/Down rollbacks across a multi-store relational model.",
-      "Built a high-volume deterministic synthetic data generator with Python and Faker producing 70,000+ inventory records and 50,000 transactions across 7 store locations."
+      "Built a high-volume deterministic synthetic data generator with Python and Faker producing 70,000+ inventory records and 50,000 transaction log records across 7 store locations."
     ],
     github: "https://github.com/juderozario08/radius",
     color: "tokyo-purple"

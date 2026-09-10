@@ -170,9 +170,9 @@ export const blogPosts: BlogPost[] = [
       {
         id: "part-6-closed-loop",
         partNumber: "6.1",
-        title: "Closing the Loop Between POS Velocity and Empty Shelf Scans",
+        title: "Closing the Loop Between Sales Velocity Logs and Empty Shelf Scans",
         status: "published",
-        description: "How mobile aisle scans and POS transactions feed an ephemeral Redis session to build optimal serpentine picking routes through the warehouse."
+        description: "How mobile aisle scans and central transaction logs feed an ephemeral Redis session to build optimal serpentine picking routes through the warehouse."
       },
       {
         id: "part-7-omnichannel-fulfillment",
@@ -219,9 +219,9 @@ export const blogPosts: BlogPost[] = [
       {
         id: "part-12-pos-transactions",
         partNumber: 12,
-        title: "Point of Sale (POS) Checkout & Canadian Tax Rules",
+        title: "Real-Time Transaction Viewer & Canadian Tax Rules",
         status: "upcoming",
-        description: "Processing multiple payment types at the cash register, calculating provincial taxes accurately, and adjusting stock numbers instantly."
+        description: "Polling real-time sales history, calculating provincial taxes dynamically, and securely auditing inventory deductions."
       },
       {
         id: "part-13-print-orders",
@@ -424,12 +424,12 @@ type StoreRepository interface {
         badge: "Database Architecture",
         title: "2. Database Architecture: Relational Foundations & Scaled Multi-Store Schema",
         content: [
-          "A multi-store retail operating system lives and dies by its database. When inventory levels drop on the sales floor, online customers reserve pickup orders, and cashiers scan goods at register lanes, the database must enforce ACID integrity without creating transaction bottlenecks.",
+          "A multi-store retail operating system lives and dies by its database. When inventory levels drop on the sales floor, online customers reserve pickup orders, and managers audit inventory from their phones, the database must enforce strict data integrity without creating query bottlenecks.",
           "Rather than using an unstructured NoSQL store or hiding critical schema operations behind an unoptimized ORM, I modeled Radius around a strictly relational schema across 40 versioned UP/DOWN migrations in PostgreSQL 16. Below is the interactive Entity-Relationship (ER) Explorer and Canvas Diagram mapping every core domain of the platform.",
-          "• Multi-Store Partitioning: Every operational table is scoped by store_id, creating rock-solid data boundaries between retail branches while allowing head office and regional managers to run unified enterprise rollups.",
-          "• 11 Sub-Inventory Status Buckets: Retail stock is never just 'in stock' or 'out of stock'. The mims_inventory schema divides units into 11 distinct buckets (new_qty, open_box_qty, display_qty, damaged_qty, bopis_qty, transfer_hold_qty, etc.) so online pickup allocations or broken units are never accidentally sold to in-store customers.",
-          "• Standardized 9-Digit Warehouse Shelving: Backroom inventory is indexed through mims_locations using standardized aisle coordinates (AA-BB-SS-PPP). This enables the replenishment engine to build serpentine routes that minimize walking time during restocking runs.",
-          "• Synthetic Scale Verification: To verify schema performance under heavy store traffic, I wrote a Python Faker test generator orchestrated by a Go runner. It seeded over 70,000 inventory rows, 50,000 register transactions, 10,000 master products, 5,000 online orders, and 1,000 cycle count audits across 7 store branches, ensuring indexes and connection pools maintain sub-millisecond lookups."
+          "• Multi-Store Partitioning: Every operational table is scoped by `store_id`, creating rock-solid data boundaries between retail branches while allowing head office and regional managers to run unified enterprise rollups.",
+          "• 11 Sub-Inventory Status Buckets: Retail stock is never just 'in stock' or 'out of stock'. The `mims_inventory` schema divides units into 11 distinct buckets (`new_qty`, `open_box_qty`, `display_qty`, `damaged_qty`, `bopis_qty`, `transfer_hold_qty`, etc.) so online pickup allocations or broken units are never accidentally sold to in-store customers.",
+          "• Standardized 9-Digit Warehouse Shelving: Backroom inventory is indexed through `mims_locations` using standardized aisle coordinates (AA-BB-SS-PPP). This enables the replenishment engine to build serpentine routes that minimize walking time during restocking runs.",
+          "• Synthetic Scale Verification: To verify schema performance under heavy store traffic, I wrote a Python Faker test generator orchestrated by a Go runner. It seeded over 70,000 inventory rows, 50,000 transaction log records, 10,000 master products, 5,000 online orders, and 1,000 cycle count audits across 7 store branches, ensuring indexes and connection pools maintain sub-millisecond lookups."
         ],
         callout: {
           type: "insight",
@@ -443,7 +443,7 @@ type StoreRepository interface {
         badge: "Data Layer",
         title: "2.1 Database Connections: Handling Rush Hours with pgx/v5 Pooling",
         content: [
-          "While the code logic runs in Go, retail systems live and die by how well they handle busy hours. On a busy Saturday afternoon, dozens of employees are scanning inventory shelves at the exact same moment cashiers are ringing up customer orders at the registers.",
+          "While the code logic runs in Go, retail systems live and die by how well they handle busy hours. On a busy Saturday afternoon, dozens of employees are scanning inventory shelves at the exact same moment managers are reviewing real-time transaction logs.",
           "Instead of using the older `lib/pq` library, I chose the modern `pgx/v5` driver. I carefully tuned the connection pool settings in `internal/database/database.go` to keep the store snappy and reliable:",
           "• Limit open connections to 25 (`SetMaxOpenConns`): Prevents the database server from running out of memory when lots of people are using the app at once.",
           "• Keep 25 connections warm (`SetMaxIdleConns`): Keeps ready-to-use lines open so when a worker scans a barcode, the response is instant without waiting to establish a new connection from scratch.",
@@ -598,10 +598,10 @@ useEffect(() => {
         badge: "Security & Sessions",
         title: "4. Device Security & Access Control: Stopping Session Conflicts on Shared Handhelds",
         content: [
-          "In a fast-paced retail store, shared handheld scanners and floor tablets change hands constantly. An associate might log in on a terminal in aisle 4, set it down on a packing bench, and pick up another device five minutes later to continue working. If two people end up using the same account simultaneously, cash drawers, inventory adjustments, and audit trails become a tangled nightmare.",
-          "Many consumer apps silently allow unlimited concurrent logins from any device anywhere in the world. But in retail operations, a user account maps to a physical human being holding a physical barcode scanner. If two different devices perform conflicting inventory transactions under the same name at the exact same second, there is no way to know who made which change.",
+          "In a fast-paced retail store, company-issued phones change hands constantly. An associate might log in on a phone in aisle 4, set it down on a packing bench, and pick up another device five minutes later to continue working. If two people end up using the same account simultaneously, inventory adjustments and audit trails become a tangled nightmare.",
+          "Many consumer apps silently allow unlimited concurrent logins from any device anywhere in the world. But in retail operations, a user account maps to a physical human being holding a single company phone. If two different devices perform conflicting inventory adjustments under the same name at the exact same second, there is no way to know who made which change.",
           "To eliminate ghost logins and preserve strict operational accountability, I built an IP-aware single active session policy in `radius-backend/internal/service/auth_service.go`. When an associate logs in, the backend checks PostgreSQL and Redis to see if that employee already has an active session on the store network.",
-          "If an active session already exists, Radius detects the potential collision. Rather than abruptly disconnecting a working register or silently creating duplicate sessions, the app prompts the worker for confirmation to take over the session. Once confirmed, the previous session is immediately revoked, issuing a brand-new token pair and keeping the audit ledger completely untangled."
+          "If an active session already exists, Radius detects the potential collision. Rather than abruptly disconnecting a working phone or silently creating duplicate sessions, the app prompts the worker for confirmation to take over the session. Once confirmed, the previous session is immediately revoked, issuing a brand-new token pair and keeping the audit ledger completely untangled."
         ],
         callout: {
           type: "insight",
@@ -648,8 +648,8 @@ accessToken, refreshToken, sessionId, err := s.sessionService.CreateSession(
         tradeoff: {
           choice: "IP-Aware Single Active Session Enforcement",
           alternatives: ["Permit Unlimited Concurrent Logins", "Silent Force-Eviction Without Warning", "Hardware MAC Address Whitelisting"],
-          why: "Guarantees that every inventory scan, cash transaction, and stock adjustment traces back to a single active device, while preventing accidental logouts during routine terminal handovers.",
-          tradeoff: "Adds a confirmation prompt when employees switch scanners on shift, but prevents costly audit ledger corruption."
+          why: "Guarantees that every inventory scan, inventory audit, and stock adjustment traces back to a single active device, while preventing accidental logouts during routine device handovers.",
+          tradeoff: "Adds a confirmation prompt when employees switch phones on shift, but prevents costly audit ledger corruption."
         }
       },
       {
@@ -712,13 +712,13 @@ if count.CountedBy == nil && employee.Role != models.RoleAdmin {
         id: "part-6-fill-replenishment",
         partNumber: 6,
         badge: "Replenishment Engine",
-        title: "6. Shelf Restocking: Closing the Loop Between Register Sales and Empty Shelves",
+        title: "6. Shelf Restocking: Closing the Loop Between Mobile Audits and Empty Shelves",
         content: [
           "In retail, one of the most frustrating experiences for both customers and staff is the 'ghost out-of-stock'. A customer walks down an aisle looking for a specific cable or tool, finds an empty shelf hook, and leaves without buying anything—even though three cases of that exact product are sitting untouched in the back storage room.",
           "Traditional stores rely on manual clipboards or delayed end-of-week reports to identify missing stock. By the time a report is printed, dozens of sales opportunities have already been lost.",
-          "To solve this, I built a closed-loop replenishment system that connects real-time register sales directly with mobile aisle audits.",
+          "To solve this, I built a closed-loop replenishment system that connects real-time transaction logs directly with mobile aisle audits.",
           "Floor associates conduct routine floor walks using the IS4TC ('In-Stock For The Customer') mobile camera scanner, tagging empty shelf hooks in seconds. Each scan is written to a shared 24-hour Redis store session, preventing duplicate scans across team members walking neighboring aisles.",
-          "Simultaneously, the backend monitors checkout transactions from cash registers. The fill report service combines these high-velocity sales and empty hole tags against backroom overstock bin quantities (`mims_location_items`). It automatically generates a prioritized pick list showing exactly which products to pull from the warehouse to restock the sales floor."
+          "Simultaneously, the backend monitors transaction logs from the central server. The fill report service combines these high-velocity sales and empty hole tags against backroom overstock bin quantities (`mims_location_items`). It automatically generates a prioritized pick list showing exactly which products to pull from the warehouse to restock the sales floor."
         ],
         callout: {
           type: "insight",
@@ -730,7 +730,7 @@ if count.CountedBy == nil && employee.Role != models.RoleAdmin {
         id: "part-6-closed-loop",
         partNumber: "6.1",
         badge: "Floor Logistics",
-        title: "6.1 Merging POS Velocity with Mobile Empty Hole Scans in Redis",
+        title: "6.1 Merging Sales Velocity Logs with Mobile Empty Hole Scans in Redis",
         content: [
           "Here is how the fill report service orchestrates floor scans, updates Redis memory sessions, and writes empty hole events to PostgreSQL in `internal/service/fill_report_service.go`:"
         ],
@@ -852,9 +852,9 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
           "• Part 9: Product Catalog, Fast Search & Smart Caching: 10,000+ master UPC barcodes, brand hierarchy, and Redis cache invalidation.",
           "• Part 10: Mobile Inventory Management (MIMS): 9-digit warehouse shelf coordinates (Aisle-Bay-Shelf-Position) and 11 distinct stock status sub-buckets.",
           "• Part 11: Inbound Logistics & Box Scanning: Receiving supplier purchase orders, routing multi-store transfers, and 20-digit License Plate Receiving (LPR) master carton scans.",
-          "• Part 12: Point of Sale (POS) Checkout: Register cash drawers, multi-tender payments, Canadian provincial tax rule engines (GST/PST/HST), and instant inventory decrements.",
+          "• Part 12: Real-Time Transaction Viewer: Polling sales logs, dynamic Canadian provincial tax calculations (GST/PST/HST), and auditing instant inventory decrements.",
           "• Part 13: Print & Copy Commercial Service Center: Custom commercial printing workflows, paper stock options, turnaround deadlines, and deposit calculations.",
-          "• Part 14: Permanent Activity History & Audit Ledger: Strict append-only tracking in the inventory_transactions audit ledger for permanent accountability.",
+          "• Part 14: Permanent Activity History & Audit Ledger: Strict append-only tracking in the `inventory_transactions` audit ledger for permanent accountability.",
           "Stay tuned as I share more practical engineering stories and architectural deep dives from building Radius!"
         ]
       }
