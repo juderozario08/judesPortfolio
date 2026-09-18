@@ -32,7 +32,7 @@ export const MobileTocDrawer = ({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full bg-tokyo-surface/95 backdrop-blur-md border border-tokyo-purple/50 shadow-2xl text-[11px] sm:text-xs font-mono font-bold text-tokyo-purple hover:bg-tokyo-purple hover:text-tokyo-base transition-all"
+        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full bg-tokyo-surface/95 backdrop-blur-md border border-tokyo-purple/50 shadow-md text-[11px] sm:text-xs font-mono font-bold text-tokyo-purple hover:bg-tokyo-purple hover:text-tokyo-base transition-all"
       >
         <ListOrdered size={15} />
         <span>TOC / Milestones</span>
@@ -55,7 +55,7 @@ export const MobileTocDrawer = ({
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-              className="fixed inset-y-0 left-0 w-72 sm:w-80 max-w-[88vw] bg-tokyo-surface/95 backdrop-blur-xl border-r border-tokyo-surface p-4 sm:p-5 shadow-2xl z-50 flex flex-col"
+              className="fixed inset-y-0 left-0 w-72 sm:w-80 max-w-[88vw] bg-tokyo-surface/95 backdrop-blur-xl border-r border-tokyo-surface p-4 sm:p-5 shadow-md z-50 flex flex-col"
             >
               <div className="flex items-center justify-between border-b border-tokyo-surface pb-3 mb-3 sm:mb-4">
                 <div className="flex items-center gap-2">

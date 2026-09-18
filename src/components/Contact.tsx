@@ -4,9 +4,9 @@ import { personalInfo } from '../data/resume';
 import { GithubIcon, LinkedinIcon } from './ui/icons';
 
 const SOCIAL_HOVER_CLASSES = {
-  'tokyo-blue': 'hover:text-tokyo-blue hover:border-tokyo-blue/50 hover:shadow-[0_0_20px_rgba(122,162,247,0.4)]',
-  'tokyo-purple': 'hover:text-tokyo-purple hover:border-tokyo-purple/50 hover:shadow-[0_0_20px_rgba(187,154,247,0.4)]',
-  'tokyo-cyan': 'hover:text-tokyo-cyan hover:border-tokyo-cyan/50 hover:shadow-[0_0_20px_rgba(125,207,255,0.4)]',
+  'tokyo-blue': 'hover:text-tokyo-blue hover:border-tokyo-blue/50',
+  'tokyo-purple': 'hover:text-tokyo-purple hover:border-tokyo-purple/50',
+  'tokyo-cyan': 'hover:text-tokyo-cyan hover:border-tokyo-cyan/50',
 } as const;
 
 type SocialHoverColor = keyof typeof SOCIAL_HOVER_CLASSES;
@@ -23,10 +23,10 @@ const SocialLink = ({ href, hoverColor, icon, external = true }: SocialLinkProps
     href={href}
     target={external ? '_blank' : undefined}
     rel={external ? 'noreferrer' : undefined}
-    whileHover={{ y: -5, scale: 1.1 }}
-    whileTap={{ scale: 0.9 }}
+    whileHover={{ y: -2 }}
+    whileTap={{ scale: 0.95 }}
     transition={{ ease: 'easeOut', duration: 0.2 }}
-    className={`text-tokyo-muted p-5 bg-tokyo-surface rounded-full shadow-lg border border-tokyo-surface ${SOCIAL_HOVER_CLASSES[hoverColor]}`}
+    className={`text-tokyo-muted p-5 bg-tokyo-surface rounded-full border border-tokyo-surface transition-colors ${SOCIAL_HOVER_CLASSES[hoverColor]}`}
   >
     {icon}
   </motion.a>
@@ -42,7 +42,7 @@ const Contact = () => {
         transition={{ ease: "easeOut", duration: 0.6 }}
         className="text-center max-w-2xl z-10"
       >
-        <p className="text-tokyo-cyan font-mono mb-4 text-sm tracking-widest">05. What's Next?</p>
+        <p className="text-tokyo-cyan font-mono mb-4 text-sm tracking-widest">06. What's Next?</p>
         <h2 className="text-4xl md:text-6xl font-bold text-tokyo-fg mb-8">Let's Connect</h2>
         <p className="text-tokyo-muted text-lg mb-12 leading-relaxed">
           I'm currently looking for new opportunities. Whether you have a question, a project idea, or just want to say hi, my inbox is always open!

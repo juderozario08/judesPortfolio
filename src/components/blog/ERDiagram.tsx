@@ -251,7 +251,7 @@ export const ERDiagram = ({ initialDomain = 'all' }: ERDiagramProps) => {
             onClick={handleToggleFullscreen}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-mono transition-colors font-semibold ${
               inFullscreenModal
-                ? 'bg-tokyo-purple text-tokyo-base border-tokyo-purple shadow-[0_0_15px_rgba(187,154,247,0.4)] hover:bg-tokyo-purple/90'
+                ? 'bg-tokyo-purple text-tokyo-base border-tokyo-purple  hover:bg-tokyo-purple/90'
                 : 'bg-tokyo-surface/80 hover:bg-tokyo-base border-tokyo-surface text-tokyo-muted hover:text-tokyo-purple'
             }`}
             title={inFullscreenModal ? 'Exit Fullscreen (Esc)' : 'Maximize Full Interactive Graph'}
@@ -374,12 +374,12 @@ export const ERDiagram = ({ initialDomain = 'all' }: ERDiagramProps) => {
       {/* Inline Container in Article Flow */}
       <div
         ref={inlineContainerRef}
-        className="relative w-full my-6 rounded-2xl border border-tokyo-surface bg-tokyo-surface/90 shadow-2xl overflow-hidden flex flex-col"
+        className="relative w-full my-6 rounded-2xl border border-tokyo-surface bg-tokyo-surface/90 shadow-md overflow-hidden flex flex-col"
       >
         {isFullscreen ? (
           /* Placeholder while popped-out into Fullscreen Modal */
           <div className="w-full h-[430px] sm:h-[510px] flex flex-col items-center justify-center text-tokyo-muted gap-3 p-6 text-center bg-tokyo-base/60">
-            <div className="w-14 h-14 rounded-2xl bg-tokyo-purple/10 border border-tokyo-purple/30 flex items-center justify-center text-tokyo-purple mb-1 shadow-[0_0_20px_rgba(187,154,247,0.2)]">
+            <div className="w-14 h-14 rounded-2xl bg-tokyo-purple/10 border border-tokyo-purple/30 flex items-center justify-center text-tokyo-purple mb-1 ">
               <Database size={28} className="animate-pulse" />
             </div>
             <span className="font-mono text-sm sm:text-base text-tokyo-fg font-bold">
@@ -390,7 +390,7 @@ export const ERDiagram = ({ initialDomain = 'all' }: ERDiagramProps) => {
             </p>
             <button
               onClick={handleToggleFullscreen}
-              className="mt-2 px-4 py-2 rounded-xl bg-tokyo-purple text-tokyo-base font-mono text-xs font-bold hover:bg-tokyo-purple/90 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(187,154,247,0.35)]"
+              className="mt-2 px-4 py-2 rounded-xl bg-tokyo-purple text-tokyo-base font-mono text-xs font-bold hover:bg-tokyo-purple/90 transition-all flex items-center gap-2 "
             >
               <Minimize2 size={14} />
               <span>Restore Inline View</span>
@@ -454,7 +454,7 @@ export const ERDiagram = ({ initialDomain = 'all' }: ERDiagramProps) => {
                       : { scale: 0.93, opacity: 0 }
                   }
                   transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-                  className="absolute z-10 overflow-hidden flex flex-col bg-[#16161e] border-none shadow-2xl"
+                  className="absolute z-10 overflow-hidden flex flex-col bg-[#16161e] border-none shadow-md"
                 >
                   {renderDiagramContent(true)}
                 </motion.div>

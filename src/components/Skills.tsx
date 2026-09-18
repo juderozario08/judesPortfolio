@@ -53,7 +53,7 @@ const SkillCategory = ({ title, items }: { title: string, items: string[] }) => 
 
 const Skills = () => {
   return (
-    <Section id="skills" number="02" title="Technical Skills" color="tokyo-cyan">
+    <Section id="skills" number="04" title="Technical Skills" color="tokyo-cyan">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12">
         <div>
           <SkillCategory title="Systems & Low-Level" items={skills.systems} />

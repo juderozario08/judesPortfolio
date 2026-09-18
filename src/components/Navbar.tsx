@@ -11,9 +11,10 @@ interface NavbarProps {
 const navItems = [
   { id: 'home', label: 'Home', num: '1' },
   { id: 'about', label: 'About', num: '2' },
-  { id: 'skills', label: 'Skills', num: '3' },
-  { id: 'experience', label: 'Experience', num: '4' },
-  { id: 'projects', label: 'Projects', num: '5' },
+  { id: 'experience', label: 'Experience', num: '3' },
+  { id: 'projects', label: 'Projects', num: '4' },
+  { id: 'skills', label: 'Skills', num: '5' },
+  { id: 'leadership', label: 'Leadership', num: '6' },
 ];
 
 const Navbar = ({ onOpenBlog }: NavbarProps) => {
@@ -33,12 +34,12 @@ const Navbar = ({ onOpenBlog }: NavbarProps) => {
       initial={{ y: -100, x: "-50%" }}
       animate={{ y: 0, x: "-50%" }}
       transition={{ ease: "easeOut", duration: 0.5 }}
-      className="fixed top-6 left-1/2 z-40 flex items-center justify-between w-[95%] max-w-6xl px-6 md:px-8 py-4 rounded-full backdrop-blur-md bg-tokyo-base/85 border border-tokyo-surface shadow-[0_5_20px_rgba(0,0,0,0.5)]"
+      className="fixed top-6 left-1/2 z-40 flex items-center justify-between w-[95%] max-w-6xl px-6 md:px-8 py-4 rounded-full backdrop-blur-md bg-tokyo-base/85 border border-tokyo-surface shadow-sm"
     >
       <a
         href="#home"
         onClick={(e) => handleNavClick(e, 'home')}
-        className="text-2xl font-bold text-tokyo-purple tracking-tighter neon-text-purple cursor-pointer transition-opacity hover:opacity-80 select-none"
+        className="text-2xl font-bold text-tokyo-purple tracking-tighter cursor-pointer transition-opacity hover:opacity-80 select-none"
       >
         {"<Jude />"}
       </a>
@@ -61,7 +62,7 @@ const Navbar = ({ onOpenBlog }: NavbarProps) => {
       <div className="hidden md:flex items-center gap-3">
         <button
           onClick={() => onOpenBlog?.('')}
-          className="px-4 py-2 rounded-full border border-tokyo-purple/50 bg-tokyo-purple/10 text-tokyo-purple hover:text-tokyo-base hover:bg-tokyo-purple transition-all text-sm font-mono font-bold flex items-center gap-1.5 shadow-[0_0_12px_rgba(187,154,247,0.25)]"
+          className="px-4 py-2 rounded-full border border-tokyo-purple/50 bg-tokyo-purple/10 text-tokyo-purple hover:text-tokyo-base hover:bg-tokyo-purple transition-all text-sm font-mono font-bold flex items-center gap-1.5"
           title="Read technical project case studies"
         >
           <BookOpen size={14} />
@@ -72,7 +73,7 @@ const Navbar = ({ onOpenBlog }: NavbarProps) => {
           href={personalInfo.github} 
           target="_blank" 
           rel="noreferrer"
-          className="px-5 py-2 rounded-full border border-tokyo-surface bg-tokyo-surface/50 text-tokyo-muted hover:text-tokyo-base hover:bg-tokyo-cyan hover:border-tokyo-cyan hover:shadow-[0_0_15px_rgba(125,207,255,0.4)] transition-all text-base font-mono font-bold"
+          className="px-5 py-2 rounded-full border border-tokyo-surface bg-tokyo-surface/50 text-tokyo-muted hover:text-tokyo-base hover:bg-tokyo-cyan hover:border-tokyo-cyan transition-all text-base font-mono font-bold"
         >
           GitHub
         </a>
@@ -103,7 +104,7 @@ const Navbar = ({ onOpenBlog }: NavbarProps) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 mt-4 p-4 rounded-2xl bg-tokyo-base/95 backdrop-blur-xl border border-tokyo-surface shadow-2xl flex flex-col gap-2 md:hidden"
+            className="absolute top-full left-0 right-0 mt-4 p-4 rounded-2xl bg-tokyo-base/95 backdrop-blur-xl border border-tokyo-surface shadow-md flex flex-col gap-2 md:hidden"
           >
             {navItems.map((item) => (
               <a

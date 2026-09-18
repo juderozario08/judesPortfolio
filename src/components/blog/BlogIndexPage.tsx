@@ -30,7 +30,7 @@ export const BlogIndexPage = ({ onNavigateHome, onSelectPost }: BlogIndexPagePro
   return (
     <div className="relative min-h-screen w-full bg-tokyo-base text-tokyo-fg selection:bg-tokyo-purple selection:text-tokyo-base pb-24">
       {/* Background Grid */}
-      <div className="fixed inset-0 pointer-events-none bg-grid opacity-50 z-0" />
+      <div className="fixed inset-0 pointer-events-none opacity-50 z-0" />
 
       {/* Top Floating Navigation Bar */}
       <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-tokyo-base/90 border-b border-tokyo-surface px-3 sm:px-6 md:px-8 py-3 sm:py-3.5 shadow-sm">
@@ -48,7 +48,7 @@ export const BlogIndexPage = ({ onNavigateHome, onSelectPost }: BlogIndexPagePro
             className="flex items-center gap-1.5 sm:gap-2 select-none cursor-pointer hover:opacity-80 transition-opacity"
             title="Go to Homepage"
           >
-            <span className="text-sm sm:text-base font-bold font-mono text-tokyo-purple neon-text-purple">
+            <span className="text-sm sm:text-base font-bold font-mono text-tokyo-purple ">
               {"<Jude />"}
             </span>
             <span className="text-xs font-mono text-tokyo-muted opacity-50 hidden sm:inline">/</span>
@@ -90,7 +90,7 @@ export const BlogIndexPage = ({ onNavigateHome, onSelectPost }: BlogIndexPagePro
                 onClick={() => setSelectedTag(tag)}
                 className={`px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-lg text-[11px] sm:text-xs font-mono transition-all capitalize ${
                   selectedTag === tag
-                    ? 'bg-tokyo-purple text-tokyo-base font-bold shadow-[0_0_12px_rgba(187,154,247,0.4)]'
+                    ? 'bg-tokyo-purple text-tokyo-base font-bold '
                     : 'bg-tokyo-surface/60 text-tokyo-muted hover:text-tokyo-fg hover:bg-tokyo-surface border border-tokyo-surface'
                 }`}
               >
@@ -135,7 +135,7 @@ export const BlogIndexPage = ({ onNavigateHome, onSelectPost }: BlogIndexPagePro
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: idx * 0.1 }}
-              className="group rounded-2xl bg-tokyo-surface/60 border border-tokyo-surface hover:border-tokyo-purple/50 p-4 sm:p-6 md:p-8 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] space-y-4 sm:space-y-6"
+              className="group rounded-2xl bg-tokyo-surface/60 border border-tokyo-surface hover:border-tokyo-purple/50 p-4 sm:p-6 md:p-8 transition-all duration-300 hover: space-y-4 sm:space-y-6"
             >
               {/* Meta row */}
               <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] sm:text-xs font-mono text-tokyo-muted">
@@ -200,7 +200,7 @@ export const BlogIndexPage = ({ onNavigateHome, onSelectPost }: BlogIndexPagePro
 
                 <button
                   onClick={() => onSelectPost(post.slug)}
-                  className="w-full sm:w-auto px-4 sm:px-5 py-2 rounded-xl bg-tokyo-purple text-tokyo-base font-mono text-xs font-bold hover:bg-tokyo-purple/90 transition-all flex items-center justify-center gap-2 group/btn shadow-[0_0_15px_rgba(187,154,247,0.3)] shrink-0"
+                  className="w-full sm:w-auto px-4 sm:px-5 py-2 rounded-xl bg-tokyo-purple text-tokyo-base font-mono text-xs font-bold hover:bg-tokyo-purple/90 transition-all flex items-center justify-center gap-2 group/btn  shrink-0"
                 >
                   <span>Read Case Study</span>
                   <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />

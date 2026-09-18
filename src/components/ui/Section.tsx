@@ -10,9 +10,9 @@ type SectionProps = {
 
 export const Section = ({ id, number, title, children, color = "tokyo-blue" }: SectionProps) => {
   const colorClass = {
-    "tokyo-blue": "text-tokyo-blue neon-text-blue",
-    "tokyo-purple": "text-tokyo-purple neon-text-purple",
-    "tokyo-cyan": "text-tokyo-cyan neon-text-cyan",
+    "tokyo-blue": "text-tokyo-blue",
+    "tokyo-purple": "text-tokyo-purple",
+    "tokyo-cyan": "text-tokyo-cyan",
   }[color];
 
   return (

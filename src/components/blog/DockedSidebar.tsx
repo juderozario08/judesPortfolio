@@ -37,7 +37,7 @@ export const DockedSidebar = ({
           className="hidden 2xl:block fixed top-24 left-[max(1.5rem,calc(50vw-448px-19.5rem))] w-72 z-30 pointer-events-auto"
           aria-label="Table of contents side navigation"
         >
-          <div className="rounded-2xl bg-tokyo-surface/90 backdrop-blur-xl border border-tokyo-surface/90 shadow-[0_10px_35px_rgba(0,0,0,0.6)] p-4 space-y-3 max-h-[calc(100vh-7.5rem)] flex flex-col">
+          <div className="rounded-2xl bg-tokyo-surface/90 backdrop-blur-xl border border-tokyo-surface/90  p-4 space-y-3 max-h-[calc(100vh-7.5rem)] flex flex-col">
             {/* Header */}
             <div className="border-b border-tokyo-surface/80 pb-2.5">
               <div className="flex items-center justify-between">

@@ -714,7 +714,7 @@ if count.CountedBy == nil && employee.Role != models.RoleAdmin {
         badge: "Replenishment Engine",
         title: "6. Shelf Restocking: Closing the Loop Between Mobile Audits and Empty Shelves",
         content: [
-          "In retail, one of the most frustrating experiences for both customers and staff is the 'ghost out-of-stock'. A customer walks down an aisle looking for a specific cable or tool, finds an empty shelf hook, and leaves without buying anything—even though three cases of that exact product are sitting untouched in the back storage room.",
+          "In retail, one of the most frustrating experiences for both customers and staff is the 'ghost out-of-stock'. A customer walks down an aisle looking for a specific cable or tool, finds an empty shelf hook, and leaves without buying anything, even though three cases of that exact product are sitting untouched in the back storage room.",
           "Traditional stores rely on manual clipboards or delayed end-of-week reports to identify missing stock. By the time a report is printed, dozens of sales opportunities have already been lost.",
           "To solve this, I built a closed-loop replenishment system that connects real-time transaction logs directly with mobile aisle audits.",
           "Floor associates conduct routine floor walks using the IS4TC ('In-Stock For The Customer') mobile camera scanner, tagging empty shelf hooks in seconds. Each scan is written to a shared 24-hour Redis store session, preventing duplicate scans across team members walking neighboring aisles.",

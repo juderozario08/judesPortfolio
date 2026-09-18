@@ -6,6 +6,7 @@ import Skills from './components/Skills';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import Leadership from './components/Leadership';
 import { BlogIndexPage } from './components/blog/BlogIndexPage';
 import { BlogPostPage } from './components/blog/BlogPostPage';
 import { scrollToSection } from './utils/scrollTo';
@@ -124,15 +125,13 @@ function App() {
 
   return (
     <div className="relative w-full min-h-screen overflow-x-hidden bg-tokyo-base text-tokyo-fg selection:bg-tokyo-purple selection:text-tokyo-base">
-      {/* Moving Grid Background */}
-      <div className="fixed inset-0 pointer-events-none bg-grid opacity-50"></div>
-
       <Navbar onOpenBlog={(slug) => (slug ? navigateBlogPost(slug) : navigateBlogIndex())} />
       <Hero />
       <About />
-      <Skills />
       <Experience />
       <Projects onOpenBlog={(slug) => navigateBlogPost(slug)} />
+      <Skills />
+      <Leadership />
       <Contact />
     </div>
   );

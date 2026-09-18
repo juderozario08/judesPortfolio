@@ -114,8 +114,8 @@ interface ProjectsProps {
 
 const Projects = ({ onOpenBlog }: ProjectsProps) => {
   return (
-    <Section id="projects" number="04" title="Technical Projects" color="tokyo-blue">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <Section id="projects" number="03" title="Technical Projects" color="tokyo-blue">
+      <div className="grid grid-cols-1 gap-8">
         {projects.map((project, i) => (
           <ProjectCard 
             key={i} 

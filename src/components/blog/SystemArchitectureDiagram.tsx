@@ -237,7 +237,7 @@ export const SystemArchitectureDiagram: React.FC<SystemArchitectureDiagramProps>
   return (
     <div
       ref={inlineContainerRef}
-      className="w-full my-8 rounded-2xl border border-tokyo-surface bg-tokyo-base overflow-hidden shadow-2xl transition-all"
+      className="w-full my-8 rounded-2xl border border-tokyo-surface bg-tokyo-base overflow-hidden shadow-md transition-all"
     >
       {/* Top Header Bar */}
       <div className="p-3 sm:p-4 bg-tokyo-surface/80 border-b border-tokyo-surface flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
@@ -404,7 +404,7 @@ export const SystemArchitectureDiagram: React.FC<SystemArchitectureDiagramProps>
               <div className="flex items-center gap-2.5">
                 <Workflow size={20} className="text-tokyo-purple" />
                 <h3 className="font-mono text-sm sm:text-base font-bold text-tokyo-fg">
-                  Radius System Architecture — Fullscreen Inspector
+                  Radius System Architecture: Fullscreen Inspector
                 </h3>
               </div>
 
@@ -450,7 +450,7 @@ export const SystemArchitectureDiagram: React.FC<SystemArchitectureDiagramProps>
       {modalNode &&
         createPortal(
           <div className="fixed inset-0 z-[10000] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-            <div className="relative w-full max-w-2xl max-h-[90vh] bg-[#161723] border border-tokyo-purple/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+            <div className="relative w-full max-w-2xl max-h-[90vh] bg-[#161723] border border-tokyo-purple/50 rounded-2xl shadow-md flex flex-col overflow-hidden">
               {/* Modal Header */}
               <div className="p-4 sm:p-5 bg-tokyo-base border-b border-tokyo-surface flex items-start justify-between gap-3">
                 <div>

@@ -11,7 +11,7 @@ interface TradeoffProps {
 
 export const TradeoffCard = ({ tradeoff }: TradeoffProps) => {
   return (
-    <div className="my-6 rounded-xl border border-tokyo-purple/30 bg-tokyo-surface/90 p-4 sm:p-5 md:p-6 shadow-xl relative overflow-hidden">
+    <div className="my-6 rounded-xl border border-tokyo-purple/30 bg-tokyo-surface/90 p-4 sm:p-5 md:p-6 shadow-sm relative overflow-hidden">
       {/* Decorative Accent Glow */}
       <div className="absolute top-0 right-0 w-48 h-48 bg-tokyo-purple/5 rounded-full blur-3xl pointer-events-none" />
 

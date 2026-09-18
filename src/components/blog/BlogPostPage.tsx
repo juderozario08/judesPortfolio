@@ -244,7 +244,7 @@ export const BlogPostPage = ({
   return (
     <div className="relative min-h-screen w-full bg-tokyo-base text-tokyo-fg selection:bg-tokyo-purple selection:text-tokyo-base pb-32">
       {/* Background Grid */}
-      <div className="fixed inset-0 pointer-events-none bg-grid opacity-50 z-0" />
+      <div className="fixed inset-0 pointer-events-none opacity-50 z-0" />
 
       {/* Top Sticky Header */}
       <BlogPostHeader
@@ -316,7 +316,7 @@ export const BlogPostPage = ({
               ) : section.id === 'part-2-database-design' ? (
                 <ERDiagram />
               ) : section.image ? (
-                <div className="my-5 sm:my-6 rounded-xl overflow-hidden border border-tokyo-surface/80 bg-tokyo-base/60 p-2 sm:p-4 shadow-xl">
+                <div className="my-5 sm:my-6 rounded-xl overflow-hidden border border-tokyo-surface/80 bg-tokyo-base/60 p-2 sm:p-4 shadow-sm">
                   <div className="relative group cursor-pointer overflow-hidden rounded-lg">
                     <img
                       src={section.image.src}

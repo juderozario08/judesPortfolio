@@ -8,16 +8,16 @@ const About = () => {
       <div className="flex flex-col md:flex-row gap-12">
         <div className="flex-1 text-tokyo-muted text-lg leading-relaxed space-y-6">
           <p>
-            I'm a Computer Science student at {personalInfo.university} who just really likes figuring out how things work. Whether it's digging into memory management in C++ or building a slick frontend in React, I love the whole process of turning an idea into something real.
+            Hey there! I'm currently studying Computer Science at {personalInfo.university}. More than anything, I just really enjoy tearing things apart to see how they tick. Whether that means wrestling with C++ memory management at 2 AM or obsessing over the perfect React component structure, I genuinely love the process of building things from scratch.
           </p>
           <p>
-            I try to focus on <span className="text-tokyo-cyan font-semibold">clean architecture</span> and writing code that I won't hate looking at 6 months from now. I care a lot about performance, but I care just as much about building things that actually feel good to use.
+            My main goal right now is writing <span className="text-tokyo-cyan font-semibold">clean, sensible code</span>, the kind I won't be embarrassed to look at six months from now. I'm a bit of a performance nerd, but I also think that if an app isn't actually enjoyable to use, the speed doesn't matter much.
           </p>
           <p>
-            When I'm not studying or deep into a project, I'm usually messing around with some new framework or spending way too much time tweaking my Neovim config.
+            Outside of classes and coding marathons, you can usually find me falling down a rabbit hole trying a new framework, or completely breaking (and then fixing) my setup. (I use Arch Linux and Neovim btw).
           </p>
         </div>
-        <div className="flex-1 hyprland-border bg-tokyo-surface p-0 flex flex-col h-full border border-transparent shadow-[0_10px_30px_-15px_rgba(187,154,247,0.3)]">
+        <div className="flex-1 bg-tokyo-surface p-0 flex flex-col h-full border border-transparent rounded-xl">
           <TerminalHeader title="user@archlinux:~/education" />
           
           <div className="p-8 z-10 relative">

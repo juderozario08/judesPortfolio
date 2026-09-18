@@ -6,7 +6,7 @@ export const personalInfo = {
   university: "Toronto Metropolitan University",
   program: "B.Sc. Computer Science",
   cgpa: "3.94/4.33 (91%)",
-  awards: "Dean's List: 2022–23, 2023–24, 2024–25, 2025–26 | Academic Entrance Scholarship & UMA Foundations Award",
+  awards: "Dean's List: 2022 to 2023, 2023 to 2024, 2024 to 2025, 2025 to 2026 | Academic Entrance Scholarship & UMA Foundations Award",
   coursework: "Machine Learning, Data Science & Analytics, Systems Programming, Data Structures & Algorithms, Database Systems"
 };
 
@@ -22,20 +22,21 @@ export const experience = [
   {
     title: "Software Developer",
     company: "Population Health Research Institute (PHRI)",
-    date: "May 2024 – Apr 2025",
+    date: "May 2024 to Apr 2025",
     bullets: [
-      "Resolved critical infrastructure bugs across .NET and ASP.NET Core applications, which directly reduced support tickets and improved system reliability for medical researchers.",
-      "Optimized legacy SQL stored procedures, reducing average query execution time by roughly 40%.",
-      "Led the frontend migration from Bootstrap 3 to 5. This resolved several mobile layout issues and established new UI component standards that the rest of the team adopted.",
-      "Cleaned up and standardized our deployment scripts, drastically cutting down project setup time for new engineers."
+      "Tracked down and fixed over 15 critical full-stack bugs deep in our C# ASP.NET Core backend and JavaScript frontend. It felt great to see support tickets drop and know the medical researchers had a smoother experience.",
+      "Spent a lot of time profiling and optimizing legacy Entity Framework LINQ queries and SQL Server indexing, eventually cutting average page load and query times by about 40%.",
+      "Led the charge on migrating our frontend from Bootstrap 3 to 5 across more than 10 application views, which completely fixed our mobile layout issues and set the UI standard for the rest of the team.",
+      "Got tired of complicated onboarding, so I rewrote and cleaned up our CI/CD Azure deployment scripts. It ended up cutting project setup time from a few hours down to just a few minutes for new engineers joining the team.",
+      "Collaborated heavily with non-technical teams, turning their requests into clear technical plans during Agile sprint planning and taking code review feedback to heart."
     ]
   },
   {
     title: "Sales Associate",
     company: "Staples Canada",
-    date: "Aug 2021 – Present",
+    date: "Aug 2021 to Present",
     bullets: [
-      "Managed POS systems and inventory logistics while providing technical support and troubleshooting assistance to customers."
+      "Handled the chaos of high-volume retail logistics and POS systems. It taught me how to stay cool under pressure and get really good at troubleshooting tech issues for frustrated customers on the spot."
     ]
   }
 ];
@@ -44,59 +45,36 @@ export const projects = [
   {
     id: "blip",
     blogSlug: "blip-text-editor-piece-table",
-    title: "Blip - Production-Grade Text Editor",
+    title: "Blip: Production-Grade Text Editor",
     tech: ["C++", "SDL2", "CMake"],
     date: "Present",
-    description: "A modular, immediate-mode GUI text editor built from scratch in C++ to explore memory management, rendering pipelines, and OS-specific abstractions.",
+    description: "I really wanted to understand how text editors actually work under the hood, so I built this immediate-mode GUI editor completely from scratch in C++ to explore memory management and OS-specific rendering pipelines.",
     bullets: [
-      "Designed a custom Piece Table data structure from scratch to ensure O(1) amortized text insertion and deletion, even for massive files, complete with a working undo/redo stack.",
-      "Built a highly efficient, low-CPU event loop paired with a custom file watcher to enable instant hot-reloading of the editor's configuration.",
-      "Integrated Fontconfig (Linux) and CoreText (macOS) via native C APIs to build a cross-platform font rendering engine.",
-      "Currently integrating Tree-sitter to parse and traverse Abstract Syntax Trees (ASTs) in real time for precise semantic syntax highlighting."
+      "Instead of a simple string buffer, I designed a custom Piece Table data structure. It gives me O(1) amortized text insertion and deletion no matter how massive the file is. Getting the undo/redo stack to cleanly handle cursor state and memory reclamation without leaking was a really fun challenge.",
+      "I was super strict about separating the rendering pipeline from the OS-specific stuff so I could swap things out easily, ensuring true platform independence.",
+      "I spent a lot of time optimizing the event loop to hit near 0% idle CPU. I also wrote a custom cross-platform filesystem watcher so the editor hot-reloads its configuration instantly without ever having to restart the process.",
+      "Wrote a cross-platform font engine by hooking directly into Fontconfig on Linux and CoreText on macOS using low-level C APIs.",
+      "Right now, I'm integrating Tree-sitter. Instead of messy regex for syntax highlighting, it builds a real-time Abstract Syntax Tree (AST) as you type so the editor actually understands the code."
     ],
-    github: "https://github.com/juderozario08/blip", // Example
+    github: "https://github.com/juderozario08/blip",
     color: "tokyo-blue"
   },
   {
     id: "radius",
     blogSlug: "radius-system-architecture",
-    title: "Radius - Cross-Platform Mobile App",
+    title: "Radius: Cross-Platform Mobile App",
     tech: ["React Native/TypeScript", "Go (Gin)", "PostgreSQL", "Redis", "Docker"],
     date: "Present",
-    description: "Built a cross-platform inventory management system around a strict layered architecture (handlers, services, repositories) so every layer stays independently testable through interfaces.",
+    description: "Built a full-stack, cross-platform inventory tracking app to handle rapid, real-time stock queries. I organized the architecture into strict layers (requests, business logic, database access) so it stays testable and scalable.",
     bullets: [
-      "Containerized the Go backend with multi-stage Docker and docker-compose, and wrote table-driven unit/integration tests with gomock to cover domain services, WebSockets, and core API paths.",
-      "Designed an IP-aware auth pipeline: Bcrypt password hashing plus JWT-based RBAC, single active session enforcement, and remote device revocation for shared retail hardware.",
-      "Engineered real-time retail workflows including concurrency-locked cycle counts, closed-loop replenishment linking POS sales to empty-shelf scans, and BOPIS fulfillment with background expiration workers.",
-      "Managed schema changes across 40 versioned migrations with golang-migrate, maintaining strict Up/Down rollbacks across a multi-store relational model.",
-      "Built a high-volume deterministic synthetic data generator with Python and Faker producing 70,000+ inventory records and 50,000 transaction log records across 7 store locations."
+      "Engineered the data storage system by combining a normalized PostgreSQL database schema for permanent records with a really fast Redis caching layer to deliver instant loading speeds.",
+      "Built a secure IP-aware authentication pipeline from scratch using Bcrypt password hashing and JWT-based role-based access control (RBAC) so associates and managers only see what they need to.",
+      "Wrote a Python script using Faker that automatically generates and inserts over 100,000 realistic test records into the SQL database, instantly populating testing environments so I didn't have to do it manually.",
+      "Containerized the Go backend with multi-stage Docker and docker-compose, and wrote automated unit and integration tests to cover domain services, WebSockets, and core API paths.",
+      "Sped up my personal AI-assisted development workflow by configuring Antigravity in a multi-agent setup to auto-generate repetitive code boilerplate, freeing me up to focus on core logic."
     ],
     github: "https://github.com/juderozario08/radius",
     color: "tokyo-purple"
-  },
-  {
-    title: "Data Parsing & Logic Engines",
-    tech: ["Go"],
-    date: "Mar 2024 – Oct 2024",
-    description: "Custom parsing and logic evaluation engines written entirely in Go.",
-    bullets: [
-      "Built a custom JSON parser from scratch using recursion. It converts raw JSON strings into strongly typed Go structs with robust error handling.",
-      "Developed a Boolean algebra simulator that parses complex logic expressions and automatically generates truth tables."
-    ],
-    github: "https://github.com/juderozario08",
-    color: "tokyo-cyan"
-  },
-  {
-    title: "Boggle Solver & Automation Pipelines",
-    tech: ["Rust", "Python"],
-    date: "Jul 2023 – Mar 2024",
-    description: "Algorithmic implementations focused on performance and data automation.",
-    bullets: [
-      "Wrote a high-performance Boggle solver in Rust. It utilizes a Depth-First Search (DFS) algorithm with hash-map lookups for incredibly fast grid traversal.",
-      "Built a Python automation script that parses unstructured text data and systematically converts it into validated Google Calendar events."
-    ],
-    github: "https://github.com/juderozario08",
-    color: "tokyo-blue"
   }
 ];
 
@@ -104,17 +82,18 @@ export const leadership = [
   {
     title: "Lead Programmer",
     organization: "Neil McNeil Robotics",
-    date: "Oct 2018 – 2023",
+    date: "Oct 2018 to 2022",
     bullets: [
-      "Developed control loops for robotic sensors and vision systems to navigate dynamic environments, while mentoring junior students in coding and hardware integration."
+      "Designed control loops for physical sensors and vision systems, applying fundamental hardware architecture concepts to navigate robots through dynamic environments.",
+      "Presented our technical designs and performance results to judges at competition showcases, and mentored younger students in hardware and software integration."
     ]
   },
   {
     title: "VP Finance",
     organization: "Practical Applications of Computer Science (PACS)",
-    date: "Sep 2023 - Dec 2023",
+    date: "Sep 2023 to Dec 2023",
     bullets: [
-      "Managed the organization's budget and successfully allocated funds to support computer science workshops, applied initiatives, and community events."
+      "Managed budgeting and financial planning for a student-led organization, making sure we had the funds to support computer science workshops, applied initiatives, and community events."
     ]
   }
 ];

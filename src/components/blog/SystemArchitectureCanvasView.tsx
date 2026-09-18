@@ -400,11 +400,11 @@ export const SystemArchitectureCanvasView: React.FC<SystemArchitectureCanvasView
                 if (hasDraggedRef.current) return;
                 setSelectedNodeId(isSelected ? null : node.id);
               }}
-              className={`rounded-xl border transition-all duration-150 cursor-pointer shadow-xl select-none z-20 flex flex-col justify-between ${
+              className={`rounded-xl border transition-all duration-150 cursor-pointer shadow-sm select-none z-20 flex flex-col justify-between ${
                 isSelected
-                  ? 'bg-tokyo-surface border-tokyo-purple ring-2 ring-tokyo-purple/60 shadow-[0_0_28px_rgba(187,154,247,0.35)] scale-[1.02]'
+                  ? 'bg-tokyo-surface border-tokyo-purple ring-2 ring-tokyo-purple/60  scale-[1.02]'
                   : isHovered
-                  ? 'bg-tokyo-surface border-tokyo-cyan shadow-[0_0_20px_rgba(125,207,255,0.25)] scale-[1.01]'
+                  ? 'bg-tokyo-surface border-tokyo-cyan  scale-[1.01]'
                   : isRelated && activeNodeId
                   ? 'bg-tokyo-surface border-tokyo-blue/70 ring-1 ring-tokyo-blue/40'
                   : 'bg-tokyo-surface/90 border-tokyo-surface/90 hover:border-tokyo-purple/40'
@@ -481,7 +481,7 @@ export const SystemArchitectureCanvasView: React.FC<SystemArchitectureCanvasView
       </div>
 
       {/* Floating Canvas Navigation Pill */}
-      <div className="absolute bottom-4 left-4 bg-tokyo-base/95 backdrop-blur-md border border-tokyo-surface rounded-xl px-3.5 py-2 text-xs font-mono text-tokyo-muted pointer-events-none hidden sm:flex items-center gap-2.5 shadow-xl z-30">
+      <div className="absolute bottom-4 left-4 bg-tokyo-base/95 backdrop-blur-md border border-tokyo-surface rounded-xl px-3.5 py-2 text-xs font-mono text-tokyo-muted pointer-events-none hidden sm:flex items-center gap-2.5 shadow-sm z-30">
         <Move size={14} className="text-tokyo-cyan shrink-0" />
         <span>Drag canvas or scroll wheel to navigate • Click nodes or arrows to inspect</span>
       </div>

@@ -100,7 +100,7 @@ export const TocNavList: React.FC<TocNavListProps> = ({
               {isMainActive && isMainPublished && (
                 <motion.div
                   layoutId="activeDockedPill"
-                  className="absolute inset-0 rounded-xl bg-tokyo-purple/15 border border-tokyo-purple/50 shadow-[0_0_16px_rgba(187,154,247,0.25)] pointer-events-none"
+                  className="absolute inset-0 rounded-xl bg-tokyo-purple/15 border border-tokyo-purple/50  pointer-events-none"
                   transition={{
                     type: 'tween',
                     ease: [0.16, 1, 0.3, 1],
@@ -156,7 +156,7 @@ export const TocNavList: React.FC<TocNavListProps> = ({
                       {isSubActive && isSubPublished && (
                         <motion.div
                           layoutId="activeDockedSubPill"
-                          className="absolute inset-0 rounded-lg bg-tokyo-cyan/15 border border-tokyo-cyan/50 shadow-[0_0_12px_rgba(125,207,255,0.2)] pointer-events-none"
+                          className="absolute inset-0 rounded-lg bg-tokyo-cyan/15 border border-tokyo-cyan/50  pointer-events-none"
                           transition={{
                             type: 'tween',
                             ease: [0.16, 1, 0.3, 1],

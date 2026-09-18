@@ -1,13 +1,13 @@
-import { experience, leadership } from '../data/resume';
+import { leadership } from '../data/resume';
 import { Section } from './ui/Section';
 import { Card } from './ui/Card';
 
-const ExperienceItem = ({ item, index }: { item: typeof experience[0] | typeof leadership[0], index: number }) => (
-  <Card index={index} hoverColor="tokyo-purple" className="mb-6">
+const LeadershipItem = ({ item, index }: { item: typeof leadership[0], index: number }) => (
+  <Card index={index} hoverColor="tokyo-cyan" className="mb-6">
     <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-2">
       <div>
-        <h3 className="text-2xl font-bold text-tokyo-fg group-hover:text-tokyo-purple transition-colors">{item.title}</h3>
-        <h4 className="text-lg text-tokyo-blue font-mono">{'company' in item ? item.company : item.organization}</h4>
+        <h3 className="text-2xl font-bold text-tokyo-fg group-hover:text-tokyo-cyan transition-colors">{item.title}</h3>
+        <h4 className="text-lg text-tokyo-blue font-mono">{item.organization}</h4>
       </div>
       <span className="text-tokyo-muted font-mono text-sm shrink-0 bg-tokyo-base px-3 py-1 rounded-full border border-tokyo-surface">
         {item.date}
@@ -18,7 +18,7 @@ const ExperienceItem = ({ item, index }: { item: typeof experience[0] | typeof l
         const colonMatch = bullet.match(/^([^:]+):\s+(.+)$/);
         return (
           <li key={i} className="flex items-start gap-3">
-            <span className="text-tokyo-purple font-mono font-bold mt-1 text-sm shrink-0">{">"}</span>
+            <span className="text-tokyo-cyan font-mono font-bold mt-1 text-sm shrink-0">{">"}</span>
             <span>
               {colonMatch ? (
                 <>
@@ -38,16 +38,16 @@ const ExperienceItem = ({ item, index }: { item: typeof experience[0] | typeof l
   </Card>
 );
 
-const Experience = () => {
+const Leadership = () => {
   return (
-    <Section id="experience" number="02" title="Experience" color="tokyo-purple">
+    <Section id="leadership" number="05" title="Extracurricular and Leadership" color="tokyo-cyan">
       <div>
-        {experience.map((item, index) => (
-          <ExperienceItem key={index} item={item} index={index} />
+        {leadership.map((item, index) => (
+          <LeadershipItem key={index} item={item} index={index} />
         ))}
       </div>
     </Section>
   );
 };
 
-export default Experience;
+export default Leadership;

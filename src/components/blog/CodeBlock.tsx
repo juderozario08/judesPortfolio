@@ -44,7 +44,7 @@ export const CodeBlock = ({ fileName, language, code, explanation }: CodeBlockPr
   };
 
   return (
-    <div className="my-6 rounded-xl overflow-hidden border border-tokyo-surface bg-tokyo-surface/80 shadow-xl">
+    <div className="my-6 rounded-xl overflow-hidden border border-tokyo-surface bg-tokyo-surface/80 shadow-sm">
       <TerminalHeader
         centerTitle={false}
         className="py-2 sm:py-2.5 border-tokyo-surface/80"

@@ -9,10 +9,10 @@ type CardProps = {
 };
 
 export const Card = ({ index, children, className = "", hoverColor = "tokyo-blue" }: CardProps) => {
-  const shadowClasses = {
-    "tokyo-blue": "hover:shadow-[0_10px_30px_-15px_rgba(122,162,247,0.3)] hover:border-tokyo-blue/30",
-    "tokyo-purple": "hover:shadow-[0_10px_30px_-15px_rgba(187,154,247,0.3)] hover:border-tokyo-purple/30",
-    "tokyo-cyan": "hover:shadow-[0_10px_30px_-15px_rgba(125,207,255,0.3)] hover:border-tokyo-cyan/30",
+  const hoverBorderClasses = {
+    "tokyo-blue": "hover:border-tokyo-blue/50",
+    "tokyo-purple": "hover:border-tokyo-purple/50",
+    "tokyo-cyan": "hover:border-tokyo-cyan/50",
   }[hoverColor];
 
   return (
@@ -24,9 +24,9 @@ export const Card = ({ index, children, className = "", hoverColor = "tokyo-blue
       className="h-full z-10"
     >
       <motion.div
-        whileHover={{ scale: 1.02, y: -5 }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className={`hyprland-border bg-tokyo-surface p-0 flex flex-col h-full border border-transparent shadow-lg ${shadowClasses} ${className}`}
+        whileHover={{ y: -2 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        className={`bg-tokyo-surface p-0 flex flex-col h-full border border-transparent transition-colors ${hoverBorderClasses} ${className} rounded-xl`}
       >
         <TerminalHeader title="user@archlinux:~" />
         <div className="p-8 flex flex-col h-full z-10 relative">
