@@ -899,5 +899,90 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
         ]
       }
     ]
+  },
+  {
+    slug: "creditguardai-credit-default-prediction",
+    projectId: "creditguardai",
+    projectTitle: "CreditGuard AI: Credit Default Prediction",
+    title: "Building an End-to-End Credit Default Prediction Engine",
+    subtitle: "From raw data ingestion to GPU-accelerated PyTorch models and threshold optimization, here is how I built a robust ML pipeline to predict credit card defaults.",
+    date: "September 2026",
+    readTime: "10 min read",
+    tags: ["Machine Learning", "PyTorch", "Scikit-Learn", "Data Science", "Python"],
+    heroSummary: "In the financial sector, missing a high-risk credit account can result in thousands of dollars in losses, while rejecting good customers hurts revenue. CreditGuard AI tackles this by analyzing 6 months of historical billing data using classical ML ensembles and deep learning. I built the entire pipeline from scratch, dealing with imbalanced datasets, heavy feature engineering, and hyperparameter tuning across multiple CPU cores.",
+    metrics: [
+      { label: "Default Catch Rate (Coverage)", value: "80.3%" },
+      { label: "Dataset Size", value: "30,000 Records" },
+      { label: "Engineered Features", value: "24 New Financial Signals" },
+      { label: "Best Performing Model", value: "HistGradientBoosting" }
+    ],
+    sections: [
+      {
+        title: "1. The Data and Feature Engineering",
+        content: [
+          "The dataset from the UCI Machine Learning Repository contained 30,000 customer records. However, raw numbers like billing amounts and payment amounts don't tell the whole story.",
+          "I engineered 24 new domain-specific features to surface real credit risk signals. For instance, `AVG_UTILIZATION` measures how close a customer is to maxing out their credit line. `DELINQUENCY_TREND` measures whether a customer's late payments are getting worse over time.",
+          "As shown below, analyzing the class distribution highlighted a heavy imbalance (77.9% settled vs 22.1% default), which influenced all subsequent model decisions."
+        ],
+        image: {
+          src: "/assets/images/eda_class_distribution.png",
+          alt: "Class Distribution showing 77.9% settled vs 22.1% default",
+          caption: "A clear view of the class imbalance that required weighted loss functions."
+        }
+      },
+      {
+        title: "2. Exploring Delinquency and Utilization",
+        content: [
+          "Before training any models, I ran an Exploratory Data Analysis (EDA) to understand the strongest predictors of default.",
+          "Plotting the delinquency status against the default rate revealed that customers who were 2+ months late on their most recent payment had default rates exceeding 60%.",
+          "Similarly, comparing credit utilization distributions showed that defaulters consistently ran higher utilization rates compared to customers who settled their balances."
+        ],
+        image: {
+          src: "/assets/images/eda_delinquency_vs_default.png",
+          alt: "Delinquency vs Default Rate",
+          caption: "Customers with recent late payments are highly likely to default."
+        }
+      },
+      {
+        title: "3. Training the Models (Classical & PyTorch)",
+        content: [
+          "I trained four distinct models: Logistic Regression, Random Forest, Histogram-Based Gradient Boosting, and a PyTorch Multi-Layer Perceptron (MLP).",
+          "To combat the class imbalance, I used `class_weight='balanced'` for the Scikit-Learn models and `pos_weight=3.52` in the PyTorch `BCEWithLogitsLoss` function.",
+          "The PyTorch model was built with 3 hidden layers using LeakyReLU activations and Dropout for regularization. Because my development machine uses an AMD Radeon GPU, I implemented Microsoft's `torch-directml` backend to parallelize training, bypassing the lack of CUDA support."
+        ],
+        codeSnippet: {
+          language: "python",
+          fileName: "src/train_pytorch.py",
+          code: `criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([3.52]).to(device))\noptimizer = torch.optim.AdamW(model.parameters(), lr=0.001, weight_decay=1e-4)\nscheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=2)`,
+          explanation: "Using AdamW for decoupled weight decay and a dynamic learning rate scheduler helped the PyTorch model converge smoothly without overfitting."
+        }
+      },
+      {
+        title: "4. Hyperparameter Tuning and Threshold Optimization",
+        content: [
+          "Gradient Boosting emerged as the best performer. To squeeze out the last bit of accuracy, I ran a `RandomizedSearchCV` across all CPU cores (`n_jobs=-1`), testing 25 different hyperparameter combinations.",
+          "However, standard 0.50 decision thresholds are poor choices for imbalanced risk domains. Catching defaulters is generally more valuable than preventing false alarms. I swept 51 thresholds from 0.20 to 0.70 and plotted the precision-recall tradeoff.",
+          "By shifting the decision threshold to 0.37, I achieved an 80.3% default coverage rate — successfully catching 4 out of every 5 defaulters."
+        ],
+        image: {
+          src: "/assets/images/threshold_coverage_tradeoff.png",
+          alt: "Threshold vs Coverage Tradeoff",
+          caption: "Optimizing the decision threshold to prioritize catching defaults (recall)."
+        }
+      },
+      {
+        title: "5. The Evaluation Dashboard",
+        content: [
+          "To provide a clear comparison across all models, the pipeline automatically generates a 4-panel evaluation dashboard.",
+          "This dashboard includes ROC curves, Precision-Recall curves, the final Confusion Matrix, and the Top 10 Feature Importances.",
+          "The feature importance plot confirmed that `PAY_0` (most recent repayment status) and `AVG_UTILIZATION` were the strongest indicators of future default."
+        ],
+        image: {
+          src: "/assets/images/model_benchmark_dashboard.png",
+          alt: "Model Benchmark Dashboard",
+          caption: "The final 4-panel dashboard comparing all trained models."
+        }
+      }
+    ]
   }
 ];

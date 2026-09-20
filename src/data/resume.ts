@@ -43,6 +43,40 @@ export const experience = [
 
 export const projects = [
   {
+    id: "radius",
+    blogSlug: "radius-system-architecture",
+    title: "Radius: Cross-Platform Mobile App",
+    tech: ["React Native/TypeScript", "Go (Gin)", "PostgreSQL", "Redis", "WebSockets"],
+    date: "Present",
+    description: "Built a full-stack, cross-platform Mobile Inventory Management System (MIMS) capable of handling rapid, real-time stock queries. Organized the architecture into strict layers to ensure testability and scalability across retail branches.",
+    bullets: [
+      "Built the backend architecture for a full-stack inventory-tracking app, organizing a Go and PostgreSQL backend into clear, testable layers (handlers, services, repositories) alongside a React Native and TypeScript frontend.",
+      "Engineered a real-time WebSocket notification hub to broadcast live order updates, implementing non-blocking fan-out and automatic slow-client eviction to handle mobile scanners entering warehouse Wi-Fi dead zones.",
+      "Designed a multi-store PostgreSQL relational schema for permanent records alongside a fast Redis caching layer, stress-testing the system with a custom Python script that seeded over 100,000 realistic records to guarantee sub-millisecond queries.",
+      "Implemented pessimistic concurrency locks and IP-aware session takeover to protect data integrity, eliminating race conditions during physical inventory audits and preventing duplicate account logins on shared company hardware.",
+      "Accelerated the project's initial setup by leveraging a multi-agent AI development workflow (Antigravity) to auto-generate boilerplate code, freeing up engineering time to focus on complex retail domain logic."
+    ],
+    github: "https://github.com/juderozario08/radius",
+    color: "tokyo-purple"
+  },
+  {
+    id: "creditguardai",
+    blogSlug: "creditguardai-credit-default-prediction",
+    title: "CreditGuard AI: Credit Default Prediction",
+    tech: ["Python", "PyTorch", "Scikit-Learn", "Pandas"],
+    date: "Present",
+    description: "An end-to-end machine learning pipeline to predict credit card default risk, featuring both classical ML ensembles and PyTorch neural networks.",
+    bullets: [
+      "Engineered 24 domain-specific financial features, like utilization ratios and delinquency trends, to capture predictive signals from 6 months of historical billing data.",
+      "Trained and evaluated classical models alongside a PyTorch Multi-Layer Perceptron, managing class imbalance using weighted loss functions and stratified cross-validation.",
+      "Achieved 80.3% default coverage by optimizing the decision threshold on a HistGradientBoosting model, prioritizing recall to minimize costly false negatives.",
+      "Implemented a robust GPU acceleration strategy utilizing torch-directml to parallelize model training on AMD hardware.",
+      "Built an automated pipeline with a CLI interface to ingest datasets, execute hyperparameter tuning across CPU cores, and generate evaluation dashboards."
+    ],
+    github: "https://github.com/juderozario08/CreditGuardAI",
+    color: "tokyo-green"
+  },
+  {
     id: "blip",
     blogSlug: "blip-text-editor-piece-table",
     title: "Blip: Production-Grade Text Editor",
@@ -58,23 +92,6 @@ export const projects = [
     ],
     github: "https://github.com/juderozario08/blip",
     color: "tokyo-blue"
-  },
-  {
-    id: "radius",
-    blogSlug: "radius-system-architecture",
-    title: "Radius: Cross-Platform Mobile App",
-    tech: ["React Native/TypeScript", "Go (Gin)", "PostgreSQL", "Redis", "Docker"],
-    date: "Present",
-    description: "Built a full-stack, cross-platform inventory tracking app to handle rapid, real-time stock queries. I organized the architecture into strict layers (requests, business logic, database access) so it stays testable and scalable.",
-    bullets: [
-      "Engineered the data storage system by combining a normalized PostgreSQL database schema for permanent records with a really fast Redis caching layer to deliver instant loading speeds.",
-      "Built a secure IP-aware authentication pipeline from scratch using Bcrypt password hashing and JWT-based role-based access control (RBAC) so associates and managers only see what they need to.",
-      "Wrote a Python script using Faker that automatically generates and inserts over 100,000 realistic test records into the SQL database, instantly populating testing environments so I didn't have to do it manually.",
-      "Containerized the Go backend with multi-stage Docker and docker-compose, and wrote automated unit and integration tests to cover domain services, WebSockets, and core API paths.",
-      "Sped up my personal AI-assisted development workflow by configuring Antigravity in a multi-agent setup to auto-generate repetitive code boilerplate, freeing me up to focus on core logic."
-    ],
-    github: "https://github.com/juderozario08/radius",
-    color: "tokyo-purple"
   }
 ];
 
