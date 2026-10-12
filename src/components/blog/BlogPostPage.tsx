@@ -48,7 +48,7 @@ const renderFormattedText = (text: string) => {
 
 const renderParagraphContent = (p: string, pIdx: number) => {
   // Check for bullet point starting with •, -, or *
-  const bulletMatch = p.match(/^([•\-\*]\s*)(.+)$/);
+  const bulletMatch = p.match(/^([•\-*]\s*)(.+)$/);
   if (bulletMatch) {
     const rawContent = bulletMatch[2];
 

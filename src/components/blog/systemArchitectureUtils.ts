@@ -28,8 +28,8 @@ export const calculateArchPath = (
   // Horizontal flow within the same tier (e.g. Domain Service -> WebSocket Hub)
   if (Math.abs(fromNode.y - toNode.y) < 80) {
     let fromX: number, toX: number;
-    let fromY = fromNode.y + fromNode.height / 2;
-    let toY = toNode.y + toNode.height / 2;
+    const fromY = fromNode.y + fromNode.height / 2;
+    const toY = toNode.y + toNode.height / 2;
 
     if (fromNode.x < toNode.x) {
       fromX = fromNode.x + fromNode.width;

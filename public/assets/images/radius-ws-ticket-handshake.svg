@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="100%" height="100%" style="background-color: #16161e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16161e"/>
+      <stop offset="100%" stop-color="#1a1b26"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#7dcfff"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#7aa2f7"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#bb9af7"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#9ece6a"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#ff9e64"/>
+    </marker>
+  </defs>
+
+  <!-- Canvas Frame -->
+  <rect width="1100" height="580" fill="url(#bgGrad)"/>
+  <rect x="25" y="25" width="1050" height="530" rx="16" fill="#1a1b26" stroke="#292e42" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title Header -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="-12" width="12" height="24" rx="3" fill="#7dcfff"/>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Radius WebSocket Security: Single-Use Ticket Protocol</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">Zero-Credential URL Architecture &amp; Single-Flight Ticket Burn</text>
+  </g>
+
+  <!-- Lifeline Columns -->
+  <!-- Column 1: Mobile Client -->
+  <g transform="translate(140, 110)">
+    <rect x="-80" y="0" width="160" height="42" rx="10" fill="#1f2335" stroke="#7aa2f7" stroke-width="1.5"/>
+    <text x="0" y="22" fill="#7aa2f7" font-size="13" font-weight="700" text-anchor="middle">Mobile Handheld</text>
+    <text x="0" y="34" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Expo SDK 54 / Client</text>
+    <line x1="0" y1="42" x2="0" y2="400" stroke="#292e42" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Column 2: Ingress Proxy -->
+  <g transform="translate(410, 110)">
+    <rect x="-80" y="0" width="160" height="42" rx="10" fill="#1f2335" stroke="#7dcfff" stroke-width="1.5"/>
+    <text x="0" y="22" fill="#7dcfff" font-size="13" font-weight="700" text-anchor="middle">Ingress Proxy</text>
+    <text x="0" y="34" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Reverse Proxy / Access Logs</text>
+    <line x1="0" y1="42" x2="0" y2="400" stroke="#292e42" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Column 3: Go Backend API -->
+  <g transform="translate(680, 110)">
+    <rect x="-80" y="0" width="160" height="42" rx="10" fill="#1f2335" stroke="#bb9af7" stroke-width="1.5"/>
+    <text x="0" y="22" fill="#bb9af7" font-size="13" font-weight="700" text-anchor="middle">Go WebSocket Hub</text>
+    <text x="0" y="34" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Gorilla Upgrader / Service</text>
+    <line x1="0" y1="42" x2="0" y2="400" stroke="#292e42" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Column 4: Redis Store -->
+  <g transform="translate(940, 110)">
+    <rect x="-80" y="0" width="160" height="42" rx="10" fill="#1f2335" stroke="#f7768e" stroke-width="1.5"/>
+    <text x="0" y="22" fill="#f7768e" font-size="13" font-weight="700" text-anchor="middle">Redis Cache</text>
+    <text x="0" y="34" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Ticket Key (TTL: 30s)</text>
+    <line x1="0" y1="42" x2="0" y2="400" stroke="#292e42" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Protocol Messages Flow -->
+  <!-- Step 1: Request Ticket -->
+  <g transform="translate(0, 180)">
+    <line x1="140" y1="0" x2="670" y2="0" stroke="#7aa2f7" stroke-width="2" marker-end="url(#arrowBlue)"/>
+    <rect x="230" y="-18" width="350" height="20" rx="5" fill="#16161e" stroke="#7aa2f7" stroke-width="1"/>
+    <text x="405" y="-4" fill="#c0caf5" font-size="10.5" font-family="monospace" text-anchor="middle">1. POST /api/v1/ws/ticket (Authorization: Bearer JWT)</text>
+  </g>
+
+  <!-- Step 2: Store Ticket in Redis -->
+  <g transform="translate(0, 225)">
+    <line x1="680" y1="0" x2="930" y2="0" stroke="#ff9e64" stroke-width="2" marker-end="url(#arrowOrange)"/>
+    <rect x="710" y="-18" x="710" width="200" height="20" rx="5" fill="#16161e" stroke="#ff9e64" stroke-width="1"/>
+    <text x="810" y="-4" fill="#ff9e64" font-size="10.5" font-family="monospace" text-anchor="middle">2. SETEX ticket:uuid 30s</text>
+  </g>
+
+  <!-- Step 3: Return Ticket to Client -->
+  <g transform="translate(0, 270)">
+    <line x1="680" y1="0" x2="150" y2="0" stroke="#bb9af7" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrowPurple)"/>
+    <rect x="260" y="-18" width="300" height="20" rx="5" fill="#16161e" stroke="#bb9af7" stroke-width="1"/>
+    <text x="410" y="-4" fill="#c0caf5" font-size="10.5" font-family="monospace" text-anchor="middle">3. 200 OK { ticket: "3f9a...8b1c" }</text>
+  </g>
+
+  <!-- Step 4: Upgrade with Ticket Parameter (Safe for Proxy Logs) -->
+  <g transform="translate(0, 325)">
+    <line x1="140" y1="0" x2="670" y2="0" stroke="#7dcfff" stroke-width="2" marker-end="url(#arrowCyan)"/>
+    <rect x="180" y="-20" width="450" height="22" rx="5" fill="#16161e" stroke="#7dcfff" stroke-width="1"/>
+    <text x="405" y="-5" fill="#7dcfff" font-size="11" font-family="monospace" text-anchor="middle">4. GET /ws?ticket=3f9a...8b1c (Upgrade: websocket)</text>
+    
+    <!-- Proxy Callout Box -->
+    <rect x="300" y="8" width="220" height="24" rx="4" fill="#24283b" stroke="#414868"/>
+    <text x="410" y="24" fill="#9ece6a" font-size="9.5" font-family="monospace" text-anchor="middle">✓ Proxy Logs: Only Ticket URL (No JWT)</text>
+  </g>
+
+  <!-- Step 5: Consume and Delete Ticket Immediately -->
+  <g transform="translate(0, 395)">
+    <line x1="680" y1="0" x2="930" y2="0" stroke="#f7768e" stroke-width="2" marker-end="url(#arrowOrange)"/>
+    <rect x="705" y="-18" width="205" height="20" rx="5" fill="#16161e" stroke="#f7768e" stroke-width="1"/>
+    <text x="807" y="-4" fill="#f7768e" font-size="10.5" font-family="monospace" text-anchor="middle">5. GETDEL ticket:uuid (Burned!)</text>
+  </g>
+
+  <!-- Step 6: 101 Switching Protocols & Live Pipe -->
+  <g transform="translate(0, 450)">
+    <line x1="680" y1="0" x2="150" y2="0" stroke="#9ece6a" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+    <rect x="230" y="-18" width="360" height="22" rx="5" fill="#16161e" stroke="#9ece6a" stroke-width="1.5"/>
+    <text x="410" y="-3" fill="#9ece6a" font-size="11" font-weight="700" font-family="monospace" text-anchor="middle">6. 101 Switching Protocols ➔ Live Bidirectional Stream</text>
+  </g>
+
+  <!-- Footer Security Legend -->
+  <g transform="translate(50, 520)">
+    <rect x="0" y="0" width="1000" height="25" rx="6" fill="#1f2335" stroke="#292e42"/>
+    <text x="20" y="16" fill="#e0af68" font-size="10" font-weight="700">SECURITY GUARANTEE:</text>
+    <text x="170" y="16" fill="#c0caf5" font-size="10">Even if intermediate proxy logs are compromised, logged tickets are expired and cannot be replayed.</text>
+  </g>
+</svg>

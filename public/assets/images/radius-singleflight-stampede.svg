@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="100%" height="100%" style="background-color: #16161e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16161e"/>
+      <stop offset="100%" stop-color="#1a1b26"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#f7768e"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#9ece6a"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#7aa2f7"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="580" fill="url(#bgGrad)"/>
+  <rect x="25" y="25" width="1050" height="530" rx="16" fill="#1a1b26" stroke="#292e42" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title Header -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="-12" width="12" height="24" rx="3" fill="#bb9af7"/>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Cache Stampede Protection: Go Singleflight Architecture</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">Deduplicating Concurrent Cache Misses &amp; Protecting PostgreSQL Connection Pools</text>
+  </g>
+
+  <!-- Left: Without Singleflight (Failure Pattern) -->
+  <g transform="translate(50, 115)">
+    <rect x="0" y="0" width="480" height="415" rx="12" fill="#1f2335" stroke="#f7768e" stroke-opacity="0.4"/>
+    <text x="20" y="32" fill="#f7768e" font-size="14" font-weight="700">✗ Without Singleflight: Cache Stampede</text>
+    
+    <!-- 100 Scanners -->
+    <rect x="20" y="55" width="120" height="70" rx="8" fill="#16161e" stroke="#414868"/>
+    <text x="80" y="85" fill="#c0caf5" font-size="12" font-weight="700" text-anchor="middle">500 Handhelds</text>
+    <text x="80" y="103" fill="#787c99" font-size="10" font-family="monospace" text-anchor="middle">Concurrent Scans</text>
+
+    <!-- Expired Redis Key -->
+    <rect x="20" y="165" width="120" height="60" rx="8" fill="#16161e" stroke="#f7768e"/>
+    <text x="80" y="195" fill="#f7768e" font-size="11" font-weight="700" text-anchor="middle">Redis Miss</text>
+    <text x="80" y="210" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">TTL Expired (0ms)</text>
+
+    <!-- Stampede Lines -->
+    <line x1="80" y1="125" x2="80" y2="165" stroke="#f7768e" stroke-width="2"/>
+    <path d="M 140 195 L 340 195" stroke="#f7768e" stroke-width="2.5" marker-end="url(#arrowRed)"/>
+    <path d="M 140 185 L 340 170" stroke="#f7768e" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <path d="M 140 205 L 340 220" stroke="#f7768e" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="240" y="160" fill="#f7768e" font-size="11" font-weight="700" text-anchor="middle">500 Identical DB Queries</text>
+
+    <!-- Overwhelmed PostgreSQL -->
+    <rect x="340" y="145" width="120" height="100" rx="8" fill="#16161e" stroke="#f7768e" stroke-width="2"/>
+    <text x="400" y="175" fill="#f7768e" font-size="12" font-weight="700" text-anchor="middle">PostgreSQL</text>
+    <text x="400" y="195" fill="#f7768e" font-size="10" font-weight="700" text-anchor="middle">100% POOL LOCK</text>
+    <text x="400" y="215" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Connection Spike</text>
+    <text x="400" y="230" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Latency: &gt; 3,200ms</text>
+
+    <!-- Failure Summary Box -->
+    <rect x="20" y="270" width="440" height="120" rx="8" fill="#16161e" stroke="#f7768e" stroke-opacity="0.3"/>
+    <text x="35" y="295" fill="#f7768e" font-size="12" font-weight="700">The Problem:</text>
+    <text x="35" y="315" fill="#c0caf5" font-size="11.5">When a popular product cache key expires during rush hour,</text>
+    <text x="35" y="335" fill="#c0caf5" font-size="11.5">every mobile barcode scan bypasses the cache simultaneously.</text>
+    <text x="35" y="355" fill="#c0caf5" font-size="11.5">PostgreSQL pgx/v5 connection pool exhausts, freezing scanners.</text>
+  </g>
+
+  <!-- Right: With Singleflight (Radius Engine) -->
+  <g transform="translate(560, 115)">
+    <rect x="0" y="0" width="490" height="415" rx="12" fill="#1f2335" stroke="#9ece6a" stroke-opacity="0.5"/>
+    <text x="20" y="32" fill="#9ece6a" font-size="14" font-weight="700">✓ With Go singleflight.Group (Radius)</text>
+    
+    <!-- 100 Scanners -->
+    <rect x="20" y="55" width="115" height="70" rx="8" fill="#16161e" stroke="#414868"/>
+    <text x="77" y="85" fill="#c0caf5" font-size="12" font-weight="700" text-anchor="middle">500 Handhelds</text>
+    <text x="77" y="103" fill="#787c99" font-size="10" font-family="monospace" text-anchor="middle">Concurrent Scans</text>
+
+    <!-- Go singleflight deduplicator -->
+    <rect x="175" y="150" width="140" height="90" rx="8" fill="#16161e" stroke="#9ece6a" stroke-width="2"/>
+    <text x="245" y="180" fill="#9ece6a" font-size="12" font-weight="700" text-anchor="middle">singleflight.Group</text>
+    <text x="245" y="198" fill="#c0caf5" font-size="10" font-family="monospace" text-anchor="middle">sfGroup.Do(key)</text>
+    <text x="245" y="218" fill="#7dcfff" font-size="10" font-weight="700" text-anchor="middle">Collapsed to 1 Call</text>
+
+    <line x1="77" y1="125" x2="175" y2="185" stroke="#7aa2f7" stroke-width="2"/>
+
+    <!-- Single Query to DB -->
+    <path d="M 315 195 L 360 195" stroke="#9ece6a" stroke-width="3" marker-end="url(#arrowGreen)"/>
+
+    <!-- Protected PostgreSQL -->
+    <rect x="365" y="150" width="105" height="90" rx="8" fill="#16161e" stroke="#9ece6a"/>
+    <text x="417" y="180" fill="#9ece6a" font-size="12" font-weight="700" text-anchor="middle">PostgreSQL</text>
+    <text x="417" y="200" fill="#7dcfff" font-size="10" font-weight="700" text-anchor="middle">1 Conn Used</text>
+    <text x="417" y="220" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Latency: 1.8ms</text>
+
+    <!-- Success Summary Box -->
+    <rect x="20" y="270" width="450" height="120" rx="8" fill="#16161e" stroke="#9ece6a" stroke-opacity="0.3"/>
+    <text x="35" y="295" fill="#9ece6a" font-size="12" font-weight="700">The Radius Solution:</text>
+    <text x="35" y="315" fill="#c0caf5" font-size="11.5">The first request executes the query; 499 concurrent requests</text>
+    <text x="35" y="335" fill="#c0caf5" font-size="11.5">wait for the channel and share the identical result in memory.</text>
+    <text x="35" y="355" fill="#9ece6a" font-size="11.5">PostgreSQL pool usage stays flat. Zero database spikes.</text>
+  </g>
+</svg>

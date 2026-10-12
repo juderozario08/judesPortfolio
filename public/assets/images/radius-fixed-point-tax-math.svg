@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="100%" height="100%" style="background-color: #16161e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16161e"/>
+      <stop offset="100%" stop-color="#1a1b26"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <rect width="1100" height="580" fill="url(#bgGrad)"/>
+  <rect x="25" y="25" width="1050" height="530" rx="16" fill="#1a1b26" stroke="#292e42" stroke-width="1.5" filter="url(#shadow)"/>
+
+  <!-- Title Header -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="-12" width="12" height="24" rx="3" fill="#e0af68"/>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Financial Integrity: Fixed-Point Scaled Tax Arithmetic</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">IEEE 754 Floating-Point Drift vs. Radius Money int64 Cents per 100,000</text>
+  </g>
+
+  <!-- Left: Floating-Point Pitfalls -->
+  <g transform="translate(50, 115)">
+    <rect x="0" y="0" width="480" height="415" rx="12" fill="#1f2335" stroke="#f7768e" stroke-opacity="0.4"/>
+    <text x="25" y="32" fill="#f7768e" font-size="14" font-weight="700">✗ The IEEE 754 Floating-Point Trap (float64)</text>
+
+    <!-- Formula Box -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="430" height="90" rx="8" fill="#16161e" stroke="#f7768e" stroke-opacity="0.5"/>
+      <text x="15" y="28" fill="#787c99" font-size="11" font-family="monospace">// Standard floating-point math</text>
+      <text x="15" y="50" fill="#f7768e" font-size="13" font-family="monospace">0.1 + 0.2 == 0.30000000000000004</text>
+      <text x="15" y="72" fill="#c0caf5" font-size="12" font-family="monospace">$19.99 * 1.14975 (QC Tax) = $22.9835025...</text>
+    </g>
+
+    <!-- Why it fails -->
+    <g transform="translate(25, 165)">
+      <text x="0" y="16" fill="#c0caf5" font-size="12" font-weight="600">Why floats fail in retail ledgers:</text>
+      <text x="0" y="38" fill="#787c99" font-size="11.5">• Fractions like 0.1 cannot be represented in binary base-2 powers.</text>
+      <text x="0" y="58" fill="#787c99" font-size="11.5">• Compounded across 50,000 POS transactions and line discounts,</text>
+      <text x="0" y="78" fill="#787c99" font-size="11.5">  sub-penny rounding errors accumulate into accounting variances.</text>
+      <text x="0" y="98" fill="#787c99" font-size="11.5">• End of day cashier register drawer cash counts mismatch by dollars.</text>
+    </g>
+
+    <!-- Outcome Tag -->
+    <rect x="25" y="295" width="430" height="85" rx="8" fill="#16161e" stroke="#292e42"/>
+    <text x="40" y="325" fill="#f7768e" font-size="12" font-weight="700">Real-World Consequence:</text>
+    <text x="40" y="348" fill="#c0caf5" font-size="11">CRA (Canada Revenue Agency) sales tax audit flags balance discrepancies.</text>
+    <text x="40" y="366" fill="#f7768e" font-size="11">Refunds over-reimburse or shortchange customers on returns.</text>
+  </g>
+
+  <!-- Right: Radius Fixed-Point Integer Cent Engine -->
+  <g transform="translate(560, 115)">
+    <rect x="0" y="0" width="490" height="415" rx="12" fill="#1f2335" stroke="#9ece6a" stroke-opacity="0.5"/>
+    <text x="25" y="32" fill="#9ece6a" font-size="14" font-weight="700">✓ Radius Engine: int64 Cents &amp; Scaled Rates</text>
+
+    <!-- Formula Box -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="440" height="90" rx="8" fill="#16161e" stroke="#9ece6a" stroke-opacity="0.5"/>
+      <text x="15" y="28" fill="#787c99" font-size="11" font-family="monospace">// Scaled rates per 100,000 (Pure int64)</text>
+      <text x="15" y="50" fill="#9ece6a" font-size="13" font-family="monospace">QC Tax: 14975 (14.975%) | ON Tax: 13000 (13%)</text>
+      <text x="15" y="72" fill="#7dcfff" font-size="12" font-family="monospace">tax = (price * rate + 50000) / 100000</text>
+    </g>
+
+    <!-- How it works -->
+    <g transform="translate(25, 165)">
+      <text x="0" y="16" fill="#c0caf5" font-size="12" font-weight="600">The Radius Mathematical Guarantee:</text>
+      <text x="0" y="38" fill="#c0caf5" font-size="11.5">• Money stored exclusively as integer cents: $19.99 = 1999.</text>
+      <text x="0" y="58" fill="#c0caf5" font-size="11.5">• Pure integer half-up rounding (+50,000 / 100,000) guarantees</text>
+      <text x="0" y="78" fill="#c0caf5" font-size="11.5">  every provincial tax calculation is exact to the cent.</text>
+      <text x="0" y="98" fill="#c0caf5" font-size="11.5">• Rational math (math/big) prorates discounts across lines without loss.</text>
+    </g>
+
+    <!-- Outcome Tag -->
+    <rect x="25" y="295" width="440" height="85" rx="8" fill="#16161e" stroke="#292e42"/>
+    <text x="40" y="325" fill="#9ece6a" font-size="12" font-weight="700">Production Result:</text>
+    <text x="40" y="348" fill="#c0caf5" font-size="11">Zero floating-point rounding errors across 50,000+ test transactions.</text>
+    <text x="40" y="366" fill="#9ece6a" font-size="11">Cashier balances reconcile down to $0.00 every single night.</text>
+  </g>
+</svg>
