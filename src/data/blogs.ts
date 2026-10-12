@@ -64,7 +64,7 @@ export const blogPosts: BlogPost[] = [
     heroSummary: "In a busy retail store, software simply cannot freeze or crash. When cashiers are ringing up long checkout lines and warehouse staff are scanning incoming inventory across multiple store locations, even a few seconds of lag causes real-world chaos. I built Radius from scratch to solve these everyday headaches. Here is an honest look at how I designed the system, the practical problems I ran into, and why I chose simplicity and reliability over complicated frameworks.",
     metrics: [
       { label: "Backend Architecture", value: "3-Tier Go Monolith" },
-      { label: "Database Migrations", value: "44 Versioned Up/Down" },
+      { label: "Database Migrations", value: "45 Versioned Up/Down" },
       { label: "DB Driver & Pool", value: "pgx/v5 (50 Conns)" },
       { label: "Synthetic Test Scale", value: "70K+ Seeded Records" }
     ],
@@ -102,7 +102,7 @@ export const blogPosts: BlogPost[] = [
         partNumber: 2,
         title: "Database Architecture: Relational Schema & Scaled Testing",
         status: "published",
-        description: "Designing a 42-migration relational schema for multi-store retail, and stress-testing it with 70,000+ synthetic records."
+        description: "Designing a 45-migration relational schema for multi-store retail, and stress-testing it with 70,000+ synthetic records."
       },
       {
         id: "part-2-database-pgx",
@@ -179,7 +179,7 @@ export const blogPosts: BlogPost[] = [
         partNumber: "6.1",
         title: "Closing the Loop Between Sales Velocity Logs and Empty Shelf Scans",
         status: "published",
-        description: "How mobile aisle scans and central transaction logs feed an ephemeral Redis session to build optimal serpentine picking routes through the warehouse."
+        description: "How mobile aisle scans and central transaction logs feed an ephemeral Redis session to build aisle-by-aisle picking routes through the warehouse."
       },
       {
         id: "part-7-omnichannel-fulfillment",
@@ -200,7 +200,7 @@ export const blogPosts: BlogPost[] = [
         partNumber: 8,
         title: "Product Catalog, Fast Search & Smart Caching",
         status: "published",
-        description: "Delivering sub-millisecond barcode scans using two-tier Redis caching, negative caching, singleflight stampede protection, and pg_trgm GIN indexing."
+        description: "Delivering low-millisecond barcode scans using two-tier Redis caching, negative caching, singleflight stampede protection, and pg_trgm GIN indexing."
       },
       {
         id: "part-8-barcode-caching",
@@ -221,7 +221,7 @@ export const blogPosts: BlogPost[] = [
         partNumber: "8.3",
         title: "Mobile Speed: Stale-While-Revalidate (SWR) for Instant Screen Loads",
         status: "published",
-        description: "Eliminating screen flicker on React Native handhelds by returning cached data in under 16ms while quietly refreshing in the background."
+        description: "Eliminating screen flicker on React Native handhelds by returning cached data instantly while quietly refreshing in the background."
       },
       {
         id: "part-9-store-hierarchy",
@@ -298,7 +298,7 @@ export const blogPosts: BlogPost[] = [
         partNumber: "12.2",
         title: "Real-Time Sales Feeds, PCI Card Masking & Floor Velocity Logs",
         status: "published",
-        description: "Broadcasting sales over WebSockets, securing payment card tokens, and feeding real-time velocity into IS4TC shelf replenishment."
+        description: "Broadcasting sales over WebSockets, storing only the last 4 card digits, and feeding real-time velocity into IS4TC shelf replenishment."
       },
       {
         id: "part-13-print-orders",
@@ -341,8 +341,8 @@ export const blogPosts: BlogPost[] = [
           "• Tier 1: Client Frontends (React Native & Expo SDK 54): Handheld barcode scanners, cash registers, and tablets running native workflows for sales floor empty hole scanning (IS4TC), BOPIS order picking, register checkout, and weekly cycle count audits.",
           "• Tier 2: Ingress & Security Middleware (Port 8080): IP token bucket rate limiting, JWT validation with store-tenancy checks, context cancellation propagation, and Gorilla WebSocket protocol upgraders.",
           "• Tier 3: Transport Handlers (internal/handler): The front desk of the API. Handlers parse incoming JSON bodies, validate query parameters, delegate work to domain services via interfaces, and serialize JSON responses. Handlers never talk directly to PostgreSQL or Redis.",
-          "• Tier 4: Domain Business Services (internal/service): The brain of Radius. Houses retail business logic (cycle count locks, session collision detection, pick-list serpentine sorting) and orchestrates background goroutine workers and the real-time WebSocket hub.",
-          "• Tier 5: Persistence & Caching (internal/repository): Manages PostgreSQL 16 relational tables via pgx/v5 connection pools, Redis in-memory token blacklists and ephemeral floor sessions, and the immutable audit ledger."
+          "• Tier 4: Domain Business Services (internal/service): The brain of Radius. Houses retail business logic (cycle count locks, session collision detection, pick-list aisle-by-aisle sorting) and orchestrates background goroutine workers and the real-time WebSocket hub.",
+          "• Tier 5: Persistence & Caching (internal/repository): Manages PostgreSQL relational tables via pgx/v5 connection pools, Redis in-memory token blacklists and ephemeral floor sessions, and the immutable audit ledger."
         ],
         callout: {
           type: "insight",
@@ -463,7 +463,7 @@ type StoreRepository interface {
           choice: "Manual Assembly in main.go",
           alternatives: ["Automatic Background Injection Libraries (Uber Dig / Fx)", "Code-Generation Tools (Google Wire)", "Global Variables Everywhere"],
           why: "No hidden magic, immediate compile-time errors if anything is missing, and crystal-clear visibility when troubleshooting issues.",
-          tradeoff: "The main.go file is about 150 lines long, but those 150 lines save hours of debugging down the road."
+          tradeoff: "The main.go file is about 180 lines long, but those 180 lines save hours of debugging down the road."
         }
       },
       {
@@ -516,12 +516,12 @@ type StoreRepository interface {
         title: "2. Database Architecture: Relational Foundations & Scaled Multi-Store Schema",
         content: [
           "A multi-store retail operating system lives and dies by its database. When inventory levels drop on the sales floor, online customers reserve pickup orders, and managers audit inventory from their phones, the database must enforce strict data integrity without creating query bottlenecks.",
-          "Rather than using an unstructured NoSQL store or hiding critical schema operations behind an unoptimized ORM, I modeled Radius around a strictly relational schema across 44 versioned UP/DOWN migrations in PostgreSQL 16. Below is the interactive Entity-Relationship (ER) Explorer and Canvas Diagram mapping every core domain of the platform.",
+          "Rather than using an unstructured NoSQL store or hiding critical schema operations behind an unoptimized ORM, I modeled Radius around a strictly relational schema across 45 versioned UP/DOWN migrations in PostgreSQL. Below is the interactive Entity-Relationship (ER) Explorer and Canvas Diagram mapping every core domain of the platform.",
           "• Multi-Store Partitioning: Every operational table is scoped by `store_id`, creating rock-solid data boundaries between retail branches while allowing head office and regional managers to run unified enterprise rollups.",
-          "• 11 Sub-Inventory Status Buckets: Retail stock is never just 'in stock' or 'out of stock'. The `mims_inventory` schema divides units into 11 distinct buckets (`new_qty`, `open_box_qty`, `display_qty`, `damaged_qty`, `bopis_qty`, `transfer_hold_qty`, etc.) so online pickup allocations or broken units are never accidentally sold to in-store customers.",
-          "• Standardized 9-Digit Warehouse Shelving: Backroom inventory is indexed through `mims_locations` using standardized aisle coordinates (AA-BB-SS-PPP). This enables the replenishment engine to build serpentine routes that minimize walking time during restocking runs.",
-          "• Trigram Text Search & Composite Covering Indexes: Migration 42 introduced the PostgreSQL `pg_trgm` extension and GIN indexes (`idx_products_search_trgm`) alongside composite covering indexes on `inventory(store_id, product_id)`. Wildcard text searches across 10,000 products dropped from ~60ms to under 3ms.",
-          "• Synthetic Scale Verification: To verify schema performance under heavy store traffic, I wrote a Python Faker test generator orchestrated by a Go runner. It seeded over 70,000 inventory rows, 50,000 transaction log records, 10,000 master products, 5,000 online orders, and 1,000 cycle count audits across 7 store branches, ensuring indexes and connection pools maintain sub-millisecond lookups."
+          "• 11 Sub-Inventory Status Buckets: Retail stock is never just 'in stock' or 'out of stock'. The `mims_inventory` schema divides units into 11 distinct buckets (`new_qty`, `open_box_qty`, `demo_qty`, `bopis_qty`, `rtv_qty`, `quarantine_qty`, etc.) so online pickup allocations or broken units are never accidentally sold to in-store customers.",
+          "• Standardized 9-Digit Warehouse Shelving: Backroom inventory is indexed through `mims_locations` using standardized aisle coordinates (AA-BB-SS-PPP). This enables the replenishment engine to build aisle-by-aisle routes that minimize walking time during restocking runs.",
+          "• Trigram Text Search & Composite Covering Indexes: Migrations 42 and 43 introduced the PostgreSQL `pg_trgm` extension and GIN indexes on product name, SKU and description, alongside a covering index on inventory lookups. Measured with `EXPLAIN ANALYZE` on 10,000 products, a wildcard search dropped from about 20ms (sequential scan) to about 1ms (bitmap index scan).",
+          "• Synthetic Scale Verification: To verify schema performance under heavy store traffic, I wrote a Python Faker test generator orchestrated by a Go runner. It seeded over 70,000 inventory rows, 50,000 transaction log records, 10,000 master products, 5,000 online orders, and 1,000 cycle count audits across 7 store branches, ensuring indexes and connection pools keep typical lookups in the low single-digit milliseconds."
         ],
         callout: {
           type: "insight",
@@ -548,12 +548,12 @@ type StoreRepository interface {
           code: `func (d *DB) RunMigrations(migrationsPath string) error {
     log.Println("Running database migrations...")
 
-    driver, err := postgres.WithInstance(d.DB, &postgres.Config{})
+    driver, err := pgxmigrate.WithInstance(d.DB, &pgxmigrate.Config{})
     if err != nil {
         return fmt.Errorf("creating migration driver: %w", err)
     }
 
-    m, err := migrate.NewWithDatabaseInstance("file://"+migrationsPath, "postgres", driver)
+    m, err := migrate.NewWithDatabaseInstance("file://"+migrationsPath, "pgx5", driver)
     if err != nil {
         return fmt.Errorf("loading migration files: %w", err)
     }
@@ -694,8 +694,8 @@ useEffect(() => {
           "Standard web browsers and mobile WebSocket clients cannot easily attach custom HTTP headers (such as `Authorization: Bearer <token>`) during the initial protocol upgrade request. Many applications take the easy shortcut of passing the user's secret JWT token directly inside the URL query string, like `ws://server/api/ws?token=...`.",
           "The danger with this shortcut is that URL query parameters are not private. Reverse proxies, load balancers, and cloud monitoring tools routinely write full request URLs into access logs in plain text. If an employee reconnects dozens of times as they walk between Wi-Fi access points, secret authentication tokens end up permanently written to log disks where anyone with monitoring access can see them.",
           "To keep tokens completely out of URL logs, I implemented a single-use connection ticket pattern in `radius-backend/internal/handler/ws_handler.go`.",
-          "Before initiating the WebSocket handshake, the mobile app sends an authenticated POST request to `/api/ws/ticket` using its regular Bearer token. The server generates a cryptographically secure 32-byte ticket, saves the employee ID, store ID, and role in Redis under `ws_ticket:<ticket>` with a strict 30-second time-to-live, and returns the ticket string to the app.",
-          "The mobile client then opens the WebSocket connection using `?ticket=...`. The handshake handler looks up the ticket in Redis, establishes the client session, and deletes the ticket immediately. If an attacker inspects access logs moments later, the ticket is already gone and cannot be reused."
+          "Before initiating the WebSocket handshake, the mobile app sends an authenticated POST request to `/api/v1/ws/ticket` using its regular Bearer token. The server generates a cryptographically secure 32-byte ticket, saves the employee ID, store ID, and role in Redis under `ws_ticket:<ticket>` with a strict 30-second time-to-live, and returns the ticket string to the app.",
+          "The mobile client then opens the WebSocket connection using `?ticket=...`. The handshake handler reads and deletes the ticket in a single atomic Redis `GETDEL`, then establishes the client session. If an attacker inspects access logs moments later, the ticket is already gone and cannot be reused."
         ],
         image: {
           src: "/assets/images/radius-ws-ticket-handshake.svg",
@@ -735,26 +735,25 @@ useEffect(() => {
 func (h *WSHandler) HandleWebSocket(ctx *gin.Context) {
     ticket := ctx.Query("ticket")
     if ticket != "" {
-        // Fetch and immediately burn the ticket from Redis
-        val, err := h.redisClient.Get(ctx.Request.Context(), "ws_ticket:"+ticket).Result()
+        // Read and burn the ticket in one atomic step so it can never be replayed
+        val, err := h.redisClient.GetDel(ctx.Request.Context(), "ws_ticket:"+ticket).Result()
         if err != nil {
             ctx.AbortWithStatusJSON(http.StatusUnauthorized, models.APIError{Error: "Invalid or expired ticket"})
             return
         }
-        _ = h.redisClient.Del(ctx.Request.Context(), "ws_ticket:"+ticket).Err()
 
         var ticketData models.WSTicketData
         _ = json.Unmarshal([]byte(val), &ticketData)
         // Authenticate client using ticketData...
     }
 }`,
-          explanation: "By burning the ticket the instant the WebSocket connection opens, Radius ensures tickets cannot be replayed. Even if full URLs are logged by intermediate proxies, the logged ticket is already invalid."
+          explanation: "Because GETDEL reads and deletes the ticket atomically, two simultaneous connection attempts can never both redeem it. Even if full URLs are logged by intermediate proxies, the logged ticket is already invalid."
         },
         tradeoff: {
           choice: "Single-Use Redis Handshake Tickets",
           alternatives: ["Passing Bearer Tokens in URL Query Strings", "Cookie-Based WebSocket Upgrades", "Unauthenticated WebSocket with In-Band First Message Auth"],
           why: "Keeps sensitive authentication tokens completely out of proxy logs, monitoring traces, and browser history while avoiding complex browser cookie quirks.",
-          tradeoff: "Requires one quick HTTP round trip before opening the socket, but the 30-second ticket generation takes less than 2 milliseconds."
+          tradeoff: "Requires one quick HTTP round trip before opening the socket, but issuing a ticket took a median of 1.4 milliseconds server-side in local benchmarks."
         }
       },
       {
@@ -767,13 +766,13 @@ func (h *WSHandler) HandleWebSocket(ctx *gin.Context) {
           "Many consumer apps silently allow unlimited concurrent logins from any device anywhere in the world. But in retail operations, a user account maps to a physical human being holding a single company phone. If two different devices perform conflicting inventory adjustments under the same name at the exact same second, there is no way to know who made which change.",
           "To eliminate ghost logins and preserve strict operational accountability, I built an IP-aware single active session policy in `radius-backend/internal/service/auth_service.go`. When an associate logs in, the backend checks PostgreSQL and Redis to see if that employee already has an active session on the store network.",
           "If an active session already exists, Radius detects the potential collision. Rather than abruptly disconnecting a working phone or silently creating duplicate sessions, the app prompts the worker for confirmation to take over the session. Once confirmed, the previous session is immediately revoked, issuing a brand-new token pair and keeping the audit ledger completely untangled.",
-          "I also eliminated a subtle session revocation leak. In early testing, deleting a session in PostgreSQL left the cached token in Redis until its 24-hour expiration. By introducing dual-indexed session tracking in Redis, calling `TerminateSessionById` or deactivating an employee account immediately evicts the active token from Redis, locking out terminated workers or lost devices on their very next request.",
+          "I also eliminated a subtle session revocation leak. In early testing, deleting a session in PostgreSQL left its cached token in Redis, so a revoked device kept working until the cache entry expired. Now `TerminateSessionById` writes a revocation marker for the session in Redis (`radius:auth:revoked:<sessionId>`) and evicts the cached token, so terminated workers and lost devices are locked out on their very next request instead of when their 15-minute access token runs out. Refresh tokens are rotated on every use, with a short 30-second grace window so a dropped response on bad Wi-Fi does not end the session.",
           "Finally, to keep the API fast under heavy store traffic, authenticated endpoints extract verified employee ID and store ID directly from JWT token claims and request context. This eliminated thousands of redundant `GetEmployeeByEmail` database queries every single hour."
         ],
         callout: {
           type: "insight",
           title: "Why Retail Hardware Demands Remote Revocation",
-          message: "If an employee accidentally leaves a company scanner on a public sales display or in a shopping cart, managers cannot afford to wait for a 24-hour token to expire. Dual-indexed Redis session lookup allows managers to terminate any lost scanner's session with a single tap, immediately invalidating the token."
+          message: "If an employee accidentally leaves a company scanner on a public sales display or in a shopping cart, managers cannot afford to wait for a token to expire. A Redis revocation marker lets managers terminate any lost scanner's session with a single tap, invalidating it on the very next request."
         }
       },
       {
@@ -788,34 +787,24 @@ func (h *WSHandler) HandleWebSocket(ctx *gin.Context) {
         codeSnippet: {
           language: "go",
           fileName: "radius-backend/internal/service/session_service.go",
-          code: `// TerminateSessionById removes PostgreSQL record and purges fast-path Redis cache
+          code: `// TerminateSessionById revokes a session everywhere it could still be trusted
 func (s *SessionService) TerminateSessionById(ctx context.Context, sessionId int) (*models.APIMessage, error) {
+    if s.redisClient != nil {
+        // Revocation marker: every authenticated request checks for it first
+        _ = s.redisClient.Set(ctx, "radius:auth:revoked:"+strconv.Itoa(sessionId), "1", utils.MaxSessionLifetime).Err()
+    }
     session, err := s.sessionRepo.GetSessionById(ctx, sessionId)
-    if err == nil && session != nil && session.AccessTokenHash != "" {
-        // Immediate Redis cache eviction eliminates the 24-hour revocation hole
-        s.redisClient.Del(ctx, "session:"+session.AccessTokenHash)
+    if err == nil && session != nil && session.AccessTokenHash != "" && s.redisClient != nil {
+        // Evict the cached token so the fast path cannot authorize it again
+        _ = s.redisClient.Del(ctx, cache.AuthTokenKey(session.AccessTokenHash)).Err()
     }
 
     if err = s.sessionRepo.TerminateSessionById(ctx, sessionId); err != nil {
         return nil, err
     }
     return &models.APIMessage{Message: "Session deleted successfully"}, nil
-}
-
-// TerminateAllSessionsByEmployeeId instantly evicts staff upon account deactivation
-func (s *SessionService) TerminateAllSessionsByEmployeeId(ctx context.Context, employeeId int) {
-    sessions, err := s.sessionRepo.GetSessionsByEmployeeId(ctx, employeeId)
-    if err != nil {
-        return
-    }
-    for _, session := range sessions {
-        if session.AccessTokenHash != "" {
-            s.redisClient.Del(ctx, "session:"+session.AccessTokenHash)
-        }
-        _ = s.sessionRepo.TerminateSessionById(ctx, session.SessionId)
-    }
 }`,
-          explanation: "Dual-indexing active sessions ensures that when a manager revokes a session or terminates an employee, the token is evicted from Redis in under 1 millisecond. Subsequent requests can no longer bypass authorization via the fast-path cache."
+          explanation: "Writing a revocation marker and evicting the cached token means a revoked session fails on its very next request. The fast-path cache can never authorize a token that a manager has already terminated."
         },
         tradeoff: {
           choice: "IP-Aware Single Active Session Enforcement",
@@ -894,8 +883,8 @@ if count.CountedBy == nil && employee.Role != models.RoleAdmin {
         ],
         callout: {
           type: "insight",
-          title: "Serpentine Picking Paths Save Miles of Walking",
-          message: "Warehouse stock is tracked with 9-digit standardized coordinates (Aisle-Bay-Shelf-Position, e.g., 01-02-01-001). By sorting generated pick lists in alphanumeric aisle order, warehouse pickers follow an optimal serpentine path through the back room without zig-zagging back and forth."
+          title: "Aisle-by-Aisle Picking Paths Save Miles of Walking",
+          message: "Warehouse stock is tracked with 9-digit standardized coordinates (Aisle-Bay-Shelf-Position, e.g., 01-02-01-001). By sorting generated pick lists in alphanumeric aisle order, warehouse pickers make a single aisle-by-aisle pass through the back room instead of zig-zagging back and forth."
         }
       },
       {
@@ -1015,16 +1004,16 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
         id: "part-8-product-catalog",
         partNumber: 8,
         badge: "High-Performance Caching",
-        title: "8. Product Catalog, Fast Search & Smart Caching: Sub-Millisecond Barcode Lookups",
+        title: "8. Product Catalog, Fast Search & Smart Caching: Millisecond Barcode Lookups",
         content: [
           "In a retail environment, employees and customers interact with the product catalog constantly. A cashier scanning items at a busy checkout counter, a warehouse specialist receiving cartons off a pallet, and a sales associate checking stock on the floor all depend on instant barcode lookups.",
           "When a system handles over 10,000 products and 70,000 inventory entries across multiple store locations, executing a traditional relational database query on every single barcode scan quickly creates severe performance bottlenecks. Joining product catalog definitions with store-specific stock tables on each scan can easily cause database response times to balloon during morning rushes.",
-          "To solve this, I designed a multi-tier caching architecture in Redis paired with PostgreSQL trigram search indexes. This setup delivers sub-millisecond barcode lookups on the sales floor while completely shielding the database from heavy traffic spikes.",
+          "To solve this, I designed a multi-tier caching architecture in Redis paired with PostgreSQL trigram search indexes. This setup keeps barcode lookups in the low milliseconds on the sales floor while shielding the database from heavy traffic spikes.",
           "• Tier 1: Store-Agnostic Barcode Mapping (24-Hour TTL): Maps UPC barcodes directly to core product details in Redis (`radius:v1:catalog:barcode:<barcode>`). Because barcode numbers and master product details rarely change, this lookup resolves item identity across all retail stores with zero database queries.",
           "• Tier 2: Store-Specific Inventory Snapshot (Jittered TTL with Event Invalidation): Caches real-time stock levels (`radius:v1:inventory:store:<store_id>:product:<product_id>`) including on-hand, reserved, and available quantities alongside physical warehouse aisle and shelf coordinates.",
-          "• Negative Caching for Invalid Scans: If an associate accidentally scans an unrecognized barcode or damaged packaging, the backend caches a `NotFound` marker in Redis for two minutes. This prevents repetitive bad scans from constantly penalizing PostgreSQL with empty table lookups.",
+          "• Negative Caching for Invalid Scans: If an associate accidentally scans an unrecognized barcode or damaged packaging, the backend caches a `NotFound` marker in Redis for about a minute (60 seconds plus up to 15 seconds of jitter). In a local test, 200 scans of the same bad barcode triggered exactly one product lookup. This prevents repetitive bad scans from constantly penalizing PostgreSQL with empty table lookups.",
           "• Write-Time Cache Invalidation: Whenever cashiers finalize a sale, receiving docks check in purchase orders, or managers approve manual adjustments, the backend immediately purges the corresponding store inventory cache keys so associates never see stale quantities.",
-          "• Trigram GIN Search Indexing: Added PostgreSQL migration 42 with the `pg_trgm` extension. Searching by product name or SKU with partial wildcards dropped from 60 milliseconds to under 3 milliseconds across 10,000 products."
+          "• Trigram GIN Search Indexing: Migrations 42 and 43 added the `pg_trgm` extension with GIN indexes on name, SKU and description. Partial wildcard searches across 10,000 products dropped from about 20 milliseconds to about 1 millisecond in `EXPLAIN ANALYZE`."
         ],
         callout: {
           type: "insight",
@@ -1086,19 +1075,19 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
         if product == nil && s.redisClient != nil {
             // Store negative cache with short jittered TTL to absorb bad scans
             negPayload, _ := json.Marshal(catalogBarcodeCache{NotFound: true})
-            negTTL := 60*time.Second + time.Duration(rand.IntN(15))*time.Second
+            negTTL := cache.ApplyJitter(60*time.Second, 15*time.Second)
             _ = s.redisClient.Set(ctx, tier1Key, negPayload, negTTL).Err()
         }
         return product, nil
     })
     // ...
 }`,
-          explanation: "By checking the global barcode cache first and the store inventory snapshot second, over 90% of barcode scans return in under 1 millisecond. If an unrecognized barcode is scanned, the negative cache shields the database from repeated hits."
+          explanation: "Checking the global barcode cache first and the store inventory snapshot second skips the product lookup entirely on a cache hit. Against the hosted PostgreSQL database, a cache hit came back in about 6ms versus about 91ms on a miss. Locally, 500 warm scans had a median of 1.4ms server-side (2.7ms cold), and the endpoint sustained roughly 3,000 scans per second at 50 concurrent clients. Every scan is still written to the scan log for auditing."
         },
         tradeoff: {
           choice: "Two-Tier Barcode Caching with Negative Caching",
           alternatives: ["Single Monolithic Store-Barcode Cache Key", "Querying PostgreSQL on Every Barcode Scan", "Client-Side In-Memory Barcode Dictionaries"],
-          why: "Decouples static product identity from dynamic store stock counts, cuts cache storage requirements by 70%, and protects PostgreSQL against scan bursts.",
+          why: "Decouples static product identity from dynamic store stock counts, roughly halves cache memory across seven stores (about 2.1KB vs 4.2KB per product, estimated from measured key sizes of 407 and 249 bytes), and protects PostgreSQL against scan bursts.",
           tradeoff: "Requires write-time invalidation in transaction and receiving services, but keeps sales floor data accurate."
         }
       },
@@ -1110,13 +1099,13 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
         content: [
           "A common hazard in high-concurrency retail systems is the cache stampede (or thundering herd problem). When the cache for a high-traffic category or popular product expires, dozens of mobile scanners might request that same item within a fraction of a second. If every request blindly queries the database simultaneously, PostgreSQL experiences sudden CPU spikes.",
           "To eliminate this risk, I integrated Go's `golang.org/x/sync/singleflight` package across product, category, and inventory domain services. When a cache miss occurs, `singleflight.Group` ensures that only one goroutine executes the database query. All other concurrent requests wait for that single query to finish and share the identical result.",
-          "In addition, I introduced jittered TTLs (adding a random plus or minus 10% to expiration times) so records seeded or cached at the same moment never expire simultaneously.",
+          "In addition, I introduced jittered TTLs (adding a random extra of up to 10% to expiration times) so records cached at the same moment never expire simultaneously.",
           "Radius also adheres to a fail-open resilience principle: if Redis ever encounters a connection error or goes offline, domain services catch the error, log a warning, and seamlessly fall back to PostgreSQL so store operations continue without disruption."
         ],
         image: {
           src: "/assets/images/radius-singleflight-stampede.svg",
           alt: "Cache Stampede Protection: Go Singleflight Architecture Diagram",
-          caption: "singleflight.Group deduplicates 500 concurrent cache misses into exactly 1 database query, protecting PostgreSQL from connection pool exhaustion."
+          caption: "Measured locally: 500 concurrent requests for an uncached product produced exactly 1 database query, in three out of three runs."
         },
         codeSnippet: {
           language: "go",
@@ -1140,7 +1129,7 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
         }
         if prod != nil && s.redisClient != nil {
             // Apply randomized TTL jitter to prevent synchronized expirations
-            ttl := 5*time.Minute + time.Duration(rand.IntN(30))*time.Second
+            ttl := cache.ApplyJitter(5*time.Minute, 30*time.Second)
             if data, marshalErr := json.Marshal(prod); marshalErr == nil {
                 _ = s.redisClient.Set(ctx, cacheKey, data, ttl).Err()
             }
@@ -1168,39 +1157,42 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
         title: "8.3 Mobile Speed: Stale-While-Revalidate (SWR) for Instant Screen Loads",
         content: [
           "Optimizing backend queries and in-memory caches brings server latency down to milliseconds. However, on handheld Android scanners connecting over warehouse Wi-Fi, round-trip network latency can still cause noticeable screen loading spinners when navigating between tabs.",
-          "To make the mobile app feel as responsive as a native desktop application, I implemented an in-memory client-side cache with Stale-While-Revalidate (SWR) semantics in `radius-frontend/src/api/client.ts`.",
-          "When an associate navigates to screens displaying slow-changing resources (such as store lists or product categories), `apiFetchSWR` immediately returns the cached memory version in under 16 milliseconds. Simultaneously, it fires a background HTTP request to revalidate the data, updating the in-memory cache smoothly without causing layout shifts or screen flickers."
+          "To make the mobile app feel as responsive as a native desktop application, I implemented an in-memory client-side cache with Stale-While-Revalidate (SWR) semantics as a cache policy on `apiFetch` in `radius-frontend/src/api/client.ts`.",
+          "When an associate navigates to screens displaying slow-changing resources (such as store lists or product categories), the `swr` policy immediately returns the cached in-memory version without waiting on the network. Simultaneously, it fires a background HTTP request to revalidate the data, updating the in-memory cache smoothly without causing layout shifts or screen flickers."
         ],
         codeSnippet: {
           language: "typescript",
           fileName: "radius-frontend/src/api/client.ts",
-          code: `const swrCache = new Map<string, { data: any; timestamp: number }>();
+          code: `export function buildCacheKey(method: string, path: string): string {
+    const url = new URL(path.startsWith("http") ? path : \`http://localhost\${path}\`);
+    const query = Array.from(url.searchParams.entries())
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([k, v]) => \`\${k}=\${v}\`)
+        .join("&");
+    // Every entry is scoped to the active store and employee
+    const storeScope = clientStoreId !== null ? \`s:\${clientStoreId}\` : "s:none";
+    const userScope = clientEmployeeId !== null ? \`u:\${clientEmployeeId}\` : "u:none";
+    return \`\${method.toUpperCase()}:\${url.pathname}:\${query}:\${storeScope}:\${userScope}\`;
+}
 
-export async function apiFetchSWR<T>(
-    path: string,
-    options?: RequestInit,
-): Promise<T> {
-    const cacheKey = path;
+// Inside apiFetch, for the "swr" cache policy
+if (cachePolicy === "swr") {
     const cached = swrCache.get(cacheKey);
-    const isStale = !cached || (Date.now() - cached.timestamp > 5 * 60 * 1000);
-
-    // If cached, return immediately for sub-16ms screen transitions
-    if (cached) {
-        if (isStale) {
-            // Quietly revalidate in background without blocking UI
-            apiFetch<T>(path, options)
+    const currentGeneration = getSessionGeneration();
+    if (cached && cached.generation === currentGeneration) {
+        if (Date.now() - cached.timestamp > 5 * 60 * 1000) {
+            // Stale: refresh quietly in the background without blocking the UI
+            executeNetworkFetch<T>(path, options, cacheKey, method, true)
                 .then((data) => {
-                    swrCache.set(cacheKey, { data, timestamp: Date.now() });
+                    if (getSessionGeneration() === currentGeneration) {
+                        setWithEviction(swrCache, cacheKey, { data, timestamp: Date.now(), generation: currentGeneration });
+                        notifyCacheUpdate(cacheKey, data);
+                    }
                 })
                 .catch(() => {});
         }
         return cached.data as T;
     }
-
-    // Cache miss: perform standard network request
-    const data = await apiFetch<T>(path, options);
-    swrCache.set(cacheKey, { data, timestamp: Date.now() });
-    return data;
 }`,
           explanation: "By returning cached data instantly and refreshing quietly in the background, screen navigation on mobile scanners feels instantaneous. Associates never see empty loading spinners when switching between familiar screens."
         }
@@ -1235,7 +1227,7 @@ export async function apiFetchSWR<T>(
           "When regional managers inspect stores, requiring them to sign out and log back in to switch branches causes immense friction. But switching store contexts dynamically in a mobile app introduces a dangerous trap: client cache poisoning.",
           "If a regional manager reviews shelf replenishment in Store 1 (Toronto) and then switches to Store 2 (Ottawa), any cached products, shelf coordinates, or activity feeds stored in memory could bleed across screens if the cache is not cleanly partitioned.",
           "In `radius-frontend/src/context/StoreContext.tsx`, I solved this by coupling active store selection with an instantaneous client cache wipe:",
-          "• Context Injection: When `setActiveStoreId` is triggered, the new store ID is registered with `setClientContext({ storeId })`, immediately appending the store context header to all future network calls.",
+          "• Context Injection: When `setActiveStoreId` is triggered, the new store ID is registered with `setClientContext({ storeId })`, which scopes every future request and every cache key to that store.",
           "• Instant SWR Cache Invalidation: The store provider immediately calls `clearSWRCache()`. This completely wipes the in-memory Stale-While-Revalidate cache, ensuring that stale stock counts or aisle layouts from Toronto never appear on screen for Ottawa.",
           "• Graceful 401 Expiration: If a manager's store-specific permissions change while switching, the provider catches `UnauthorizedError` and invokes `handleSessionExpired`, terminating the session safely without leaving the UI in an inconsistent state."
         ],
@@ -1282,9 +1274,9 @@ export async function apiFetchSWR<T>(
           explanation: "Coupling branch selection with clearSWRCache() ensures zero cross-store data leakage on mobile screens. Handheld scanners switch store contexts instantly without requiring an expensive application restart."
         },
         tradeoff: {
-          choice: "Client Context Switching with Immediate SWR Cache Flush",
-          alternatives: ["Full Application Reload on Branch Switch", "Store-Prefixing Every Cache Key", "Ambient LocalStorage State"],
-          why: "Instantly flushes stale store state in memory without incurring the latency and jarring screen flash of a full React Native app reload.",
+          choice: "Store-Scoped Cache Keys plus an Immediate SWR Flush on Switch",
+          alternatives: ["Full Application Reload on Branch Switch", "Cache Flush Alone Without Scoped Keys", "Ambient LocalStorage State"],
+          why: "Scoping every cache key by store and employee means one store's data can never be served for another, and the flush frees memory and in-flight state immediately, without the latency and screen flash of a full React Native app reload.",
           tradeoff: "Requires re-fetching root branch data on the initial screen of the newly selected store."
         }
       },
@@ -1358,23 +1350,23 @@ type Inventory struct {
         title: "10.1 Standardized 9-Digit Warehouse Shelving Coordinates (Aisle-Bay-Shelf-Position)",
         content: [
           "Knowing that a store possesses 3 sealed units of an item is useless if warehouse staff do not know where in the warehouse it sits. If a pallet of monitors is pushed onto a high rack without recording its location, it effectively disappears until the next annual inventory audit.",
-          "Radius organizes backroom warehouse storage through standardized 9-digit alphanumeric coordinates formatted as `Aisle-Bay-Shelf-Position` (e.g. `A04-B02-S03-P01`):",
-          "• Aisle (`A04`): The physical corridor or racking row in the warehouse.",
-          "• Bay (`B02`): The vertical racking section between structural upright support pillars.",
-          "• Shelf (`S03`): The horizontal steel shelf tier counted from the floor upward.",
-          "• Position (`P01`): The specific bin slot or pallet footprint along the shelf tier.",
+          "Radius organizes backroom warehouse storage through standardized 9-digit numeric coordinates formatted as `Aisle-Bay-Shelf-Position` (e.g. `04-02-03-001`), enforced by a database check constraint:",
+          "• Aisle (`04`): The physical corridor or racking row in the warehouse.",
+          "• Bay (`02`): The vertical racking section between structural upright support pillars.",
+          "• Shelf (`03`): The horizontal steel shelf tier counted from the floor upward.",
+          "• Position (`001`): The specific bin slot or pallet footprint along the shelf tier.",
           "Mobile barcode scanners enforce a two-scan binning protocol (`BinItemRequest`): the employee scans the product UPC, followed by the shelf bin location barcode. The backend validates location types (`OVERSTOCK` for top pallet racking, `TOP_STOCK` for risers above active sales shelves, and `UNBINNED` for intake carts).",
-          "Standardized coordinates eliminate warehouse scavenger hunts and allow the replenishment engine to sort restock pick lists in physical serpentine order through the warehouse corridors."
+          "Standardized coordinates eliminate warehouse scavenger hunts and allow the replenishment engine to sort restock pick lists in physical aisle-by-aisle order through the warehouse corridors."
         ],
         image: {
           src: "/assets/images/radius-mims-coordinate-shelving.svg",
-          alt: "MIMS Spatial Coordinate Topology & Serpentine Routing Diagram",
-          caption: "Standardized 9-digit Aisle-Bay-Shelf-Position coordinates enable serpentine warehouse replenishment paths, cutting picker walking distance by 64%."
+          alt: "MIMS Spatial Coordinate Topology & Aisle-by-Aisle Routing Diagram",
+          caption: "Standardized 9-digit Aisle-Bay-Shelf-Position coordinates let pick lists run aisle by aisle. In a walking model over the seeded store layout, sorted pick lists cut walking distance by about 65% versus unsorted ones."
         },
         callout: {
           type: "tip",
           title: "Why Standardized Coordinates Save Miles of Walking",
-          message: "By enforcing standardized Aisle-Bay-Shelf-Position coordinate formatting, the IS4TC shelf replenishment engine sorts picking routes in serpentine order, eliminating backtracking through warehouse corridors."
+          message: "By enforcing standardized Aisle-Bay-Shelf-Position coordinate formatting, the IS4TC shelf replenishment engine sorts picking routes in aisle-by-aisle order, cutting most of the backtracking through warehouse corridors."
         }
       },
       {
@@ -1615,7 +1607,7 @@ func (m Money) Prorate(part, whole Money) Money {
           "When a transaction completes at the cash register, it initiates three immediate system reactions:",
           "• Real-Time WebSocket Broadcast: The backend emits a `StoreActivityPayload` (`tx-{id}`) over WebSockets, delivering live sales alerts, subtotal amounts, and register IDs to managerial tablets.",
           "• Closed-Loop Sales Velocity: The service calls `fillReportRepo.AddSoldItems`, recording the transaction items into the ephemeral floor sales log. This feeds the IS4TC replenishment algorithm, ensuring shelves restock before items sell out.",
-          "• PCI Compliance & Card Masking: Migration 44 dropped the legacy `card_number` column and introduced `payment_card_last4 VARCHAR(4)`. Radius never stores raw primary account numbers (PAN), recording only the payment method, card brand, and masked last 4 digits for receipt verification."
+          "• Card Masking: Radius never stores raw primary account numbers (PAN), only the payment method, card brand, and the last 4 digits for receipt verification. Migration 44 renamed the legacy `card_number` column, which already held just those 4 digits, to `payment_card_last4` so the schema says exactly what it stores."
         ],
         codeSnippet: {
           language: "go",
@@ -1720,10 +1712,23 @@ if s.broadcaster != nil && tx != nil {
         return nil, ErrConflict
     }
 
-    // Persist status and broadcast WebSocket event to service center displays
+    // Persist only if the order is still in the status we validated against
     updated, err := s.ordersRepo.UpdatePrintOrderStatus(ctx, id, order.StoreId, order.Status, next)
-    if err != nil || !updated {
+    if err != nil {
+        return nil, err
+    }
+    if !updated {
         return nil, ErrConflict
+    }
+    previous := order.Status
+    order.Status = next
+
+    // Broadcast the stage change to service center displays
+    if s.broadcaster != nil {
+        s.broadcaster.BroadcastToStore(order.StoreId, models.WebSocketEvent{
+            Type: models.EventPrintOrderStatusUpdated, StoreId: order.StoreId, Timestamp: time.Now(),
+            Payload: models.PrintOrderStatusUpdatedPayload{PrintOrderID: id, StoreID: order.StoreId, PreviousStatus: previous, NewStatus: next},
+        })
     }
     return order, nil
 }`,
@@ -1805,14 +1810,14 @@ func (r *AuditRepo) LogInventoryTransaction(ctx context.Context, tx *sql.Tx, ent
           "With all 14 operational pillars fully architected, implemented, and tested, Radius stands as a comprehensive retail, logistics, and store management engine built from first principles.",
           "Every module is backed by production-ready code across the Go backend and React Native Expo SDK 54 frontend:",
           "• Strict 3-Tier Go Clean Monolith: Explicit manual dependency wiring in `main.go`, context cancellation propagation on dropped Wi-Fi, and clean interface decoupling.",
-          "• PostgreSQL 16 Relational Topology: 44 versioned UP/DOWN schema migrations, composite covering indexes, pg_trgm trigram search, and 70,000+ seeded synthetic records stress-tested under load.",
+          "• PostgreSQL Relational Topology: 45 versioned UP/DOWN schema migrations, composite covering indexes, pg_trgm trigram search, and 70,000+ seeded synthetic records stress-tested under load.",
           "• High-Speed Resilient WebSockets: Gorilla WebSocket hubs, single-use 30-second handshake tickets, slow-client dead-zone dropped connection protections, and mobile AppState battery savers.",
           "• IP-Aware Single-Device Security: Token bucket IP rate limiting, SHA-256 refresh token hashing, and IP-aware takeover prompts that stop duplicate handheld logins.",
-          "• Concurrency-Safe Operations: Mutex-locked cycle counts, shift ownership handovers, mutual-exclusion BOPIS order assignment locks, and background expiration goroutines.",
-          "• Closed-Loop Replenishment & Omnichannel: In-Stock For The Customer (IS4TC) empty hole floor scans combined with live POS sales velocity to generate optimal serpentine warehouse pick lists.",
-          "• High-Performance Multi-Tier Caching: Negative caching, Go singleflight stampede suppression, and mobile Stale-While-Revalidate (SWR) under 16ms.",
+          "• Concurrency-Safe Operations: Assignment-locked cycle counts, shift ownership handovers, mutual-exclusion BOPIS order assignment locks, and background expiration goroutines.",
+          "• Closed-Loop Replenishment & Omnichannel: In-Stock For The Customer (IS4TC) empty hole floor scans combined with live POS sales velocity to generate optimal aisle-by-aisle warehouse pick lists.",
+          "• High-Performance Multi-Tier Caching: Negative caching, Go singleflight stampede suppression, and mobile Stale-While-Revalidate (SWR) screen loads.",
           "• Enterprise Multi-Store Logistics: Dynamic branch switching with cache partitioning, 9-digit warehouse coordinates (Aisle-Bay-Shelf-Position), 11 inventory sub-buckets, supervisor approval queues, and 20-digit LPR freight receiving.",
-          "• Financial Integrity & Immutable Auditing: Fixed-point integer cent arithmetic (`Money int64`), dynamic Canadian provincial tax rules (GST/PST/HST), PCI-compliant card tokenization, and transaction-atomic audit ledger logging.",
+          "• Financial Integrity & Immutable Auditing: Fixed-point integer cent arithmetic (`Money int64`), dynamic Canadian provincial tax rules (GST/PST/HST), last-4-only card storage, and transaction-atomic audit ledger logging.",
           "Modern software development often pushes teams toward over-complicated microservice meshes and bloated libraries. Building Radius proved that by choosing simplicity, relational database guarantees, and clear software architecture, a unified system can remain blazingly fast, rock-solid, and a true pleasure for retail associates to use every single day."
         ]
       }

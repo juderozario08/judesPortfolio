@@ -103,7 +103,7 @@
       <text x="15" y="25" fill="#ff9e64" font-size="12" font-weight="700" transform="translate(790, 0)">4. Cache Purge</text>
       <text x="15" y="45" fill="#c0caf5" font-size="11" transform="translate(790, 0)">Redis keys flushed</text>
       <text x="15" y="65" fill="#c0caf5" font-size="11" transform="translate(790, 0)">Instantly sellable</text>
-      <text x="15" y="85" fill="#9ece6a" font-size="10" font-family="monospace" transform="translate(790, 0)">Latency &lt; 14ms</text>
+      <text x="15" y="85" fill="#9ece6a" font-size="10" font-family="monospace" transform="translate(790, 0)">Latency ≈ 15ms (local)</text>
     </g>
 
     <text x="35" y="195" fill="#9ece6a" font-size="11">✓ Result: Pallet of 200 items checked in under 1 second without scanning individual items, with zero phantom inventory.</text>
