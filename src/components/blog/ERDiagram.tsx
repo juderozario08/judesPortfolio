@@ -165,7 +165,7 @@ export const ERDiagram = ({ initialDomain = 'all' }: ERDiagramProps) => {
                 Radius Relational Database Topology
               </span>
               <span className="text-[10px] font-mono text-tokyo-muted">
-                32 Entities • 66 Foreign Keys • PostgreSQL 16
+                32 Entities • 66 Foreign Keys • PostgreSQL 18
               </span>
             </div>
           </div>
@@ -343,7 +343,7 @@ export const ERDiagram = ({ initialDomain = 'all' }: ERDiagramProps) => {
       <div className="bg-tokyo-base px-3 sm:px-5 py-2.5 border-t border-tokyo-surface flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-tokyo-muted shrink-0">
         <div className="flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-emerald-400" />
-          <span>PostgreSQL 16 Multi-Store Architecture</span>
+          <span>PostgreSQL 18 Multi-Store Architecture</span>
           <span className="text-tokyo-surface">•</span>
           <span>{RADIUS_SCHEMA_TABLES.length} Schema Tables</span>
           <span className="text-tokyo-surface">•</span>

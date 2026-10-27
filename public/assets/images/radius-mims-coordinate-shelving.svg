@@ -16,14 +16,14 @@
   <!-- Title Header -->
   <g transform="translate(50, 60)">
     <rect x="0" y="-12" width="12" height="24" rx="3" fill="#9ece6a"/>
-    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">MIMS Spatial Coordinate Topology &amp; Aisle-by-Aisle Routing</text>
-    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">9-Digit Aisle-Bay-Shelf-Position Structure &amp; Physical Corridor Pick Paths</text>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">MIMS Bin Locations &amp; Aisle-by-Aisle Picking</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">9-digit Aisle-Bay-Shelf-Position codes (e.g. 04-02-03-001) and sorted pick paths</text>
   </g>
 
   <!-- Left Card: 9-Digit Coordinate Anatomy -->
   <g transform="translate(50, 110)">
     <rect x="0" y="0" width="480" height="420" rx="12" fill="#1f2335" stroke="#292e42"/>
-    <text x="20" y="32" fill="#7dcfff" font-size="14" font-weight="700">1. Standardized 9-Digit Coordinate Anatomy</text>
+    <text x="20" y="32" fill="#7dcfff" font-size="14" font-weight="700">1. Anatomy of a 9-Digit Location</text>
     
     <!-- Chip Display of Coordinate -->
     <g transform="translate(20, 55)">
@@ -31,40 +31,40 @@
       
       <!-- A04 -->
       <rect x="15" y="10" width="90" height="40" rx="6" fill="#7aa2f7" fill-opacity="0.2" stroke="#7aa2f7"/>
-      <text x="60" y="35" fill="#7aa2f7" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">A04</text>
+      <text x="60" y="35" fill="#7aa2f7" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">04</text>
       
       <text x="115" y="35" fill="#565f89" font-size="16" font-family="monospace">-</text>
 
       <!-- B02 -->
       <rect x="125" y="10" width="90" height="40" rx="6" fill="#bb9af7" fill-opacity="0.2" stroke="#bb9af7"/>
-      <text x="170" y="35" fill="#bb9af7" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">B02</text>
+      <text x="170" y="35" fill="#bb9af7" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">02</text>
       
       <text x="225" y="35" fill="#565f89" font-size="16" font-family="monospace">-</text>
 
       <!-- S03 -->
       <rect x="235" y="10" width="90" height="40" rx="6" fill="#9ece6a" fill-opacity="0.2" stroke="#9ece6a"/>
-      <text x="280" y="35" fill="#9ece6a" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">S03</text>
+      <text x="280" y="35" fill="#9ece6a" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">03</text>
       
       <text x="335" y="35" fill="#565f89" font-size="16" font-family="monospace">-</text>
 
       <!-- P01 -->
       <rect x="345" y="10" width="80" height="40" rx="6" fill="#ff9e64" fill-opacity="0.2" stroke="#ff9e64"/>
-      <text x="385" y="35" fill="#ff9e64" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">P01</text>
+      <text x="385" y="35" fill="#ff9e64" font-size="18" font-weight="700" font-family="monospace" text-anchor="middle">001</text>
     </g>
 
     <!-- Detailed Explanations -->
     <g transform="translate(25, 140)">
       <circle cx="10" cy="12" r="5" fill="#7aa2f7"/>
-      <text x="25" y="16" fill="#c0caf5" font-size="13" font-weight="600">Aisle (A04): <tspan fill="#787c99" font-weight="400">Warehouse Corridor (Rows 01 - 24)</tspan></text>
+      <text x="25" y="16" fill="#c0caf5" font-size="13" font-weight="600">Aisle (04): <tspan fill="#787c99" font-weight="400">Which aisle in the store</tspan></text>
       
       <circle cx="10" cy="45" r="5" fill="#bb9af7"/>
-      <text x="25" y="49" fill="#c0caf5" font-size="13" font-weight="600">Bay (B02): <tspan fill="#787c99" font-weight="400">Vertical upright section between steel pillars</tspan></text>
+      <text x="25" y="49" fill="#c0caf5" font-size="13" font-weight="600">Bay (02): <tspan fill="#787c99" font-weight="400">Section of shelving along the aisle</tspan></text>
 
       <circle cx="10" cy="78" r="5" fill="#9ece6a"/>
-      <text x="25" y="82" fill="#c0caf5" font-size="13" font-weight="600">Shelf Tier (S03): <tspan fill="#787c99" font-weight="400">Horizontal rack level (Floor: S01 up to High: S05)</tspan></text>
+      <text x="25" y="82" fill="#c0caf5" font-size="13" font-weight="600">Shelf (03): <tspan fill="#787c99" font-weight="400">Shelf level within the bay</tspan></text>
 
       <circle cx="10" cy="111" r="5" fill="#ff9e64"/>
-      <text x="25" y="115" fill="#c0caf5" font-size="13" font-weight="600">Position (P01): <tspan fill="#787c99" font-weight="400">Specific slot bin / pallet footprint along shelf</tspan></text>
+      <text x="25" y="115" fill="#c0caf5" font-size="13" font-weight="600">Position (001): <tspan fill="#787c99" font-weight="400">Exact slot on that shelf</tspan></text>
     </g>
 
     <!-- Physical Shelf Elevation Graphic -->
@@ -72,23 +72,23 @@
       <rect x="0" y="0" width="420" height="115" rx="6" fill="#16161e" stroke="#292e42"/>
       
       <!-- Tier 3: Overstock -->
-      <rect x="20" y="15" width="380" height="24" rx="4" fill="#bb9af7" fill-opacity="0.15" stroke="#bb9af7"/>
-      <text x="35" y="32" fill="#bb9af7" font-size="11" font-family="monospace">Tier 3 (High): OVERSTOCK Pallet Racking (Forklift Access)</text>
+      <rect x="10" y="15" width="400" height="24" rx="4" fill="#bb9af7" fill-opacity="0.15" stroke="#bb9af7"/>
+      <text x="22" y="32" fill="#bb9af7" font-size="10" font-family="monospace">OVERSTOCK: extra stock held in a bin</text>
       
       <!-- Tier 2: Top Stock -->
-      <rect x="20" y="46" width="380" height="24" rx="4" fill="#7dcfff" fill-opacity="0.15" stroke="#7dcfff"/>
-      <text x="35" y="63" fill="#7dcfff" font-size="11" font-family="monospace">Tier 2 (Mid): TOP_STOCK Risers (Hand Ladder Accessible)</text>
+      <rect x="10" y="46" width="400" height="24" rx="4" fill="#7dcfff" fill-opacity="0.15" stroke="#7dcfff"/>
+      <text x="22" y="63" fill="#7dcfff" font-size="10" font-family="monospace">TOP_STOCK: stock kept above the sales shelf</text>
 
       <!-- Tier 1: Pick Floor -->
-      <rect x="20" y="77" width="380" height="24" rx="4" fill="#9ece6a" fill-opacity="0.15" stroke="#9ece6a"/>
-      <text x="35" y="94" fill="#9ece6a" font-size="11" font-family="monospace">Tier 1 (Floor): ACTIVE PICK BINS (Immediate Scanner Pick)</text>
+      <rect x="10" y="77" width="400" height="24" rx="4" fill="#9ece6a" fill-opacity="0.15" stroke="#9ece6a"/>
+      <text x="22" y="94" fill="#9ece6a" font-size="10" font-family="monospace">UNBINNED: received, not assigned to a bin yet</text>
     </g>
   </g>
 
   <!-- Right Card: Serpentine Pick Route vs Naive Path -->
   <g transform="translate(560, 110)">
     <rect x="0" y="0" width="490" height="420" rx="12" fill="#1f2335" stroke="#292e42"/>
-    <text x="20" y="32" fill="#7dcfff" font-size="14" font-weight="700">2. Replenishment Route Geometry</text>
+    <text x="20" y="32" fill="#7dcfff" font-size="14" font-weight="700">2. Restock Pick Path</text>
     
     <!-- Warehouse Floor Map Simulation -->
     <g transform="translate(25, 55)">
@@ -133,9 +133,9 @@
     <!-- Comparison Callout -->
     <g transform="translate(25, 320)">
       <rect x="0" y="0" width="440" height="80" rx="8" fill="#16161e" stroke="#292e42"/>
-      <text x="15" y="24" fill="#9ece6a" font-size="12" font-weight="700">✓ Aisle-by-Aisle Sorting (Radius IS4TC Engine):</text>
+      <text x="15" y="24" fill="#9ece6a" font-size="12" font-weight="700">✓ Sorted by location (Radius fill reports):</text>
       <text x="15" y="42" fill="#c0caf5" font-size="11">Pick lists sorted by location: about 65% less walking in a model of the seeded layout.</text>
-      <text x="15" y="62" fill="#f7768e" font-size="11">✗ Naive Sorting: Random jumps between aisles exhaust staff and waste pick hours.</text>
+      <text x="15" y="62" fill="#f7768e" font-size="11">✗ Unsorted: staff zig-zag between aisles and walk much further.</text>
     </g>
   </g>
 </svg>

@@ -21,8 +21,8 @@
   <!-- Title Header -->
   <g transform="translate(50, 60)">
     <rect x="0" y="-12" width="12" height="24" rx="3" fill="#9ece6a"/>
-    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Transaction-Atomic Audit Ledger Architecture</text>
-    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">Zero-Phantom Inventory via Synchronous in-Transaction *sql.Tx Dual-Writes</text>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Audit Ledger in the Same Transaction</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">The stock change and its audit record commit together in one *sql.Tx</text>
   </g>
 
   <!-- Left Card: Synchronous In-Transaction Dual Write (Radius Approach) -->
@@ -61,16 +61,16 @@
     <!-- Guarantee Summary -->
     <g transform="translate(25, 310)">
       <rect x="0" y="0" width="430" height="85" rx="8" fill="#16161e" stroke="#292e42"/>
-      <text x="15" y="24" fill="#9ece6a" font-size="12" font-weight="700">Architectural Guarantee:</text>
-      <text x="15" y="44" fill="#c0caf5" font-size="11">If the server crashes midway, PostgreSQL rolls back completely.</text>
-      <text x="15" y="64" fill="#9ece6a" font-size="11">Zero phantom inventory. Zero unlogged movements.</text>
+      <text x="15" y="24" fill="#9ece6a" font-size="12" font-weight="700">What this guarantees:</text>
+      <text x="15" y="44" fill="#c0caf5" font-size="11">If anything fails before COMMIT, PostgreSQL rolls back both writes.</text>
+      <text x="15" y="64" fill="#9ece6a" font-size="11">Every stock change has an audit record.</text>
     </g>
   </g>
 
   <!-- Right Card: The Asynchronous Event Queue Trap -->
   <g transform="translate(560, 115)">
     <rect x="0" y="0" width="490" height="415" rx="12" fill="#1f2335" stroke="#f7768e" stroke-opacity="0.4"/>
-    <text x="25" y="32" fill="#f7768e" font-size="14" font-weight="700">✗ The Async Queue Trap: Phantom Move Inconsistency</text>
+    <text x="25" y="32" fill="#f7768e" font-size="14" font-weight="700">✗ Async Queue: The Audit Event Can Be Lost</text>
 
     <!-- Split Flow -->
     <g transform="translate(25, 55)">
@@ -96,7 +96,7 @@
 
       <g transform="translate(15, 170)">
         <rect x="0" y="0" width="410" height="45" rx="6" fill="#1f2335" stroke="#f7768e"/>
-        <text x="15" y="22" fill="#f7768e" font-size="11" font-weight="700">Catastrophic Ledger Desynchronization</text>
+        <text x="15" y="22" fill="#f7768e" font-size="11" font-weight="700">Stock and audit log out of sync</text>
         <text x="15" y="38" fill="#787c99" font-size="10">Stock changed on floor, but audit log has zero record of who or why.</text>
       </g>
     </g>
@@ -104,9 +104,9 @@
     <!-- Failure Consequence -->
     <g transform="translate(25, 310)">
       <rect x="0" y="0" width="440" height="85" rx="8" fill="#16161e" stroke="#292e42"/>
-      <text x="15" y="24" fill="#f7768e" font-size="12" font-weight="700">The Real-World Consequence:</text>
-      <text x="15" y="44" fill="#c0caf5" font-size="11">Warehouse managers spend hours investigating missing pallets</text>
-      <text x="15" y="64" fill="#f7768e" font-size="11">that exist only because an asynchronous logging event dropped.</text>
+      <text x="15" y="24" fill="#f7768e" font-size="12" font-weight="700">What goes wrong:</text>
+      <text x="15" y="44" fill="#c0caf5" font-size="11">Managers end up chasing stock changes</text>
+      <text x="15" y="64" fill="#f7768e" font-size="11">with no record of who made them or why.</text>
     </g>
   </g>
 </svg>

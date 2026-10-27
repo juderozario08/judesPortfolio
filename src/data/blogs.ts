@@ -1437,7 +1437,7 @@ type ReviewAdjustmentRequest struct {
         image: {
           src: "/assets/images/radius-lpr-barcode-anatomy.svg",
           alt: "20-Digit License Plate Receiving (LPR) Architecture Diagram",
-          caption: "GS1-128 20-digit LPR barcodes allow handheld scanners to check in 200 pre-palletized units in under one second with atomic database execution."
+          caption: "One scan of a 20-digit GS1-128 LPR barcode receives every item in the carton, inside a single database transaction."
         },
         codeSnippet: {
           language: "go",

@@ -15,14 +15,14 @@
   <!-- Title Header -->
   <g transform="translate(50, 60)">
     <rect x="0" y="-12" width="12" height="24" rx="3" fill="#e0af68"/>
-    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Financial Integrity: Fixed-Point Scaled Tax Arithmetic</text>
-    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">IEEE 754 Floating-Point Drift vs. Radius Money int64 Cents per 100,000</text>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Tax Math with Integer Cents</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">float64 rounding drift vs. Radius Money (int64 cents, rates per 100,000)</text>
   </g>
 
   <!-- Left: Floating-Point Pitfalls -->
   <g transform="translate(50, 115)">
     <rect x="0" y="0" width="480" height="415" rx="12" fill="#1f2335" stroke="#f7768e" stroke-opacity="0.4"/>
-    <text x="25" y="32" fill="#f7768e" font-size="14" font-weight="700">✗ The IEEE 754 Floating-Point Trap (float64)</text>
+    <text x="25" y="32" fill="#f7768e" font-size="14" font-weight="700">✗ Floating-Point Money (float64)</text>
 
     <!-- Formula Box -->
     <g transform="translate(25, 55)">
@@ -35,23 +35,23 @@
     <!-- Why it fails -->
     <g transform="translate(25, 165)">
       <text x="0" y="16" fill="#c0caf5" font-size="12" font-weight="600">Why floats fail in retail ledgers:</text>
-      <text x="0" y="38" fill="#787c99" font-size="11.5">• Fractions like 0.1 cannot be represented in binary base-2 powers.</text>
-      <text x="0" y="58" fill="#787c99" font-size="11.5">• Compounded across 50,000 POS transactions and line discounts,</text>
-      <text x="0" y="78" fill="#787c99" font-size="11.5">  sub-penny rounding errors accumulate into accounting variances.</text>
-      <text x="0" y="98" fill="#787c99" font-size="11.5">• End of day cashier register drawer cash counts mismatch by dollars.</text>
+      <text x="0" y="38" fill="#787c99" font-size="11.5">• Values like 0.1 can't be stored exactly in binary.</text>
+      <text x="0" y="58" fill="#787c99" font-size="11.5">• Across thousands of transactions, discounts and returns,</text>
+      <text x="0" y="78" fill="#787c99" font-size="11.5">  tiny rounding errors add up to cent-level mismatches.</text>
+      <text x="0" y="98" fill="#787c99" font-size="11.5">• Register totals stop matching the sales report.</text>
     </g>
 
     <!-- Outcome Tag -->
     <rect x="25" y="295" width="430" height="85" rx="8" fill="#16161e" stroke="#292e42"/>
-    <text x="40" y="325" fill="#f7768e" font-size="12" font-weight="700">Real-World Consequence:</text>
-    <text x="40" y="348" fill="#c0caf5" font-size="11">CRA (Canada Revenue Agency) sales tax audit flags balance discrepancies.</text>
-    <text x="40" y="366" fill="#f7768e" font-size="11">Refunds over-reimburse or shortchange customers on returns.</text>
+    <text x="40" y="325" fill="#f7768e" font-size="12" font-weight="700">What goes wrong:</text>
+    <text x="40" y="348" fill="#c0caf5" font-size="11">Collected tax drifts from what the books say it should be.</text>
+    <text x="40" y="366" fill="#f7768e" font-size="11">Refunds can be off by a cent from the original charge.</text>
   </g>
 
   <!-- Right: Radius Fixed-Point Integer Cent Engine -->
   <g transform="translate(560, 115)">
     <rect x="0" y="0" width="490" height="415" rx="12" fill="#1f2335" stroke="#9ece6a" stroke-opacity="0.5"/>
-    <text x="25" y="32" fill="#9ece6a" font-size="14" font-weight="700">✓ Radius Engine: int64 Cents &amp; Scaled Rates</text>
+    <text x="25" y="32" fill="#9ece6a" font-size="14" font-weight="700">✓ Radius: int64 Cents &amp; Scaled Rates</text>
 
     <!-- Formula Box -->
     <g transform="translate(25, 55)">
@@ -63,17 +63,17 @@
 
     <!-- How it works -->
     <g transform="translate(25, 165)">
-      <text x="0" y="16" fill="#c0caf5" font-size="12" font-weight="600">The Radius Mathematical Guarantee:</text>
-      <text x="0" y="38" fill="#c0caf5" font-size="11.5">• Money stored exclusively as integer cents: $19.99 = 1999.</text>
-      <text x="0" y="58" fill="#c0caf5" font-size="11.5">• Pure integer half-up rounding (+50,000 / 100,000) guarantees</text>
-      <text x="0" y="78" fill="#c0caf5" font-size="11.5">  every provincial tax calculation is exact to the cent.</text>
-      <text x="0" y="98" fill="#c0caf5" font-size="11.5">• Rational math (math/big) prorates discounts across lines without loss.</text>
+      <text x="0" y="16" fill="#c0caf5" font-size="12" font-weight="600">How Radius does it:</text>
+      <text x="0" y="38" fill="#c0caf5" font-size="11.5">• Money is stored as integer cents: $19.99 = 1999.</text>
+      <text x="0" y="58" fill="#c0caf5" font-size="11.5">• Integer half-up rounding (+50,000 / 100,000) rounds</text>
+      <text x="0" y="78" fill="#c0caf5" font-size="11.5">  every provincial tax the same way, to the cent.</text>
+      <text x="0" y="98" fill="#c0caf5" font-size="11.5">• math/big rationals split discounts across lines without losing a cent.</text>
     </g>
 
     <!-- Outcome Tag -->
     <rect x="25" y="295" width="440" height="85" rx="8" fill="#16161e" stroke="#292e42"/>
-    <text x="40" y="325" fill="#9ece6a" font-size="12" font-weight="700">Production Result:</text>
-    <text x="40" y="348" fill="#c0caf5" font-size="11">Zero floating-point rounding errors across 50,000+ test transactions.</text>
-    <text x="40" y="366" fill="#9ece6a" font-size="11">Cashier balances reconcile down to $0.00 every single night.</text>
+    <text x="40" y="325" fill="#9ece6a" font-size="12" font-weight="700">The result:</text>
+    <text x="40" y="348" fill="#c0caf5" font-size="11">No floating-point drift: the same inputs always give the same cents.</text>
+    <text x="40" y="366" fill="#9ece6a" font-size="11">Totals, taxes and refunds add up exactly.</text>
   </g>
 </svg>

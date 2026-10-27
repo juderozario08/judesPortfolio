@@ -74,8 +74,8 @@ const TIER_REGIONS = [
   },
   {
     tierNumber: 5,
-    title: 'TIER 5: STORAGE INFRASTRUCTURE, CACHE & WORKERS (THE FILING CABINET)',
-    subtitle: 'PostgreSQL 16 (40 Migrations, pgx/v5 Pool) • Redis In-Memory Cache • Background Workers',
+    title: 'TIER 5: STORAGE INFRASTRUCTURE, CACHE & WORKERS',
+    subtitle: 'PostgreSQL 18 (45 Migrations, database/sql + pgx) • Redis In-Memory Cache • Background Workers',
     y: 1125,
     height: 285,
     color: '#ff9e64',

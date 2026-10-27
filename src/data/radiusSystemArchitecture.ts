@@ -967,8 +967,8 @@ func (c *RedisClient) RecordEmptyHole(ctx context.Context, storeID int64, upc st
   },
   {
     id: 'storage-postgres',
-    name: 'PostgreSQL 16 Primary DB',
-    subtitle: 'pgx/v5 Pool (25 Conns) • 40 Migrations',
+    name: 'PostgreSQL 18 Primary DB',
+    subtitle: 'database/sql + pgx (50 max conns) • 45 Migrations',
     tier: 'storage',
     tierNumber: 5,
     tierName: 'Persistence & Cache',
@@ -985,7 +985,7 @@ func (c *RedisClient) RecordEmptyHole(ctx context.Context, storeID int64, upc st
     safeguard: 'Pessimistic SELECT ... FOR UPDATE prevents race conditions during simultaneous BOPIS order claims.',
     inbound: 'All Domain Repositories via pgx/v5',
     outbound: 'ACID database operations',
-    tags: ['PostgreSQL 16', 'jackc/pgx/v5', 'Pessimistic Lock', '40 Migrations'],
+    tags: ['PostgreSQL 18', 'jackc/pgx/v5', 'Pessimistic Lock', '45 Migrations'],
     metrics: '70,000+ synthetic inventory test scale',
     codeSnippet: {
       language: 'go',

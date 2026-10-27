@@ -18,14 +18,14 @@
   <!-- Title Header -->
   <g transform="translate(50, 60)">
     <rect x="0" y="-12" width="12" height="24" rx="3" fill="#7dcfff"/>
-    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">20-Digit License Plate Receiving (LPR) Architecture</text>
-    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">GS1-128 Symbology Anatomy &amp; Atomic Master Carton Bulk Ingestion</text>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">License Plate Receiving (LPR)</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">One carton barcode receives everything in the carton, in one transaction</text>
   </g>
 
   <!-- Section 1: Symbology Anatomy (Top Card) -->
   <g transform="translate(50, 110)">
     <rect x="0" y="0" width="1000" height="180" rx="12" fill="#1f2335" stroke="#292e42"/>
-    <text x="25" y="30" fill="#7dcfff" font-size="14" font-weight="700">1. Master Carton 20-Digit LPR Data Breakdown</text>
+    <text x="25" y="30" fill="#7dcfff" font-size="14" font-weight="700">1. Anatomy of a 20-Digit LPR (GS1-128 SSCC)</text>
 
     <!-- Barcode Pattern Bar -->
     <g transform="translate(25, 50)">
@@ -34,56 +34,56 @@
       <!-- AI (00) -->
       <rect x="15" y="10" width="90" height="45" rx="6" fill="#f7768e" fill-opacity="0.2" stroke="#f7768e"/>
       <text x="60" y="32" fill="#f7768e" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle">(00)</text>
-      <text x="60" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">AI: SSCC</text>
+      <text x="60" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">App. ID</text>
 
       <!-- Packaging Type '1' -->
       <rect x="115" y="10" width="70" height="45" rx="6" fill="#ff9e64" fill-opacity="0.2" stroke="#ff9e64"/>
       <text x="150" y="32" fill="#ff9e64" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle">1</text>
-      <text x="150" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Carton</text>
+      <text x="150" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Extension</text>
 
       <!-- Facility Code '1042' -->
       <rect x="195" y="10" width="120" height="45" rx="6" fill="#bb9af7" fill-opacity="0.2" stroke="#bb9af7"/>
-      <text x="255" y="32" fill="#bb9af7" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle">1042</text>
-      <text x="255" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Facility ID</text>
+      <text x="255" y="32" fill="#bb9af7" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle">1042000</text>
+      <text x="255" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Company Prefix</text>
 
       <!-- Serialized Number '0089412351' -->
       <rect x="325" y="10" width="510" height="45" rx="6" fill="#7aa2f7" fill-opacity="0.2" stroke="#7aa2f7"/>
-      <text x="580" y="32" fill="#7aa2f7" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle">0089412351</text>
-      <text x="580" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Unique Serialized Carton Manifest Reference (10 Digits)</text>
+      <text x="580" y="32" fill="#7aa2f7" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle">089412351</text>
+      <text x="580" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Serial Reference (9 Digits)</text>
 
       <!-- Checksum '8' -->
       <rect x="845" y="10" width="90" height="45" rx="6" fill="#9ece6a" fill-opacity="0.2" stroke="#9ece6a"/>
       <text x="890" y="32" fill="#9ece6a" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle">8</text>
-      <text x="890" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Mod-10 Check</text>
+      <text x="890" y="48" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Check Digit</text>
     </g>
 
     <!-- Legend row -->
-    <text x="35" y="150" fill="#787c99" font-size="11">GS1 Serial Shipping Container Code (SSCC-18): Encodes supplier identity, carton packing list, and routing destination in 20 digits.</text>
+    <text x="35" y="150" fill="#787c99" font-size="11">The SSCC-18 is a unique ID for one shipping carton. Radius doesn't decode the fields: it matches the whole barcode against the LPRs on the purchase order.</text>
   </g>
 
   <!-- Section 2: Atomic Ingestion Flow (Bottom Card) -->
   <g transform="translate(50, 310)">
     <rect x="0" y="0" width="1000" height="220" rx="12" fill="#1f2335" stroke="#292e42"/>
-    <text x="25" y="30" fill="#7dcfff" font-size="14" font-weight="700">2. Atomic Backend Intake Pipeline: ReceiveLPR()</text>
+    <text x="25" y="30" fill="#7dcfff" font-size="14" font-weight="700">2. What ReceiveLPR() Does</text>
 
     <!-- Flow Steps -->
     <g transform="translate(30, 55)">
       <!-- Step 1 -->
       <rect x="0" y="0" width="200" height="110" rx="8" fill="#16161e" stroke="#7aa2f7"/>
       <text x="15" y="25" fill="#7aa2f7" font-size="12" font-weight="700">1. Mobile Scanner</text>
-      <text x="15" y="45" fill="#c0caf5" font-size="11">Single barcode scan</text>
-      <text x="15" y="65" fill="#c0caf5" font-size="11">submits LPR string to</text>
-      <text x="15" y="85" fill="#787c99" font-size="10" font-family="monospace">POST /receiving/lpr</text>
+      <text x="15" y="45" fill="#c0caf5" font-size="11">Scans one barcode</text>
+      <text x="15" y="65" fill="#c0caf5" font-size="11">and sends it to</text>
+      <text x="15" y="85" fill="#787c99" font-size="10" font-family="monospace">.../receive_lpr</text>
 
       <!-- Arrow -->
       <path d="M 210 55 L 240 55" stroke="#7dcfff" stroke-width="2" marker-end="url(#arrowCyan)"/>
 
       <!-- Step 2 -->
       <rect x="250" y="0" width="220" height="110" rx="8" fill="#16161e" stroke="#bb9af7"/>
-      <text x="15" y="25" fill="#bb9af7" font-size="12" font-weight="700" transform="translate(250, 0)">2. Manifest Lookup</text>
-      <text x="15" y="45" fill="#c0caf5" font-size="11" transform="translate(250, 0)">Database checks open PO</text>
-      <text x="15" y="65" fill="#c0caf5" font-size="11" transform="translate(250, 0)">resolving 200 line units</text>
-      <text x="15" y="85" fill="#787c99" font-size="10" font-family="monospace" transform="translate(250, 0)">SELECT items FROM po...</text>
+      <text x="15" y="25" fill="#bb9af7" font-size="12" font-weight="700" transform="translate(250, 0)">2. Match the LPR</text>
+      <text x="15" y="45" fill="#c0caf5" font-size="11" transform="translate(250, 0)">Finds the LPR on the PO</text>
+      <text x="15" y="65" fill="#c0caf5" font-size="11" transform="translate(250, 0)">and the lines it holds</text>
+      <text x="15" y="85" fill="#787c99" font-size="10" font-family="monospace" transform="translate(250, 0)">SELECT ... lpr_barcode = $2</text>
 
       <!-- Arrow -->
       <path d="M 480 55 L 510 55" stroke="#7dcfff" stroke-width="2" marker-end="url(#arrowCyan)"/>
@@ -91,8 +91,8 @@
       <!-- Step 3 -->
       <rect x="520" y="0" width="220" height="110" rx="8" fill="#16161e" stroke="#9ece6a"/>
       <text x="15" y="25" fill="#9ece6a" font-size="12" font-weight="700" transform="translate(520, 0)">3. Atomic DB Write</text>
-      <text x="15" y="45" fill="#c0caf5" font-size="11" transform="translate(520, 0)">Increments new_qty buckets</text>
-      <text x="15" y="65" fill="#c0caf5" font-size="11" transform="translate(520, 0)">Updates PO lines to received</text>
+      <text x="15" y="45" fill="#c0caf5" font-size="11" transform="translate(520, 0)">Adds to new_qty</text>
+      <text x="15" y="65" fill="#c0caf5" font-size="11" transform="translate(520, 0)">Adds to PO qty_received</text>
       <text x="15" y="85" fill="#787c99" font-size="10" font-family="monospace" transform="translate(520, 0)">Writes inventory_tx entry</text>
 
       <!-- Arrow -->
@@ -101,11 +101,11 @@
       <!-- Step 4 -->
       <rect x="790" y="0" width="150" height="110" rx="8" fill="#16161e" stroke="#ff9e64"/>
       <text x="15" y="25" fill="#ff9e64" font-size="12" font-weight="700" transform="translate(790, 0)">4. Cache Purge</text>
-      <text x="15" y="45" fill="#c0caf5" font-size="11" transform="translate(790, 0)">Redis keys flushed</text>
-      <text x="15" y="65" fill="#c0caf5" font-size="11" transform="translate(790, 0)">Instantly sellable</text>
-      <text x="15" y="85" fill="#9ece6a" font-size="10" font-family="monospace" transform="translate(790, 0)">Latency ≈ 15ms (local)</text>
+      <text x="15" y="45" fill="#c0caf5" font-size="11" transform="translate(790, 0)">Store cache keys cleared</text>
+      <text x="15" y="65" fill="#c0caf5" font-size="11" transform="translate(790, 0)">Next read is fresh</text>
+      <text x="15" y="85" fill="#9ece6a" font-size="9.5" font-family="monospace" transform="translate(790, 0)">SCAN + DEL by pattern</text>
     </g>
 
-    <text x="35" y="195" fill="#9ece6a" font-size="11">✓ Result: Pallet of 200 items checked in under 1 second without scanning individual items, with zero phantom inventory.</text>
+    <text x="35" y="195" fill="#9ece6a" font-size="11">✓ Result: a whole carton is received with one scan, and either every line is received or none is.</text>
   </g>
 </svg>

@@ -24,8 +24,8 @@
   <!-- Title Header -->
   <g transform="translate(50, 60)">
     <rect x="0" y="-12" width="12" height="24" rx="3" fill="#bb9af7"/>
-    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Cache Stampede Protection: Go Singleflight Architecture</text>
-    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">Deduplicating Concurrent Cache Misses &amp; Protecting PostgreSQL Connection Pools</text>
+    <text x="24" y="6" fill="#c0caf5" font-size="20" font-weight="700">Cache Stampede Protection with Go singleflight</text>
+    <text x="24" y="26" fill="#787c99" font-size="12" font-family="monospace">Collapsing concurrent cache misses into one database query</text>
   </g>
 
   <!-- Left: Without Singleflight (Failure Pattern) -->
@@ -41,7 +41,7 @@
     <!-- Expired Redis Key -->
     <rect x="20" y="165" width="120" height="60" rx="8" fill="#16161e" stroke="#f7768e"/>
     <text x="80" y="195" fill="#f7768e" font-size="11" font-weight="700" text-anchor="middle">Redis Miss</text>
-    <text x="80" y="210" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">TTL Expired (0ms)</text>
+    <text x="80" y="210" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">TTL just expired</text>
 
     <!-- Stampede Lines -->
     <line x1="80" y1="125" x2="80" y2="165" stroke="#f7768e" stroke-width="2"/>
@@ -53,16 +53,16 @@
     <!-- Overwhelmed PostgreSQL -->
     <rect x="340" y="145" width="120" height="100" rx="8" fill="#16161e" stroke="#f7768e" stroke-width="2"/>
     <text x="400" y="175" fill="#f7768e" font-size="12" font-weight="700" text-anchor="middle">PostgreSQL</text>
-    <text x="400" y="195" fill="#f7768e" font-size="10" font-weight="700" text-anchor="middle">100% POOL LOCK</text>
+    <text x="400" y="195" fill="#f7768e" font-size="10" font-weight="700" text-anchor="middle">POOL SATURATED</text>
     <text x="400" y="215" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Connection Spike</text>
-    <text x="400" y="230" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Latency: &gt; 3,200ms</text>
+    <text x="400" y="230" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Slow responses</text>
 
     <!-- Failure Summary Box -->
     <rect x="20" y="270" width="440" height="120" rx="8" fill="#16161e" stroke="#f7768e" stroke-opacity="0.3"/>
     <text x="35" y="295" fill="#f7768e" font-size="12" font-weight="700">The Problem:</text>
     <text x="35" y="315" fill="#c0caf5" font-size="11.5">When a popular product cache key expires during rush hour,</text>
-    <text x="35" y="335" fill="#c0caf5" font-size="11.5">every mobile barcode scan bypasses the cache simultaneously.</text>
-    <text x="35" y="355" fill="#c0caf5" font-size="11.5">PostgreSQL pgx/v5 connection pool exhausts, freezing scanners.</text>
+    <text x="35" y="335" fill="#c0caf5" font-size="11.5">every scan misses the cache at once and goes to the database.</text>
+    <text x="35" y="355" fill="#c0caf5" font-size="11.5">The connection pool fills up and scans slow down.</text>
   </g>
 
   <!-- Right: With Singleflight (Radius Engine) -->
@@ -89,14 +89,14 @@
     <!-- Protected PostgreSQL -->
     <rect x="365" y="150" width="105" height="90" rx="8" fill="#16161e" stroke="#9ece6a"/>
     <text x="417" y="180" fill="#9ece6a" font-size="12" font-weight="700" text-anchor="middle">PostgreSQL</text>
-    <text x="417" y="200" fill="#7dcfff" font-size="10" font-weight="700" text-anchor="middle">1 Conn Used</text>
-    <text x="417" y="220" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Latency: 1.8ms</text>
+    <text x="417" y="200" fill="#7dcfff" font-size="10" font-weight="700" text-anchor="middle">1 Query</text>
+    <text x="417" y="220" fill="#787c99" font-size="9" font-family="monospace" text-anchor="middle">Result shared</text>
 
     <!-- Success Summary Box -->
     <rect x="20" y="270" width="450" height="120" rx="8" fill="#16161e" stroke="#9ece6a" stroke-opacity="0.3"/>
     <text x="35" y="295" fill="#9ece6a" font-size="12" font-weight="700">The Radius Solution:</text>
     <text x="35" y="315" fill="#c0caf5" font-size="11.5">The first request executes the query; 499 concurrent requests</text>
-    <text x="35" y="335" fill="#c0caf5" font-size="11.5">wait for the channel and share the identical result in memory.</text>
-    <text x="35" y="355" fill="#9ece6a" font-size="11.5">PostgreSQL pool usage stays flat. Zero database spikes.</text>
+    <text x="35" y="335" fill="#c0caf5" font-size="11.5">wait for it and share the same result.</text>
+    <text x="35" y="355" fill="#9ece6a" font-size="11.5">The database sees one query instead of 500.</text>
   </g>
 </svg>
