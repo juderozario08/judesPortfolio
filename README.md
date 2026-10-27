@@ -1,10 +1,6 @@
 # Jude Rozario | Software Engineer Portfolio
 
-A sleek, responsive, and highly animated personal portfolio built for modern web performance and aesthetics. The design is heavily inspired by the **Tokyo Night** color palette and **Hyprland / Arch Linux** tiling window manager aesthetics, featuring custom terminal-style window bars, animated gradient borders, and reactive background geometry.
-
-## 🚀 Live Demo
-
-[View Live Site](https://juderozario08.github.io/judesPortfolio/) *(Replace with actual Netlify/GitHub pages link if custom domain is used)*
+My portfolio and blog, built with React 19, TypeScript and Tailwind CSS. The design is inspired by the **Tokyo Night** color palette and my **Arch Linux + Hyprland** setup, with terminal-style windows and animated gradient borders. The blog includes interactive diagrams of the systems I've built.
 
 ## 🛠️ Tech Stack
 
@@ -12,21 +8,20 @@ A sleek, responsive, and highly animated personal portfolio built for modern web
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **Animations:** [Framer Motion](https://www.framer.com/motion/)
-- **Icons:** [React Icons](https://react-icons.github.io/react-icons/) (Simple Icons, FontAwesome, etc.)
+- **Syntax Highlighting:** [Prism.js](https://prismjs.com/)
+- **Icons:** [Lucide](https://lucide.dev/) & [React Icons](https://react-icons.github.io/react-icons/)
 - **Typography:** [Fira Code](https://github.com/tonsky/FiraCode) (monospace) & [Outfit](https://fonts.google.com/specimen/Outfit) (sans-serif)
-- **Deployment:** Netlify / GitHub Pages
 
 ## ✨ Key Features
 
-- **Tokyo Night Theme:** A beautiful, dark, neon-accented color palette offering a premium developer aesthetic.
-- **Hyprland Aesthetics:** Custom rotating conic gradient borders and snappy, high-stiffness spring animations that mimic the feel of an Arch Linux tiling window manager.
-- **Terminal UI Components:** Cards and sections designed to look like native terminal windows (Mac/Linux window controls, `user@archlinux:~` prompts).
-- **Procedural Background Geometry:** A custom React hook that procedurally generates floating wireframe geometries (Tesseracts, Pyramids, Hexagons, etc.) on every page load.
-- **Responsive Layout:** fully optimized for mobile, tablet, and desktop viewing.
+- **Tokyo Night Theme:** A dark, neon-accented color palette.
+- **Hyprland Aesthetics:** Rotating conic gradient borders and snappy spring animations that mimic a tiling window manager.
+- **Terminal UI Components:** Cards and sections styled as terminal windows with window controls and `user@archlinux:~` prompts.
+- **Engineering Blog:** In-depth posts with syntax-highlighted code, callouts, tradeoff cards and a table of contents (docked sidebar on desktop, drawer on mobile).
+- **Interactive Diagrams:** System architecture and ER diagrams with drag-to-pan, zoom and fit-to-screen, on both mouse and touch.
+- **Responsive Layout:** Works on mobile, tablet and desktop.
 
 ## 💻 Running Locally
-
-To run this project locally on your machine:
 
 1. **Clone the repository:**
    ```bash
@@ -51,4 +46,10 @@ To run this project locally on your machine:
 
 ## 📝 Data Structure
 
-All personal information, project details, skills, and work experience are centralized in the `src/data/resume.ts` file. To update the portfolio content, simply edit the objects in that file and the UI will automatically populate.
+Content lives in typed data files under `src/data/`, separate from the UI:
+
+- `resume.ts`: personal info, skills, experience and projects
+- `blogs.ts`: blog posts and their sections
+- `radiusSchema.ts` / `radiusSystemArchitecture.ts`: data for the Radius post's ER and architecture diagrams
+
+Edit these files and the UI updates automatically.
