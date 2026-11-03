@@ -245,8 +245,8 @@ export const BlogPostPage = ({
       <div
         className={`mx-auto px-6 pt-12 sm:pt-16 ${
           hasToc
-            ? 'max-w-6xl lg:grid lg:grid-cols-[15rem_minmax(0,48rem)] lg:gap-14 lg:justify-center'
-            : 'max-w-3xl'
+            ? 'max-w-6xl lg:grid lg:grid-cols-[15rem_minmax(0,48rem)] lg:gap-14 lg:justify-center 3xl:max-w-[86rem] 3xl:grid-cols-[18rem_minmax(0,60rem)] 3xl:gap-20'
+            : 'max-w-3xl 3xl:max-w-[63rem]'
         }`}
       >
         {hasToc && (
@@ -265,12 +265,12 @@ export const BlogPostPage = ({
           <div className="space-y-14">
             {post.sections.map((section, idx) => (
               <section key={idx} id={section.id} className="space-y-5 scroll-mt-20">
-                <h2 className="flex items-start gap-3 text-2xl font-semibold text-tokyo-fg leading-snug">
+                <h2 className="flex items-start gap-3 text-2xl 3xl:text-[1.75rem] font-semibold text-tokyo-fg leading-snug">
                   <span className={`mt-1 w-1.5 h-6 rounded-full shrink-0 ${partBarClass(section.id, idx)}`} aria-hidden />
                   {section.title}
                 </h2>
 
-                <div className="space-y-4 text-tokyo-fg/90 leading-relaxed text-[17px] break-words">
+                <div className="space-y-4 text-tokyo-fg/90 leading-relaxed text-[17px] 3xl:text-[19px] break-words">
                   {section.content.map((p, pIdx) => renderParagraphContent(p, pIdx))}
                 </div>
 
@@ -284,7 +284,7 @@ export const BlogPostPage = ({
                       <img
                         src={section.image.src}
                         alt={section.image.alt}
-                        className="w-full h-auto rounded-lg border border-tokyo-border object-contain max-h-[520px] mx-auto"
+                        className="w-full h-auto rounded-lg border border-tokyo-border object-contain max-h-[520px] 3xl:max-h-[680px] mx-auto"
                         loading="lazy"
                       />
                     </a>

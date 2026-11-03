@@ -31,6 +31,6 @@ export const BlogPostHero = ({ post }: BlogPostHeroProps) => (
       </dl>
     )}
 
-    <p className="text-tokyo-fg/90 leading-relaxed">{post.heroSummary}</p>
+    <p className="text-tokyo-fg/90 leading-relaxed 3xl:text-[19px]">{post.heroSummary}</p>
   </header>
 );

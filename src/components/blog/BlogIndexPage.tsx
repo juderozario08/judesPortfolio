@@ -10,7 +10,7 @@ export const BlogIndexPage = ({ onNavigateHome, onSelectPost }: BlogIndexPagePro
   <div className="min-h-screen bg-tokyo-base text-tokyo-fg pb-24">
     <BlogTopBar onNavigateHome={onNavigateHome} />
 
-    <main className="max-w-3xl mx-auto px-6 pt-16">
+    <main className="max-w-3xl 3xl:max-w-[63rem] mx-auto px-6 pt-16">
       <h1 className="text-4xl font-bold tracking-tight mb-3">Blog</h1>
       <p className="text-lg text-tokyo-muted leading-relaxed mb-12">
         Notes on how I built my projects: the design decisions, what went wrong, and what I'd change.

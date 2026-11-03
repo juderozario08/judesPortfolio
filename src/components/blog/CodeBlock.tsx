@@ -49,7 +49,7 @@ export const CodeBlock = ({ fileName, language, code, explanation }: CodeBlockPr
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      <pre className="p-4 overflow-x-auto font-mono text-[13px] leading-relaxed text-tokyo-fg bg-[#13141c]">
+      <pre className="p-4 overflow-x-auto font-mono text-[13px] 3xl:text-[15px] leading-relaxed text-tokyo-fg bg-[#13141c]">
         <code className={`language-${language}`} dangerouslySetInnerHTML={{ __html: highlightedCode }} />
       </pre>
       {explanation && (
