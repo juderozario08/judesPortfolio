@@ -55,9 +55,9 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "radius-system-architecture",
     projectId: "radius",
-    projectTitle: "Radius - Cross-Platform Mobile App",
-    title: "Architecting Radius: Building a Scalable Retail Operations Engine from Scratch",
-    subtitle: "A step-by-step story of how I built a multi-store retail system in Go and React Native, starting with a clean foundation and turning it into a reliable, real-time operating system for store employees.",
+    projectTitle: "Radius",
+    title: "Building Radius: A Multi-Store Retail System in Go and React Native",
+    subtitle: "How I built a retail inventory system for store employees, from the first layers of the Go backend to live updates across every device in a store.",
     date: "September 2026",
     readTime: "45 min read",
     tags: ["Go", "System Design", "PostgreSQL", "Clean Architecture", "WebSockets", "Redis", "React Native"],
@@ -74,7 +74,7 @@ export const blogPosts: BlogPost[] = [
         partNumber: 1,
         title: "System Architecture: 3-Tier Monolith & Top-Level Design",
         status: "published",
-        description: "How dividing code into three strict tiers (transport handlers, business services, and data repositories) keeps mobile scanners and cash registers rock-solid."
+        description: "How dividing code into three strict tiers (transport handlers, business services, and data repositories) keeps the code that mobile scanners and cash registers depend on easy to test."
       },
       {
         id: "part-1-interfaces",
@@ -158,7 +158,7 @@ export const blogPosts: BlogPost[] = [
         partNumber: 5,
         title: "Routine Store Audits, Concurrency Locking & Shift Handovers",
         status: "published",
-        description: "Preventing audit race conditions with automatic concurrency locks, tracking real-time dollar shrinkage, and seamlessly handing in-progress counts between shifts."
+        description: "Preventing audit race conditions with automatic concurrency locks, tracking real-time dollar shrinkage, and handing in-progress counts over between shifts."
       },
       {
         id: "part-5-concurrency",
@@ -517,7 +517,7 @@ type StoreRepository interface {
         content: [
           "A multi-store retail operating system lives and dies by its database. When inventory levels drop on the sales floor, online customers reserve pickup orders, and managers audit inventory from their phones, the database must enforce strict data integrity without creating query bottlenecks.",
           "Rather than using an unstructured NoSQL store or hiding critical schema operations behind an unoptimized ORM, I modeled Radius around a strictly relational schema across 45 versioned UP/DOWN migrations in PostgreSQL. Below is the interactive Entity-Relationship (ER) Explorer and Canvas Diagram mapping every core domain of the platform.",
-          "• Multi-Store Partitioning: Every operational table is scoped by `store_id`, creating rock-solid data boundaries between retail branches while allowing head office and regional managers to run unified enterprise rollups.",
+          "• Multi-Store Partitioning: Every operational table is scoped by `store_id`, keeping each branch's data separate while allowing head office and regional managers to run unified enterprise rollups.",
           "• 11 Sub-Inventory Status Buckets: Retail stock is never just 'in stock' or 'out of stock'. The `mims_inventory` schema divides units into 11 distinct buckets (`new_qty`, `open_box_qty`, `demo_qty`, `bopis_qty`, `rtv_qty`, `quarantine_qty`, etc.) so online pickup allocations or broken units are never accidentally sold to in-store customers.",
           "• Standardized 9-Digit Warehouse Shelving: Backroom inventory is indexed through `mims_locations` using standardized aisle coordinates (AA-BB-SS-PPP). This enables the replenishment engine to build aisle-by-aisle routes that minimize walking time during restocking runs.",
           "• Trigram Text Search & Composite Covering Indexes: Migrations 42 and 43 introduced the PostgreSQL `pg_trgm` extension and GIN indexes on product name, SKU and description, alongside a covering index on inventory lookups. Measured with `EXPLAIN ANALYZE` on 10,000 products, a wildcard search dropped from about 20ms (sequential scan) to about 1ms (bitmap index scan).",
@@ -654,7 +654,7 @@ if len(slowClients) > 0 {
     }
     h.stateMu.Unlock()
 }`,
-          explanation: "The select statement with a default block ensures the server never pauses for a sluggish phone. If a device cannot receive messages because it has zero signal, the server safely removes it from the broadcast list so the rest of the store stays lightning-fast."
+          explanation: "The select statement with a default block ensures the server never pauses for a sluggish phone. If a device cannot receive messages because it has zero signal, the server safely removes it from the broadcast list so the rest of the store keeps getting updates."
         }
       },
       {
@@ -929,7 +929,7 @@ if count.CountedBy == nil && employee.Role != models.RoleAdmin {
           choice: "Atomic Redis Hashes for Collaborative Floor Scanning",
           alternatives: ["Serialized JSON Array Overwrites", "Direct Persistent SQL Inserts for Every Scan Event", "Local-Only On-Phone Scan Storage"],
           why: "Redis Hashes provide atomic, field-level writes and sub-millisecond deduplication across multiple mobile devices operating simultaneously without overwriting colleague scans.",
-          tradeoff: "Requires maintaining dual persistence paths in the service layer, but provides a rock-solid, race-free collaborative experience on the sales floor."
+          tradeoff: "Requires maintaining dual persistence paths in the service layer, but means two associates on the sales floor can't race each other."
         }
       },
       {
@@ -1100,7 +1100,7 @@ func (s *OnlineOrderService) StartBOPISAutoCancelWorker(ctx context.Context, int
           "A common hazard in high-concurrency retail systems is the cache stampede (or thundering herd problem). When the cache for a high-traffic category or popular product expires, dozens of mobile scanners might request that same item within a fraction of a second. If every request blindly queries the database simultaneously, PostgreSQL experiences sudden CPU spikes.",
           "To eliminate this risk, I integrated Go's `golang.org/x/sync/singleflight` package across product, category, and inventory domain services. When a cache miss occurs, `singleflight.Group` ensures that only one goroutine executes the database query. All other concurrent requests wait for that single query to finish and share the identical result.",
           "In addition, I introduced jittered TTLs (adding a random extra of up to 10% to expiration times) so records cached at the same moment never expire simultaneously.",
-          "Radius also adheres to a fail-open resilience principle: if Redis ever encounters a connection error or goes offline, domain services catch the error, log a warning, and seamlessly fall back to PostgreSQL so store operations continue without disruption."
+          "Radius also adheres to a fail-open resilience principle: if Redis ever encounters a connection error or goes offline, domain services catch the error, log a warning, and fall back to PostgreSQL so store operations continue without disruption."
         ],
         image: {
           src: "/assets/images/radius-singleflight-stampede.svg",
@@ -1206,7 +1206,7 @@ if (cachePolicy === "swr") {
           "In a multi-store retail chain, each store branch is an autonomous operational tenant. When employees are scanning barcodes, fulfilling online pickup orders, or counting shelves in Toronto, they must never see or accidentally modify inventory, cycle counts, or purchase orders belonging to Ottawa or Mississauga.",
           "At the same time, regional managers and head office administrators need a unified operational view. They need the ability to switch between retail locations from a single mobile handheld without logging out and back in every time they visit a different store.",
           "To enforce strict tenant boundaries without creating duplicate codebases, Radius scopes every operational database query by `store_id`. For non-admin roles (`SALES`, `SERVICE`, `MANAGER`), the store ID is strictly extracted from the employee's authenticated session context. Cross-store data leaks are impossible at the database query level.",
-          "Crucially, physical stores are not just static rows in a database table. They represent active floor labor, pending customer pickup orders, and trucks at the loading dock. To protect ongoing store operations, Radius implements an active operations safety guard (`StoreOperationSummary`). Before a manager can close, mothball, or deactivate a store branch, the system queries live operational metrics:",
+          "Physical stores are not just static rows in a database table. They represent active floor labor, pending customer pickup orders, and trucks at the loading dock. To protect ongoing store operations, Radius implements an active operations safety guard (`StoreOperationSummary`). Before a manager can close, mothball, or deactivate a store branch, the system queries live operational metrics:",
           "• Active Online Orders: Checks `active_orders_count` to ensure no BOPIS pickup orders are waiting to be picked or claimed by customers.",
           "• In-Progress Audits: Checks `active_counts_count` to prevent deactivating a store while floor staff are midway through a concurrency-locked cycle count.",
           "• Pending Freight: Checks `pending_pos_count` to guarantee no inbound purchase orders or delivery manifests are open at the loading bay.",
@@ -1489,7 +1489,7 @@ type ReviewAdjustmentRequest struct {
           "Because merchandise is transported across public roads by third-party couriers, inventory shrinkage and damaged cartons can happen in transit. To balance speed with security, Radius provides two distinct receiving modes:",
           "• Manual Scan Verification (`ReceiveTransfer`): The receiving associate scans each product barcode individually to verify that all sent units arrived safely without transit loss.",
           "• One-Tap Quick Receive (`QuickReceiveTransfer`): For low-shrink merchandise packed in tamper-evident sealed totes, associates can intake the entire transfer in one tap.",
-          "Crucially, the backend enforces a security override: if the dispatching store manager flagged `ManualCheckRequired = true` (e.g. for high-shrink electronics, open-box items, or suspicious seal breaks), `QuickReceiveTransfer` strictly refuses execution with `ErrValidation: this transfer requires manual check`. The associate is forced to open the box and scan every unit individually, preventing shrinkage from being swept under the rug."
+          "The backend also enforces an override: if the dispatching store manager flagged `ManualCheckRequired = true` (e.g. for high-shrink electronics, open-box items, or suspicious seal breaks), `QuickReceiveTransfer` strictly refuses execution with `ErrValidation: this transfer requires manual check`. The associate is forced to open the box and scan every unit individually, preventing shrinkage from being swept under the rug."
         ],
         codeSnippet: {
           language: "go",
@@ -1818,7 +1818,7 @@ func (r *AuditRepo) LogInventoryTransaction(ctx context.Context, tx *sql.Tx, ent
           "• High-Performance Multi-Tier Caching: Negative caching, Go singleflight stampede suppression, and mobile Stale-While-Revalidate (SWR) screen loads.",
           "• Enterprise Multi-Store Logistics: Dynamic branch switching with cache partitioning, 9-digit warehouse coordinates (Aisle-Bay-Shelf-Position), 11 inventory sub-buckets, supervisor approval queues, and 20-digit LPR freight receiving.",
           "• Financial Integrity & Immutable Auditing: Fixed-point integer cent arithmetic (`Money int64`), dynamic Canadian provincial tax rules (GST/PST/HST), last-4-only card storage, and transaction-atomic audit ledger logging.",
-          "Modern software development often pushes teams toward over-complicated microservice meshes and bloated libraries. Building Radius proved that by choosing simplicity, relational database guarantees, and clear software architecture, a unified system can remain blazingly fast, rock-solid, and a true pleasure for retail associates to use every single day."
+          "Modern software development often pushes teams toward over-complicated microservice meshes and bloated libraries. Building Radius convinced me that a single well-structured service on top of a relational database goes a long way. It stays fast and predictable, and it's much easier to reason about than a pile of microservices."
         ]
       }
     ]
@@ -1826,18 +1826,18 @@ func (r *AuditRepo) LogInventoryTransaction(ctx context.Context, tx *sql.Tx, ent
   {
     slug: "blip-text-editor-piece-table",
     projectId: "blip",
-    projectTitle: "Blip - Production-Grade Text Editor",
+    projectTitle: "Blip",
     title: "Designing a Fast Text Editor in C++: Handling Big Files Without Lag",
-    subtitle: "What building a lightweight desktop text editor in C++ taught me about computer memory, screen rendering, and lightning-fast undo and redo.",
+    subtitle: "What building a lightweight desktop text editor in C++ taught me about computer memory, screen rendering, and fast undo and redo.",
     date: "August 2026",
     readTime: "7 min read",
     tags: ["C++", "Data Structures", "SDL2", "Systems Programming", "Memory Management"],
     heroSummary: "A simple look at why standard text programs slow down when opening large files, how a smart data structure called a Piece Table lets you insert text instantly without copying huge chunks of memory, and how to build unlimited undo and redo without eating up RAM.",
     metrics: [
-      { label: "Typing Speed", value: "Instant (O(1))" },
-      { label: "Memory Usage", value: "Near-Zero Copy" },
-      { label: "Undo History", value: "Unlimited" },
-      { label: "Frame Rate", value: "60 FPS Smooth" }
+      { label: "Text buffer", value: "Piece table" },
+      { label: "Insert / delete", value: "O(1) amortized" },
+      { label: "Stack", value: "C++, SDL2, CMake" },
+      { label: "Fonts", value: "Fontconfig, CoreText" }
     ],
     sections: [
       {
@@ -1850,7 +1850,7 @@ func (r *AuditRepo) LogInventoryTransaction(ctx context.Context, tx *sql.Tx, ent
         tradeoff: {
           choice: "Two-Buffer Piece Table",
           alternatives: ["One Giant String", "Gap Buffer (shifting text around a cursor gap)", "Rope (a tree of small strings)"],
-          why: "It lets large files open instantly without copying megabytes of memory, and makes undo and redo effortless.",
+          why: "It lets large files open instantly without copying megabytes of memory, and makes undo and redo cheap.",
           tradeoff: "Finding the exact line and column on screen takes a tiny bit of math compared to counting characters in a single string."
         }
       },
@@ -1866,9 +1866,9 @@ func (r *AuditRepo) LogInventoryTransaction(ctx context.Context, tx *sql.Tx, ent
   {
     slug: "creditguardai-credit-default-prediction",
     projectId: "creditguardai",
-    projectTitle: "CreditGuard AI: Credit Default Prediction",
-    title: "Building an End-to-End Credit Default Prediction Engine",
-    subtitle: "From raw data ingestion to GPU-accelerated PyTorch models and threshold optimization, here is how I built a robust ML pipeline to predict credit card defaults.",
+    projectTitle: "CreditGuard AI",
+    title: "Predicting Credit Card Defaults with Classical ML and PyTorch",
+    subtitle: "From raw data ingestion to GPU-accelerated PyTorch models and threshold optimization, here is how I built the pipeline and what actually moved the numbers.",
     date: "September 2026",
     readTime: "10 min read",
     tags: ["Machine Learning", "PyTorch", "Scikit-Learn", "Data Science", "Python"],

@@ -1,36 +1,36 @@
 import { motion } from 'framer-motion';
 
+export type SectionAccent = 'purple' | 'blue' | 'cyan' | 'green' | 'orange';
+
+const BAR: Record<SectionAccent, string> = {
+  purple: 'bg-tokyo-purple',
+  blue: 'bg-tokyo-blue',
+  cyan: 'bg-tokyo-cyan',
+  green: 'bg-tokyo-green',
+  orange: 'bg-tokyo-orange',
+};
+
 type SectionProps = {
   id: string;
-  number: string;
   title: string;
+  accent?: SectionAccent;
   children: React.ReactNode;
-  color?: "tokyo-blue" | "tokyo-purple" | "tokyo-cyan";
 };
 
-export const Section = ({ id, number, title, children, color = "tokyo-blue" }: SectionProps) => {
-  const colorClass = {
-    "tokyo-blue": "text-tokyo-blue",
-    "tokyo-purple": "text-tokyo-purple",
-    "tokyo-cyan": "text-tokyo-cyan",
-  }[color];
-
-  return (
-    <section id={id} className="py-24 px-6 md:px-20 min-h-[80vh] bg-transparent flex flex-col justify-center relative">
-      <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.98 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-5xl mx-auto w-full"
-      >
-        <h2 className={`text-3xl md:text-4xl font-bold ${colorClass} mb-16 flex items-center gap-4`}>
-          <span className="text-tokyo-muted text-xl font-mono font-normal">{number}.</span>
-          {title}
-          <div className="h-px bg-tokyo-surface flex-grow ml-4 border-t border-tokyo-surface/50"></div>
-        </h2>
-        {children}
-      </motion.div>
-    </section>
-  );
-};
+export const Section = ({ id, title, accent = 'purple', children }: SectionProps) => (
+  <section id={id} className="px-6 py-14 md:py-20">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="max-w-5xl mx-auto"
+    >
+      <h2 className="flex items-center gap-3 text-3xl font-bold text-tokyo-fg mb-10">
+        <span className={`w-1.5 h-8 rounded-full ${BAR[accent]}`} aria-hidden />
+        {title}
+      </h2>
+      {children}
+    </motion.div>
+  </section>
+);

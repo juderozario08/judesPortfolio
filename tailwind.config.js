@@ -22,30 +22,18 @@ export default {
         'tokyo-blue': '#7aa2f7',
         'tokyo-purple': '#bb9af7',
         'tokyo-cyan': '#7dcfff',
+        'tokyo-green': '#9ece6a',
+        'tokyo-red': '#f7768e',
+        'tokyo-yellow': '#e0af68',
+        'tokyo-comment': '#565f89',
+        'tokyo-orange': '#ff9e64',
+        'tokyo-card': '#1f2335',
+        'tokyo-border': '#2f3549',
       },
       fontFamily: {
         sans: ['Outfit', 'sans-serif'],
         mono: ['"Fira Code"', 'monospace'],
       },
-      animation: {
-        'blob': 'blob 10s infinite',
-      },
-      keyframes: {
-        blob: {
-          '0%': {
-            transform: 'translate(0px, 0px) scale(1)',
-          },
-          '33%': {
-            transform: 'translate(30px, -50px) scale(1.1)',
-          },
-          '66%': {
-            transform: 'translate(-20px, 20px) scale(0.9)',
-          },
-          '100%': {
-            transform: 'translate(0px, 0px) scale(1)',
-          },
-        }
-      }
     },
   },
   plugins: [],

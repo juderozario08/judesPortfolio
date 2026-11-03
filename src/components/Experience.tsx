@@ -1,53 +1,34 @@
 import { experience, leadership } from '../data/resume';
 import { Section } from './ui/Section';
-import { Card } from './ui/Card';
+import { Entry } from './ui/Entry';
 
-const ExperienceItem = ({ item, index }: { item: typeof experience[0] | typeof leadership[0], index: number }) => (
-  <Card index={index} hoverColor="tokyo-purple" className="mb-6">
-    <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-2">
-      <div>
-        <h3 className="text-2xl font-bold text-tokyo-fg group-hover:text-tokyo-purple transition-colors">{item.title}</h3>
-        <h4 className="text-lg text-tokyo-blue font-mono">{'company' in item ? item.company : item.organization}</h4>
-      </div>
-      <span className="text-tokyo-muted font-mono text-sm shrink-0 bg-tokyo-base px-3 py-1 rounded-full border border-tokyo-surface">
-        {item.date}
-      </span>
-    </div>
-    <ul className="list-none space-y-3 text-tokyo-muted leading-relaxed">
-      {item.bullets.map((bullet: string, i: number) => {
-        const colonMatch = bullet.match(/^([^:]+):\s+(.+)$/);
-        return (
-          <li key={i} className="flex items-start gap-3">
-            <span className="text-tokyo-purple font-mono font-bold mt-1 text-sm shrink-0">{">"}</span>
-            <span>
-              {colonMatch ? (
-                <>
-                  <strong className="text-tokyo-fg font-bold font-sans">
-                    {colonMatch[1]}:
-                  </strong>{' '}
-                  {colonMatch[2]}
-                </>
-              ) : (
-                bullet
-              )}
-            </span>
-          </li>
-        );
-      })}
-    </ul>
-  </Card>
+export const Experience = () => (
+  <Section id="experience" title="Experience" accent="blue">
+    {experience.map((item, i) => (
+      <Entry
+        key={item.title + item.company}
+        title={item.title}
+        org={item.company}
+        date={item.date}
+        bullets={item.bullets}
+        tech={item.tech}
+        isLast={i === experience.length - 1}
+      />
+    ))}
+  </Section>
 );
 
-const Experience = () => {
-  return (
-    <Section id="experience" number="02" title="Experience" color="tokyo-purple">
-      <div>
-        {experience.map((item, index) => (
-          <ExperienceItem key={index} item={item} index={index} />
-        ))}
-      </div>
-    </Section>
-  );
-};
-
-export default Experience;
+export const Leadership = () => (
+  <Section id="leadership" title="Leadership" accent="orange">
+    {leadership.map((item, i) => (
+      <Entry
+        key={item.title + item.organization}
+        title={item.title}
+        org={item.organization}
+        date={item.date}
+        bullets={item.bullets}
+        isLast={i === leadership.length - 1}
+      />
+    ))}
+  </Section>
+);

@@ -1,132 +1,74 @@
-import { projects } from '../data/resume';
+import { ArrowRight } from 'lucide-react';
+import { projects, type Accent } from '../data/resume';
 import { Section } from './ui/Section';
-import { Card } from './ui/Card';
+import { TechChip } from './ui/TechChip';
 import { GithubIcon } from './ui/icons';
-import { FolderGit2, BookOpen } from 'lucide-react';
-
-type ProjectItem = (typeof projects)[number];
-
-interface ProjectCardProps {
-  project: ProjectItem;
-  index: number;
-  onOpenBlog?: (slug: string) => void;
-}
-
-const ProjectCard = ({ project, index, onOpenBlog }: ProjectCardProps) => {
-  const blogSlug = 'blogSlug' in project ? project.blogSlug : undefined;
-  const hasBlog = Boolean(blogSlug);
-
-  return (
-    <Card index={index} hoverColor={project.color as "tokyo-blue" | "tokyo-purple" | "tokyo-cyan"}>
-      <div className="flex justify-between items-center mb-6">
-        <FolderGit2 size={36} className={`text-${project.color} group-hover:text-tokyo-cyan transition-colors`} />
-        
-        <div className="flex items-center gap-3">
-          {hasBlog && blogSlug && (
-            <button
-              onClick={() => onOpenBlog?.(blogSlug)}
-              className="px-3 py-1.5 rounded-lg border border-tokyo-purple/50 bg-tokyo-purple/15 text-tokyo-purple hover:bg-tokyo-purple hover:text-tokyo-base text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-sm hover:shadow-[0_0_12px_rgba(187,154,247,0.4)]"
-              title="Read technical blog post"
-            >
-              <BookOpen size={14} />
-              <span>Read Blog</span>
-            </button>
-          )}
-
-          <a 
-            href={project.github} 
-            className="text-tokyo-muted hover:text-tokyo-cyan transition-colors p-1" 
-            target="_blank" 
-            rel="noreferrer"
-            title="View GitHub Repository"
-          >
-            <GithubIcon size={22} />
-          </a>
-        </div>
-      </div>
-      
-      <h3 
-        onClick={() => hasBlog && blogSlug && onOpenBlog?.(blogSlug)}
-        className={`text-2xl font-bold text-tokyo-fg mb-3 group-hover:text-${project.color} transition-colors ${
-          hasBlog ? "cursor-pointer hover:underline" : ""
-        }`}
-      >
-        {project.title}
-      </h3>
-
-      <p className="text-tokyo-muted mb-6 flex-grow leading-relaxed">
-        {project.description}
-      </p>
-      
-      <ul className="list-none space-y-2 text-sm text-tokyo-muted mb-6">
-        {project.bullets.map((bullet, i) => {
-          const colonMatch = bullet.match(/^([^:]+):\s+(.+)$/);
-          return (
-            <li key={i} className="flex items-start gap-2 leading-relaxed">
-              <span className={`text-${project.color} font-mono font-bold mt-0.5 shrink-0`}>{">"}</span>
-              <span>
-                {colonMatch ? (
-                  <>
-                    <strong className="text-tokyo-fg font-bold font-sans">
-                      {colonMatch[1]}:
-                    </strong>{' '}
-                    {colonMatch[2]}
-                  </>
-                ) : (
-                  bullet
-                )}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-
-      {/* Prominent Blog Action Banner */}
-      {hasBlog && blogSlug && (
-        <div className="mb-4">
-          <button
-            onClick={() => onOpenBlog?.(blogSlug)}
-            className="w-full py-2.5 px-4 rounded-xl border border-tokyo-purple/40 bg-tokyo-purple/10 hover:bg-tokyo-purple/20 text-tokyo-purple hover:text-tokyo-cyan font-mono text-xs font-bold transition-all flex items-center justify-between group/btn shadow-inner"
-          >
-            <span className="flex items-center gap-2">
-              <BookOpen size={15} />
-              <span>Read Technical Deep-Dive & Tradeoffs</span>
-            </span>
-            <span className="text-tokyo-cyan group-hover/btn:translate-x-1 transition-transform">→</span>
-          </button>
-        </div>
-      )}
-      
-      <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-tokyo-surface/50">
-        {project.tech.map((tech: string, i: number) => (
-          <span key={i} className="text-xs font-mono text-tokyo-muted bg-tokyo-base px-2 py-1 rounded-md border border-tokyo-surface">
-            {tech}
-          </span>
-        ))}
-      </div>
-    </Card>
-  );
-};
 
 interface ProjectsProps {
-  onOpenBlog?: (slug: string) => void;
+  onOpenBlog: (slug: string) => void;
 }
 
-const Projects = ({ onOpenBlog }: ProjectsProps) => {
-  return (
-    <Section id="projects" number="03" title="Technical Projects" color="tokyo-blue">
-      <div className="grid grid-cols-1 gap-8">
-        {projects.map((project, i) => (
-          <ProjectCard 
-            key={i} 
-            project={project} 
-            index={i} 
-            onOpenBlog={onOpenBlog}
-          />
-        ))}
-      </div>
-    </Section>
-  );
+const ACCENT: Record<Accent, { text: string; hoverText: string }> = {
+  purple: { text: 'text-tokyo-purple', hoverText: 'hover:text-tokyo-purple' },
+  cyan: { text: 'text-tokyo-cyan', hoverText: 'hover:text-tokyo-cyan' },
+  green: { text: 'text-tokyo-green', hoverText: 'hover:text-tokyo-green' },
 };
+
+const Projects = ({ onOpenBlog }: ProjectsProps) => (
+  <Section id="projects" title="Projects" accent="cyan">
+    <div className="space-y-6">
+      {projects.map((project) => {
+        const accent = ACCENT[project.accent];
+        return (
+          <article
+            key={project.id}
+            className="rounded-xl border border-tokyo-border bg-tokyo-card p-6 sm:p-7 grid grid-cols-1 md:grid-cols-[16rem_1fr] gap-6 md:gap-8 transition-colors hover:border-tokyo-comment"
+          >
+            <img
+              src={project.image}
+              alt=""
+              loading="lazy"
+              className="w-full aspect-video object-cover rounded-lg border border-tokyo-border"
+            />
+
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-start justify-between gap-4 mb-2">
+                <h3 className="text-2xl font-semibold text-tokyo-fg">{project.title}</h3>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`text-tokyo-muted ${accent.hoverText} transition-colors p-1 -m-1 shrink-0`}
+                  aria-label={`${project.title} source on GitHub`}
+                  title="Source on GitHub"
+                >
+                  <GithubIcon size={22} />
+                </a>
+              </div>
+              <p className="text-tokyo-muted leading-relaxed mb-4">{project.description}</p>
+              <ul className="list-disc pl-5 space-y-2 text-sm text-tokyo-muted leading-relaxed marker:text-tokyo-comment mb-5">
+                {project.bullets.map((bullet, i) => (
+                  <li key={i}>{bullet}</li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap gap-2 mb-5">
+                {project.tech.map((tech) => (
+                  <TechChip key={tech} name={tech} accent={project.accent} />
+                ))}
+              </div>
+              <button
+                onClick={() => onOpenBlog(project.blogSlug)}
+                className={`group self-start inline-flex items-center gap-1.5 text-sm font-medium ${accent.text} hover:text-tokyo-fg transition-colors`}
+              >
+                Read the write-up
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+              </button>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </Section>
+);
 
 export default Projects;

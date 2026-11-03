@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { blogPosts, type BlogPost } from '../../data/blogs';
 import { fastScrollTo } from '../../utils/scrollTo';
 import { CodeBlock } from './CodeBlock';
@@ -9,8 +8,7 @@ import { ERDiagram } from './ERDiagram';
 import { SystemArchitectureDiagram } from './SystemArchitectureDiagram';
 import { BlogPostHeader } from './BlogPostHeader';
 import { BlogPostHero } from './BlogPostHero';
-import { InlineTableOfContents } from './InlineTableOfContents';
-import { DockedSidebar } from './DockedSidebar';
+import { TocSidebar } from './TocSidebar';
 import { MobileTocDrawer } from './MobileTocDrawer';
 import type { TocGroup } from './TocNavList';
 
@@ -21,6 +19,20 @@ interface BlogPostPageProps {
   onSelectPost: (slug: string) => void;
 }
 
+// Heading bar colors cycle by top-level part, like the section accents on the homepage.
+const PART_BARS = [
+  'bg-tokyo-purple glow-purple',
+  'bg-tokyo-blue glow-blue',
+  'bg-tokyo-cyan glow-cyan',
+  'bg-tokyo-green glow-green',
+  'bg-tokyo-orange glow-orange',
+];
+
+const partBarClass = (sectionId: string | undefined, index: number) => {
+  const part = Number(sectionId?.match(/^part-(\d+)/)?.[1] ?? index + 1);
+  return PART_BARS[(part - 1) % PART_BARS.length];
+};
+
 const renderFormattedText = (text: string) => {
   // Parses inline code `code` and markdown bold **bold**
   const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
@@ -29,7 +41,7 @@ const renderFormattedText = (text: string) => {
       return (
         <code
           key={i}
-          className="font-mono text-tokyo-cyan bg-tokyo-surface/80 px-1.5 py-0.5 rounded text-[0.88em] border border-tokyo-surface/70"
+          className="font-mono text-tokyo-cyan bg-tokyo-surface px-1.5 py-0.5 rounded text-[0.88em]"
         >
           {part.slice(1, -1)}
         </code>
@@ -37,7 +49,7 @@ const renderFormattedText = (text: string) => {
     }
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
-        <strong key={i} className="font-bold text-tokyo-fg font-sans">
+        <strong key={i} className="font-semibold text-tokyo-fg">
           {part.slice(2, -2)}
         </strong>
       );
@@ -64,15 +76,11 @@ const renderParagraphContent = (p: string, pIdx: number) => {
       const topic = colonMatch[1];
       const description = colonMatch[2];
       return (
-        <div key={pIdx} className="flex items-start gap-2.5 pl-1.5 sm:pl-3 my-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-tokyo-purple mt-2 sm:mt-2.5 shrink-0 shadow-sm" />
-          <div className="flex-1 leading-relaxed">
-            <strong className="font-bold text-tokyo-fg font-sans">
-              {renderFormattedText(topic)}:
-            </strong>{' '}
-            <span className="text-tokyo-fg/90">
-              {renderFormattedText(description)}
-            </span>
+        <div key={pIdx} className="flex items-start gap-3 pl-1">
+          <span className="text-tokyo-comment select-none">•</span>
+          <div className="flex-1">
+            <span className="font-semibold text-tokyo-fg">{renderFormattedText(topic)}:</span>{' '}
+            {renderFormattedText(description)}
           </div>
         </div>
       );
@@ -80,11 +88,9 @@ const renderParagraphContent = (p: string, pIdx: number) => {
 
     // Bullet without colon
     return (
-      <div key={pIdx} className="flex items-start gap-2.5 pl-1.5 sm:pl-3 my-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-tokyo-purple mt-2 sm:mt-2.5 shrink-0 shadow-sm" />
-        <div className="flex-1 leading-relaxed text-tokyo-fg/90">
-          {renderFormattedText(rawContent)}
-        </div>
+      <div key={pIdx} className="flex items-start gap-3 pl-1">
+        <span className="text-tokyo-comment select-none">•</span>
+        <div className="flex-1">{renderFormattedText(rawContent)}</div>
       </div>
     );
   }
@@ -100,11 +106,9 @@ export const BlogPostPage = ({
   onSelectPost,
 }: BlogPostPageProps) => {
   const [activeSectionId, setActiveSectionId] = useState<string>('');
-  const [isDocked, setIsDocked] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [readProgress, setReadProgress] = useState(0);
 
-  const inlineTocRef = useRef<HTMLDivElement>(null);
   const isProgrammaticScrollRef = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -113,9 +117,9 @@ export const BlogPostPage = ({
   );
 
   // Group table of contents into main chapters and subheaders
-  const { publishedGroups, upcomingGroups, groupedToc } = useMemo(() => {
+  const { upcomingGroups, groupedToc } = useMemo(() => {
     if (!post?.tableOfContents) {
-      return { publishedGroups: [], upcomingGroups: [], groupedToc: [] };
+      return { upcomingGroups: [], groupedToc: [] };
     }
 
     const groups: TocGroup[] = [];
@@ -135,10 +139,9 @@ export const BlogPostPage = ({
       }
     }
 
-    const published = groups.filter((g) => g.main.status === 'published');
     const upcoming = groups.filter((g) => g.main.status === 'upcoming');
 
-    return { publishedGroups: published, upcomingGroups: upcoming, groupedToc: groups };
+    return { upcomingGroups: upcoming, groupedToc: groups };
   }, [post?.tableOfContents]);
 
   useEffect(() => {
@@ -153,7 +156,7 @@ export const BlogPostPage = ({
     };
   }, []);
 
-  // Scroll listener for reading progress, docking state, and active section
+  // Scroll listener for reading progress and the active section
   useEffect(() => {
     if (!post) return;
 
@@ -165,15 +168,7 @@ export const BlogPostPage = ({
         setReadProgress(progress);
       }
 
-      // 2. Docking state: when the user scrolls past the inline Table of Contents
-      if (inlineTocRef.current) {
-        const rect = inlineTocRef.current.getBoundingClientRect();
-        setIsDocked(rect.bottom < 80);
-      } else {
-        setIsDocked(window.scrollY > 450);
-      }
-
-      // 3. Active section scroll spy (suppressed during programmatic smooth scroll to avoid jitter)
+      // 2. Active section scroll spy (suppressed during programmatic smooth scroll to avoid jitter)
       if (isProgrammaticScrollRef.current) return;
 
       const headerOffset = 180;
@@ -224,13 +219,10 @@ export const BlogPostPage = ({
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-tokyo-base text-tokyo-fg flex flex-col items-center justify-center space-y-4">
-        <p className="font-mono text-base text-tokyo-muted">Article not found.</p>
-        <button
-          onClick={onNavigateBlogIndex}
-          className="px-4 py-2 rounded-xl bg-tokyo-purple text-tokyo-base font-mono text-xs font-bold"
-        >
-          Return to Blog Directory
+      <div className="min-h-screen bg-tokyo-base text-tokyo-fg flex flex-col items-center justify-center gap-3">
+        <p className="text-tokyo-muted">Post not found.</p>
+        <button onClick={onNavigateBlogIndex} className="text-tokyo-purple hover:underline">
+          ← Back to all posts
         </button>
       </div>
     );
@@ -242,167 +234,105 @@ export const BlogPostPage = ({
   const hasToc = Boolean(post.tableOfContents && post.tableOfContents.length > 0);
 
   return (
-    <div className="relative min-h-screen w-full bg-tokyo-base text-tokyo-fg selection:bg-tokyo-purple selection:text-tokyo-base pb-32">
-      {/* Background Grid */}
-      <div className="fixed inset-0 pointer-events-none opacity-50 z-0" />
-
-      {/* Top Sticky Header */}
+    <div className="min-h-screen bg-tokyo-base text-tokyo-fg pb-32">
       <BlogPostHeader
-        slug={post.slug}
+        wide={hasToc}
         readProgress={readProgress}
         onNavigateHome={onNavigateHome}
         onNavigateBlogIndex={onNavigateBlogIndex}
       />
 
-      {/* Floating Animated Left-Side Rail (≥2xl screens) */}
-      <DockedSidebar
-        isDocked={isDocked}
-        hasToc={hasToc}
-        publishedCount={post.tableOfContents?.filter((t) => t.status === 'published').length || 0}
-        totalCount={post.tableOfContents?.length || 0}
-        readProgress={readProgress}
-        groupedToc={groupedToc}
-        activeSectionId={activeSectionId}
-        onScrollToSection={scrollToSection}
-        onScrollToTop={() => fastScrollTo(0, 240)}
-      />
-
-      {/* Main Full-Page Centered Article Container */}
-      <main className="relative z-10 max-w-3xl 2xl:max-w-4xl mx-auto px-3 sm:px-6 md:px-8 pt-6 sm:pt-10 md:pt-14 space-y-8 sm:space-y-12">
-        {/* Hero Meta, Title, Metrics, Summary */}
-        <BlogPostHero post={post} />
-
-        {/* Inline Table of Contents & Roadmap */}
+      <div
+        className={`mx-auto px-6 pt-12 sm:pt-16 ${
+          hasToc
+            ? 'max-w-6xl lg:grid lg:grid-cols-[15rem_minmax(0,48rem)] lg:gap-14 lg:justify-center'
+            : 'max-w-3xl'
+        }`}
+      >
         {hasToc && (
-          <InlineTableOfContents
-            inlineTocRef={inlineTocRef}
-            totalMilestones={post.tableOfContents!.length}
-            publishedCount={publishedGroups.length}
-            publishedGroups={publishedGroups}
+          <TocSidebar
+            groupedToc={groupedToc}
             upcomingGroups={upcomingGroups}
+            activeSectionId={activeSectionId}
             onScrollToSection={scrollToSection}
+            onScrollToTop={() => fastScrollTo(0, 240)}
           />
         )}
 
-        {/* Article Sections */}
-        <div className="space-y-12 sm:space-y-16 pt-2">
-          {post.sections.map((section, idx) => (
-            <article key={idx} id={section.id} className="space-y-4 sm:space-y-5 scroll-mt-20 sm:scroll-mt-24">
-              {(section.badge || section.partNumber) && (
-                <div className="flex items-center gap-2">
-                  {section.badge && (
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-tokyo-cyan bg-tokyo-cyan/10 border border-tokyo-cyan/30 px-2 sm:px-2.5 py-0.5 rounded">
-                      {section.badge}
-                    </span>
-                  )}
-                  {section.partNumber && (
-                    <span className="text-[10px] font-mono text-tokyo-muted">
-                      PART {section.partNumber}
-                    </span>
-                  )}
+        <main className="min-w-0 space-y-12">
+          <BlogPostHero post={post} />
+
+          <div className="space-y-14">
+            {post.sections.map((section, idx) => (
+              <section key={idx} id={section.id} className="space-y-5 scroll-mt-20">
+                <h2 className="flex items-start gap-3 text-2xl font-semibold text-tokyo-fg leading-snug">
+                  <span className={`mt-1 w-1.5 h-6 rounded-full shrink-0 ${partBarClass(section.id, idx)}`} aria-hidden />
+                  {section.title}
+                </h2>
+
+                <div className="space-y-4 text-tokyo-fg/90 leading-relaxed text-[17px] break-words">
+                  {section.content.map((p, pIdx) => renderParagraphContent(p, pIdx))}
                 </div>
+
+                {section.id === 'part-1-system-architecture' || section.id === 'part-1-layered-architecture' ? (
+                  <SystemArchitectureDiagram />
+                ) : section.id === 'part-2-database-design' ? (
+                  <ERDiagram />
+                ) : section.image ? (
+                  <figure className="my-6">
+                    <a href={section.image.src} target="_blank" rel="noreferrer">
+                      <img
+                        src={section.image.src}
+                        alt={section.image.alt}
+                        className="w-full h-auto rounded-lg border border-tokyo-border object-contain max-h-[520px] mx-auto"
+                        loading="lazy"
+                      />
+                    </a>
+                    {section.image.caption && (
+                      <figcaption className="text-center text-sm text-tokyo-comment mt-3">{section.image.caption}</figcaption>
+                    )}
+                  </figure>
+                ) : null}
+
+                {section.tradeoff && <TradeoffCard tradeoff={section.tradeoff} />}
+
+                {section.codeSnippet && (
+                  <CodeBlock
+                    fileName={section.codeSnippet.fileName}
+                    language={section.codeSnippet.language}
+                    code={section.codeSnippet.code}
+                    explanation={section.codeSnippet.explanation}
+                  />
+                )}
+
+                {section.callout && <CalloutBox callout={section.callout} />}
+              </section>
+            ))}
+          </div>
+
+          <nav className="pt-8 border-t border-tokyo-border grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
+            <div>
+              {prevPost && (
+                <button onClick={() => onSelectPost(prevPost.slug)} className="text-left group">
+                  <span className="block text-tokyo-comment mb-1">← Previous</span>
+                  <span className="text-tokyo-fg group-hover:text-tokyo-purple transition-colors">{prevPost.title}</span>
+                </button>
               )}
-
-              <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-tokyo-fg font-sans border-b border-tokyo-surface/60 pb-2.5 sm:pb-3 break-words">
-                {section.title}
-              </h2>
-
-              <div className="space-y-3.5 sm:space-y-4 text-tokyo-fg/90 leading-relaxed font-sans text-xs sm:text-base break-words">
-                {section.content.map((p, pIdx) => renderParagraphContent(p, pIdx))}
-              </div>
-
-              {section.id === 'part-1-system-architecture' || section.id === 'part-1-layered-architecture' ? (
-                <SystemArchitectureDiagram />
-              ) : section.id === 'part-2-database-design' ? (
-                <ERDiagram />
-              ) : section.image ? (
-                <div className="my-5 sm:my-6 rounded-xl overflow-hidden border border-tokyo-surface/80 bg-tokyo-base/60 p-2 sm:p-4 shadow-sm">
-                  <div className="relative group cursor-pointer overflow-hidden rounded-lg">
-                    <img
-                      src={section.image.src}
-                      alt={section.image.alt}
-                      className="w-full h-auto rounded-lg object-contain max-h-[520px] mx-auto transition-transform duration-300 group-hover:scale-[1.01]"
-                      onClick={() => window.open(section.image?.src, '_blank')}
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-tokyo-purple/0 group-hover:bg-tokyo-purple/5 transition-colors pointer-events-none" />
-                  </div>
-                  {section.image.caption && (
-                    <p className="text-center text-[11px] sm:text-xs font-mono text-tokyo-muted mt-2 sm:mt-3 flex items-center justify-center gap-1.5 flex-wrap">
-                      <span className="w-1.5 h-1.5 rounded-full bg-tokyo-purple inline-block shrink-0" />
-                      <span>{section.image.caption}</span>
-                      <span
-                        className="text-[10px] text-tokyo-purple/80 underline cursor-pointer"
-                        onClick={() => window.open(section.image?.src, '_blank')}
-                      >
-                        (view full size)
-                      </span>
-                    </p>
-                  )}
-                </div>
-              ) : null}
-
-              {section.tradeoff && <TradeoffCard tradeoff={section.tradeoff} />}
-
-              {section.codeSnippet && (
-                <CodeBlock
-                  fileName={section.codeSnippet.fileName}
-                  language={section.codeSnippet.language}
-                  code={section.codeSnippet.code}
-                  explanation={section.codeSnippet.explanation}
-                />
+            </div>
+            <div className="sm:text-right">
+              {nextPost && (
+                <button onClick={() => onSelectPost(nextPost.slug)} className="sm:text-right group">
+                  <span className="block text-tokyo-comment mb-1">Next →</span>
+                  <span className="text-tokyo-fg group-hover:text-tokyo-purple transition-colors">{nextPost.title}</span>
+                </button>
               )}
+            </div>
+          </nav>
+        </main>
+      </div>
 
-              {section.callout && <CalloutBox callout={section.callout} />}
-            </article>
-          ))}
-        </div>
-
-        {/* Footer Navigation */}
-        <div className="pt-8 sm:pt-12 border-t border-tokyo-surface flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
-          {prevPost ? (
-            <button
-              onClick={() => onSelectPost(prevPost.slug)}
-              className="flex items-center gap-2 text-xs font-mono text-tokyo-muted hover:text-tokyo-cyan transition-colors w-full sm:w-auto text-left p-2 rounded-lg hover:bg-tokyo-surface/40"
-            >
-              <ArrowLeft size={15} className="shrink-0" />
-              <div className="min-w-0">
-                <span className="opacity-60 block text-[10px]">Previous Case Study</span>
-                <span className="text-tokyo-fg font-semibold line-clamp-1 break-words">{prevPost.title}</span>
-              </div>
-            </button>
-          ) : (
-            <div />
-          )}
-
-          <button
-            onClick={onNavigateBlogIndex}
-            className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-tokyo-surface hover:bg-tokyo-base border border-tokyo-surface hover:border-tokyo-purple text-xs font-mono font-bold text-tokyo-fg hover:text-tokyo-purple transition-all shadow-sm text-center shrink-0"
-          >
-            All Case Studies
-          </button>
-
-          {nextPost ? (
-            <button
-              onClick={() => onSelectPost(nextPost.slug)}
-              className="flex items-center gap-2 text-xs font-mono text-tokyo-muted hover:text-tokyo-cyan transition-colors w-full sm:w-auto text-right justify-end p-2 rounded-lg hover:bg-tokyo-surface/40"
-            >
-              <div className="min-w-0">
-                <span className="opacity-60 block text-[10px]">Next Case Study</span>
-                <span className="text-tokyo-fg font-semibold line-clamp-1 break-words">{nextPost.title}</span>
-              </div>
-              <ArrowRight size={15} className="shrink-0" />
-            </button>
-          ) : (
-            <div />
-          )}
-        </div>
-      </main>
-
-      {/* Floating Left Drawer for Mobile (<2xl screens) */}
       <MobileTocDrawer
         hasToc={hasToc}
-        isDocked={isDocked}
         isOpen={mobileDrawerOpen}
         setIsOpen={setMobileDrawerOpen}
         groupedToc={groupedToc}

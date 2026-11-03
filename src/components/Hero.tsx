@@ -1,59 +1,53 @@
 import { motion } from 'framer-motion';
+import { Mail } from 'lucide-react';
 import { personalInfo } from '../data/resume';
-import { scrollToSection } from '../utils/scrollTo';
+import { GithubIcon, LinkedinIcon } from './ui/icons';
 
-const Hero = () => {
-  return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-tokyo-base">
-      <div className="z-10 text-center px-4 flex flex-col items-center mt-20">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-8 relative rounded-full p-1"
-        >
-          <img
-            src="/assets/images/jude.jpg"
-            alt="Jude Rozario"
-            className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-tokyo-surface shadow-sm"
-          />
-        </motion.div>
+const links = [
+  { label: 'Email', href: `mailto:${personalInfo.email}`, icon: <Mail size={16} />, external: false },
+  { label: 'GitHub', href: personalInfo.github, icon: <GithubIcon size={16} />, external: true },
+  { label: 'LinkedIn', href: personalInfo.linkedin, icon: <LinkedinIcon size={16} />, external: true },
+];
 
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 text-tokyo-fg tracking-tight">
-          Hi, I'm {personalInfo.name.split(' ')[0]}.
-        </h1>
+const Hero = () => (
+  <section id="home" className="px-6 pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="relative max-w-5xl mx-auto flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-12"
+    >
+      <div className="max-w-2xl">
+        <p className="text-tokyo-purple font-medium mb-2">Hi, I'm</p>
+        <h1 className="text-5xl md:text-6xl font-bold text-tokyo-fg tracking-tight mb-5">{personalInfo.name}</h1>
+        <p className="text-lg md:text-xl text-tokyo-muted leading-relaxed">{personalInfo.tagline}</p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, ease: "easeOut", duration: 0.6 }}
-          className="text-lg md:text-2xl text-tokyo-muted mb-12 font-mono"
-        >
-          {personalInfo.program.split(' ')[1]} {personalInfo.program.split(' ')[2]}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, ease: "easeOut", duration: 0.6 }}
-        >
-          <motion.a
-            href="#projects"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection('projects', { updateHash: true });
-            }}
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ ease: "easeOut", duration: 0.2 }}
-            className="inline-block px-10 py-4 rounded-md border border-tokyo-cyan text-tokyo-cyan font-bold tracking-widest uppercase text-sm hover:bg-tokyo-cyan/10 cursor-pointer transition-colors"
-          >
-            View My Work
-          </motion.a>
-        </motion.div>
+        <div className="flex flex-wrap gap-3 mt-8">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noreferrer' : undefined}
+              className="inline-flex items-center gap-2 rounded-lg border border-tokyo-border bg-tokyo-card px-4 py-2 text-sm text-tokyo-fg hover:border-tokyo-purple hover:text-tokyo-purple hover:-translate-y-0.5 transition-all"
+            >
+              {link.icon}
+              {link.label}
+            </a>
+          ))}
+        </div>
       </div>
-    </section>
-  );
-};
+
+      <div className="relative shrink-0 self-start md:self-auto">
+        <div className="absolute -inset-6 rounded-full bg-tokyo-purple/25 blur-3xl" aria-hidden />
+        <img
+          src="/assets/images/jude.jpg"
+          alt={personalInfo.name}
+          className="relative w-36 h-36 md:w-56 md:h-56 rounded-full object-cover border-4 border-tokyo-purple/40"
+        />
+      </div>
+    </motion.div>
+  </section>
+);
 
 export default Hero;

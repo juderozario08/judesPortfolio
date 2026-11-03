@@ -1,92 +1,101 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { personalInfo } from '../data/resume';
 import { scrollToSection } from '../utils/scrollTo';
-import { BookOpen } from 'lucide-react';
 
 interface NavbarProps {
-  onOpenBlog?: (slug: string) => void;
+  onOpenBlog: () => void;
 }
 
 const navItems = [
-  { id: 'home', label: 'Home', num: '1' },
-  { id: 'about', label: 'About', num: '2' },
-  { id: 'experience', label: 'Experience', num: '3' },
-  { id: 'projects', label: 'Projects', num: '4' },
-  { id: 'skills', label: 'Skills', num: '5' },
-  { id: 'leadership', label: 'Leadership', num: '6' },
+  { id: 'about', label: 'About' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'contact', label: 'Contact' },
 ];
+
+/** Id of the section currently under the navbar, so its link can be highlighted. */
+const useActiveSection = () => {
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const onScroll = () => {
+      let current = '';
+      for (const { id } of navItems) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 120) current = id;
+      }
+      // At the very bottom, the last section may be too short to reach the top.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        current = navItems[navItems.length - 1].id;
+      }
+      setActive(current);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return active;
+};
 
 const Navbar = ({ onOpenBlog }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const active = useActiveSection();
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    closeMenu();
+    setIsOpen(false);
     scrollToSection(targetId, { updateHash: true });
   };
 
-  return (
-    <motion.nav 
-      initial={{ y: -100, x: "-50%" }}
-      animate={{ y: 0, x: "-50%" }}
-      transition={{ ease: "easeOut", duration: 0.5 }}
-      className="fixed top-6 left-1/2 z-40 flex items-center justify-between w-[95%] max-w-6xl px-6 md:px-8 py-4 rounded-full backdrop-blur-md bg-tokyo-base/85 border border-tokyo-surface shadow-sm"
-    >
-      <a
-        href="#home"
-        onClick={(e) => handleNavClick(e, 'home')}
-        className="text-2xl font-bold text-tokyo-purple tracking-tighter cursor-pointer transition-opacity hover:opacity-80 select-none"
-      >
-        {"<Jude />"}
-      </a>
+  const linkClass = (isActive: boolean) =>
+    `transition-colors ${isActive ? 'text-tokyo-purple' : 'text-tokyo-muted hover:text-tokyo-fg'}`;
 
-      {/* Desktop Menu */}
-      <div className="hidden md:flex gap-2 text-base font-mono font-bold">
-        {navItems.map((item) => (
-          <a
-            key={item.id}
-            href={`#${item.id}`}
-            onClick={(e) => handleNavClick(e, item.id)}
-            className="px-4 py-1.5 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all"
-          >
-            <span className="text-tokyo-blue mr-2 opacity-70">{item.num}</span>
-            {item.label}
-          </a>
-        ))}
-      </div>
-
-      <div className="hidden md:flex items-center gap-3">
-        <button
-          onClick={() => onOpenBlog?.('')}
-          className="px-4 py-2 rounded-full border border-tokyo-purple/50 bg-tokyo-purple/10 text-tokyo-purple hover:text-tokyo-base hover:bg-tokyo-purple transition-all text-sm font-mono font-bold flex items-center gap-1.5"
-          title="Read technical project case studies"
+  const links = (
+    <>
+      {navItems.map((item) => (
+        <a
+          key={item.id}
+          href={`#${item.id}`}
+          onClick={(e) => handleNavClick(e, item.id)}
+          className={linkClass(active === item.id)}
         >
-          <BookOpen size={14} />
-          <span>Blog</span>
-        </button>
-
-        <a 
-          href={personalInfo.github} 
-          target="_blank" 
-          rel="noreferrer"
-          className="px-5 py-2 rounded-full border border-tokyo-surface bg-tokyo-surface/50 text-tokyo-muted hover:text-tokyo-base hover:bg-tokyo-cyan hover:border-tokyo-cyan transition-all text-base font-mono font-bold"
-        >
-          GitHub
+          {item.label}
         </a>
-      </div>
+      ))}
+      <button
+        onClick={() => {
+          setIsOpen(false);
+          onOpenBlog();
+        }}
+        className={`${linkClass(false)} text-left`}
+      >
+        Blog
+      </button>
+    </>
+  );
 
-      {/* Mobile Menu Toggle Button */}
-      <div className="md:hidden flex items-center">
-        <button
-          onClick={toggleMenu}
-          className="text-tokyo-fg hover:text-tokyo-cyan focus:outline-none transition-colors p-2"
-          aria-label="Toggle Navigation Menu"
+  return (
+    <nav className="sticky top-0 z-40 bg-tokyo-base/90 backdrop-blur border-b border-tokyo-border">
+      <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <a
+          href="#home"
+          onClick={(e) => handleNavClick(e, 'home')}
+          className="font-bold text-lg text-tokyo-purple hover:opacity-80 transition-opacity"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {personalInfo.name}
+        </a>
+
+        <div className="hidden md:flex items-center gap-7 text-sm">{links}</div>
+
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden text-tokyo-muted hover:text-tokyo-fg p-2 -mr-2"
+          aria-label="Toggle navigation menu"
+          aria-expanded={isOpen}
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {isOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -96,53 +105,10 @@ const Navbar = ({ onOpenBlog }: NavbarProps) => {
         </button>
       </div>
 
-      {/* Mobile Dropdown Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 mt-4 p-4 rounded-2xl bg-tokyo-base/95 backdrop-blur-xl border border-tokyo-surface shadow-md flex flex-col gap-2 md:hidden"
-          >
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className="px-4 py-3 rounded-md text-tokyo-muted hover:bg-tokyo-surface hover:text-tokyo-cyan transition-all font-mono font-bold text-lg"
-              >
-                <span className="text-tokyo-blue mr-3 opacity-70">{item.num}</span>
-                {item.label}
-              </a>
-            ))}
-
-            <button
-              onClick={() => {
-                closeMenu();
-                onOpenBlog?.('');
-              }}
-              className="px-4 py-3 rounded-md text-tokyo-purple hover:bg-tokyo-surface transition-all font-mono font-bold text-lg flex items-center gap-2 text-left"
-            >
-              <BookOpen size={18} />
-              <span>Engineering Blog</span>
-            </button>
-
-            <div className="h-px bg-tokyo-surface my-2 mx-2" />
-            <a 
-              href={personalInfo.github} 
-              target="_blank" 
-              rel="noreferrer"
-              onClick={closeMenu}
-              className="mt-2 mx-2 px-5 py-3 text-center rounded-full border border-tokyo-surface bg-tokyo-surface/50 text-tokyo-muted hover:text-tokyo-base hover:bg-tokyo-cyan hover:border-tokyo-cyan transition-all text-base font-mono font-bold"
-            >
-              GitHub
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+      {isOpen && (
+        <div className="md:hidden border-t border-tokyo-border px-6 py-4 flex flex-col gap-4">{links}</div>
+      )}
+    </nav>
   );
 };
 

@@ -4,15 +4,15 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 3.5rem;
   }
 
   html, body {
     @apply bg-tokyo-base text-tokyo-fg;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
 
   /* Custom Tokyo Night Scrollbar */
@@ -57,58 +57,18 @@
 }
 
 @layer utilities {
-  .bg-grid {
-    background-size: 40px 40px;
-    background-image: 
-      linear-gradient(to right, rgba(65, 72, 104, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(65, 72, 104, 0.1) 1px, transparent 1px);
-    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-  }
-  
-  .neon-text-blue {
-    text-shadow: 0 0 10px rgba(122, 162, 247, 0.5), 0 0 20px rgba(122, 162, 247, 0.3);
-  }
-  .neon-text-purple {
-    text-shadow: 0 0 10px rgba(187, 154, 247, 0.5), 0 0 20px rgba(187, 154, 247, 0.3);
-  }
-  .neon-text-cyan {
-    text-shadow: 0 0 10px rgba(125, 207, 255, 0.5), 0 0 20px rgba(125, 207, 255, 0.3);
-  }
+  /* Soft neon accents, used sparingly on blog posts. */
+  .glow-purple { box-shadow: 0 0 10px rgba(187, 154, 247, 0.55); }
+  .glow-blue   { box-shadow: 0 0 10px rgba(122, 162, 247, 0.55); }
+  .glow-cyan   { box-shadow: 0 0 10px rgba(125, 207, 255, 0.55); }
+  .glow-green  { box-shadow: 0 0 10px rgba(158, 206, 106, 0.5); }
+  .glow-orange { box-shadow: 0 0 10px rgba(255, 158, 100, 0.5); }
+  .glow-red    { box-shadow: 0 0 10px rgba(247, 118, 142, 0.5); }
 
-  /* Hyprland Animated Borders */
-  .hyprland-border {
-    position: relative;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    z-index: 1;
-  }
-  .hyprland-border::before {
-    content: "";
-    position: absolute;
-    inset: -50%;
-    background: conic-gradient(from 0deg, transparent 70%, #bb9af7, #7dcfff, #7aa2f7);
-    z-index: -2;
-    animation: spin 3s linear infinite;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .hyprland-border:hover::before {
-    opacity: 1;
-  }
-  .hyprland-border::after {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    background: #16161e; /* tokyo-surface */
-    border-radius: 0.7rem;
-    z-index: -1;
-  }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  .text-glow-purple { text-shadow: 0 0 14px rgba(187, 154, 247, 0.45); }
+  .text-glow-blue   { text-shadow: 0 0 14px rgba(122, 162, 247, 0.45); }
+  .text-glow-cyan   { text-shadow: 0 0 14px rgba(125, 207, 255, 0.45); }
+  .text-glow-green  { text-shadow: 0 0 14px rgba(158, 206, 106, 0.4); }
 }
 
 /* Tokyo Night Syntax Highlighting for PrismJS */
