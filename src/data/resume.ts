@@ -20,7 +20,23 @@ export const skills = {
   tools: ["Git/GitHub", "Azure", "Neovim"]
 };
 
-export const experience = [
+export const experience: {
+  title: string;
+  company: string;
+  date: string;
+  tech?: string[];
+  bullets?: string[];
+}[] = [
+  {
+    title: "Academic Initiatives and Student Support Developer",
+    company: "Toronto Metropolitan University",
+    date: "Sep 2026 – Present"
+  },
+  {
+    title: "AI-Driven Bookkeeping Automation",
+    company: "Go Fig Bookz (via Riipen)",
+    date: "Oct 2026 – Present"
+  },
   {
     title: "Software Developer",
     company: "Population Health Research Institute (PHRI)",

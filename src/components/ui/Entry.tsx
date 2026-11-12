@@ -4,7 +4,7 @@ type EntryProps = {
   title: string;
   org: string;
   date: string;
-  bullets: string[];
+  bullets?: string[];
   tech?: string[];
   isLast: boolean;
 };
@@ -27,12 +27,14 @@ export const Entry = ({ title, org, date, bullets, tech, isLast }: EntryProps) =
           <h3 className="text-lg font-semibold text-tokyo-fg">{title}</h3>
           <span className="text-sm text-tokyo-comment shrink-0">{date}</span>
         </div>
-        <p className="text-sm text-tokyo-blue mb-4">{org}</p>
-        <ul className="list-disc pl-5 space-y-2 text-tokyo-muted leading-relaxed marker:text-tokyo-comment">
-          {bullets.map((bullet, i) => (
-            <li key={i}>{bullet}</li>
-          ))}
-        </ul>
+        <p className="text-sm text-tokyo-blue">{org}</p>
+        {bullets && bullets.length > 0 && (
+          <ul className="list-disc pl-5 mt-4 space-y-2 text-tokyo-muted leading-relaxed marker:text-tokyo-comment">
+            {bullets.map((bullet, i) => (
+              <li key={i}>{bullet}</li>
+            ))}
+          </ul>
+        )}
         {tech && tech.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-5 pt-4 border-t border-tokyo-border">
             {tech.map((t) => (
