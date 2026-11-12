@@ -118,20 +118,20 @@ export const projects: {
 
 export const leadership = [
   {
+    title: "VP Finance",
+    organization: "Practical Applications of Computer Science (PACS)",
+    date: "Sep 2023 – Dec 2023",
+    bullets: [
+      "Managed the budget for a student-run club so we could fund computer science workshops and community events."
+    ]
+  },
+  {
     title: "Lead Programmer",
     organization: "Neil McNeil Robotics",
     date: "Oct 2018 – 2022",
     bullets: [
       "Wrote control loops for the robot's sensors and vision system to navigate it around the competition field.",
       "Presented our designs and results to judges at competitions, and mentored younger students on hardware and software."
-    ]
-  },
-  {
-    title: "VP Finance",
-    organization: "Practical Applications of Computer Science (PACS)",
-    date: "Sep 2023 – Dec 2023",
-    bullets: [
-      "Managed the budget for a student-run club so we could fund computer science workshops and community events."
     ]
   }
 ];
