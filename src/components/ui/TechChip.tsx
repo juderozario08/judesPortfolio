@@ -3,6 +3,7 @@ import {
   SiCplusplus, SiC, SiGo, SiRust, SiTypescript, SiPython, SiLinux, SiCmake, SiDotnet, SiGin,
   SiNodedotjs, SiPostgresql, SiRedis, SiMongodb, SiReact, SiTailwindcss, SiBootstrap, SiHtml5,
   SiPytorch, SiScikitlearn, SiPandas, SiGit, SiNeovim, SiJavascript, SiNumpy,
+  SiDjango, SiCelery, SiDocker, SiKotlin, SiAndroid, SiApple,
 } from 'react-icons/si';
 import { FaJava, FaDatabase } from 'react-icons/fa';
 import { TbBrandCSharp, TbPlugConnected, TbSql } from 'react-icons/tb';
@@ -44,6 +45,12 @@ const ICONS: Record<string, IconType> = {
   'Git/GitHub': SiGit,
   Azure: VscAzure,
   Neovim: SiNeovim,
+  Django: SiDjango,
+  Celery: SiCelery,
+  Docker: SiDocker,
+  Kotlin: SiKotlin,
+  Android: SiAndroid,
+  macOS: SiApple,
 };
 
 export type ChipAccent = 'purple' | 'cyan' | 'green' | 'blue';

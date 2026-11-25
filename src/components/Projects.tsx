@@ -12,6 +12,7 @@ const ACCENT: Record<Accent, { text: string; hoverText: string }> = {
   purple: { text: 'text-tokyo-purple', hoverText: 'hover:text-tokyo-purple' },
   cyan: { text: 'text-tokyo-cyan', hoverText: 'hover:text-tokyo-cyan' },
   green: { text: 'text-tokyo-green', hoverText: 'hover:text-tokyo-green' },
+  blue: { text: 'text-tokyo-blue', hoverText: 'hover:text-tokyo-blue' },
 };
 
 const Projects = ({ onOpenBlog }: ProjectsProps) => (
@@ -19,6 +20,8 @@ const Projects = ({ onOpenBlog }: ProjectsProps) => (
     <div className="space-y-6">
       {projects.map((project) => {
         const accent = ACCENT[project.accent];
+        const { blogSlug } = project;
+        const linkClass = `group self-start inline-flex items-center gap-1.5 text-sm font-medium ${accent.text} hover:text-tokyo-fg transition-colors`;
         return (
           <article
             key={project.id}
@@ -46,23 +49,29 @@ const Projects = ({ onOpenBlog }: ProjectsProps) => (
                 </a>
               </div>
               <p className="text-tokyo-muted leading-relaxed mb-4">{project.description}</p>
-              <ul className="list-disc pl-5 space-y-2 text-sm text-tokyo-muted leading-relaxed marker:text-tokyo-comment mb-5">
-                {project.bullets.map((bullet, i) => (
-                  <li key={i}>{bullet}</li>
-                ))}
-              </ul>
+              {project.bullets && (
+                <ul className="list-disc pl-5 space-y-2 text-sm text-tokyo-muted leading-relaxed marker:text-tokyo-comment mb-5">
+                  {project.bullets.map((bullet, i) => (
+                    <li key={i}>{bullet}</li>
+                  ))}
+                </ul>
+              )}
               <div className="flex flex-wrap gap-2 mb-5">
                 {project.tech.map((tech) => (
                   <TechChip key={tech} name={tech} accent={project.accent} />
                 ))}
               </div>
-              <button
-                onClick={() => onOpenBlog(project.blogSlug)}
-                className={`group self-start inline-flex items-center gap-1.5 text-sm font-medium ${accent.text} hover:text-tokyo-fg transition-colors`}
-              >
-                Read the write-up
-                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-              </button>
+              {blogSlug ? (
+                <button onClick={() => onOpenBlog(blogSlug)} className={linkClass}>
+                  Read the write-up
+                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+                </button>
+              ) : (
+                <a href={project.github} target="_blank" rel="noreferrer" className={linkClass}>
+                  View on GitHub
+                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+                </a>
+              )}
             </div>
           </article>
         );

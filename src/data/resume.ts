@@ -52,15 +52,16 @@ export const experience: {
   }
 ];
 
-export type Accent = "purple" | "cyan" | "green";
+export type Accent = "purple" | "cyan" | "green" | "blue";
 
 export const projects: {
   id: string;
-  blogSlug: string;
+  /** Omit for projects without a write-up; the card links to GitHub instead. */
+  blogSlug?: string;
   title: string;
   tech: string[];
   description: string;
-  bullets: string[];
+  bullets?: string[];
   github: string;
   accent: Accent;
   image: string;
@@ -113,6 +114,24 @@ export const projects: {
     github: "https://github.com/juderozario08/CreditGuardAI",
     accent: "green",
     image: "/assets/images/projects/creditguard.jpg"
+  },
+  {
+    id: "faultkeeper",
+    title: "Faultkeeper",
+    tech: ["Python", "Django", "Celery", "PostgreSQL", "Redis", "WebSockets", "React", "TypeScript", "Docker"],
+    description: "A self-hosted error monitoring platform that works with the official Sentry SDKs. It groups duplicate errors into issues, shows them on a live dashboard as they happen, and can use a local LLM to suggest the root cause and a fix.",
+    github: "https://github.com/juderozario08/Faultkeeper",
+    accent: "blue",
+    image: "/assets/images/projects/faultkeeper.jpg"
+  },
+  {
+    id: "stylus-cast",
+    title: "Stylus-Cast",
+    tech: ["C++", "Kotlin", "CMake", "Android", "macOS"],
+    description: "Turns a Samsung phone with an S-Pen into a wireless drawing tablet for macOS, with pressure, tilt and an eraser. An Android app streams pen input over UDP on a direct hotspot, and a C++ server on the Mac smooths out Wi-Fi jitter and passes it on as native tablet events.",
+    github: "https://github.com/juderozario08/stylus-cast",
+    accent: "purple",
+    image: "/assets/images/projects/stylus-cast.jpg"
   }
 ];
 
