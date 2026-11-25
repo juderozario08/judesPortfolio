@@ -49,13 +49,11 @@ const Projects = ({ onOpenBlog }: ProjectsProps) => (
                 </a>
               </div>
               <p className="text-tokyo-muted leading-relaxed mb-4">{project.description}</p>
-              {project.bullets && (
-                <ul className="list-disc pl-5 space-y-2 text-sm text-tokyo-muted leading-relaxed marker:text-tokyo-comment mb-5">
-                  {project.bullets.map((bullet, i) => (
-                    <li key={i}>{bullet}</li>
-                  ))}
-                </ul>
-              )}
+              <ul className="list-disc pl-5 space-y-2 text-sm text-tokyo-muted leading-relaxed marker:text-tokyo-comment mb-5">
+                {project.bullets.map((bullet, i) => (
+                  <li key={i}>{bullet}</li>
+                ))}
+              </ul>
               <div className="flex flex-wrap gap-2 mb-5">
                 {project.tech.map((tech) => (
                   <TechChip key={tech} name={tech} accent={project.accent} />

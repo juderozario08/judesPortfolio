@@ -4,13 +4,14 @@ type EntryProps = {
   title: string;
   org: string;
   date: string;
+  logo?: string;
   bullets?: string[];
   tech?: string[];
   isLast: boolean;
 };
 
 /** One role on the timeline: a year marker on the left, a card on the right. */
-export const Entry = ({ title, org, date, bullets, tech, isLast }: EntryProps) => {
+export const Entry = ({ title, org, date, logo, bullets, tech, isLast }: EntryProps) => {
   const year = date.match(/\d{4}/)?.[0] ?? '';
 
   return (
@@ -23,11 +24,20 @@ export const Entry = ({ title, org, date, bullets, tech, isLast }: EntryProps) =
       </div>
 
       <article className="flex-1 min-w-0 mb-8 rounded-xl border border-tokyo-border bg-tokyo-card p-5 sm:p-6 transition-colors hover:border-tokyo-blue/50">
-        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
-          <h3 className="text-lg font-semibold text-tokyo-fg">{title}</h3>
-          <span className="text-sm text-tokyo-comment shrink-0">{date}</span>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          {logo && (
+            <div className="w-32 h-16 shrink-0 rounded-lg bg-white p-2 flex items-center justify-center">
+              <img src={logo} alt="" loading="lazy" className="w-full h-full object-contain" />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+              <h3 className="text-lg font-semibold text-tokyo-fg">{title}</h3>
+              <span className="text-sm text-tokyo-comment shrink-0">{date}</span>
+            </div>
+            <p className="text-sm text-tokyo-blue">{org}</p>
+          </div>
         </div>
-        <p className="text-sm text-tokyo-blue">{org}</p>
         {bullets && bullets.length > 0 && (
           <ul className="list-disc pl-5 mt-4 space-y-2 text-tokyo-muted leading-relaxed marker:text-tokyo-comment">
             {bullets.map((bullet, i) => (

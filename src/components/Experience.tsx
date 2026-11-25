@@ -10,6 +10,7 @@ export const Experience = () => (
         title={item.title}
         org={item.company}
         date={item.date}
+        logo={item.logo}
         bullets={item.bullets}
         tech={item.tech}
         isLast={i === experience.length - 1}

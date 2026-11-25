@@ -1804,20 +1804,20 @@ func (r *AuditRepo) LogInventoryTransaction(ctx context.Context, tx *sql.Tx, ent
       },
       {
         id: "operations-retrospective",
-        badge: "Architecture Retrospective",
-        title: "Engineering Retrospective: The Complete 14-Pillar Retail Operations Engine",
+        badge: "Retrospective",
+        title: "Looking Back: What I Built and What I Learned",
         content: [
-          "With all 14 operational pillars fully architected, implemented, and tested, Radius stands as a comprehensive retail, logistics, and store management engine built from first principles.",
-          "Every module is backed by production-ready code across the Go backend and React Native Expo SDK 54 frontend:",
-          "• Strict 3-Tier Go Clean Monolith: Explicit manual dependency wiring in `main.go`, context cancellation propagation on dropped Wi-Fi, and clean interface decoupling.",
-          "• PostgreSQL Relational Topology: 45 versioned UP/DOWN schema migrations, composite covering indexes, pg_trgm trigram search, and 70,000+ seeded synthetic records stress-tested under load.",
-          "• High-Speed Resilient WebSockets: Gorilla WebSocket hubs, single-use 30-second handshake tickets, slow-client dead-zone dropped connection protections, and mobile AppState battery savers.",
-          "• IP-Aware Single-Device Security: Token bucket IP rate limiting, SHA-256 refresh token hashing, and IP-aware takeover prompts that stop duplicate handheld logins.",
-          "• Concurrency-Safe Operations: Assignment-locked cycle counts, shift ownership handovers, mutual-exclusion BOPIS order assignment locks, and background expiration goroutines.",
-          "• Closed-Loop Replenishment & Omnichannel: In-Stock For The Customer (IS4TC) empty hole floor scans combined with live POS sales velocity to generate optimal aisle-by-aisle warehouse pick lists.",
-          "• High-Performance Multi-Tier Caching: Negative caching, Go singleflight stampede suppression, and mobile Stale-While-Revalidate (SWR) screen loads.",
-          "• Enterprise Multi-Store Logistics: Dynamic branch switching with cache partitioning, 9-digit warehouse coordinates (Aisle-Bay-Shelf-Position), 11 inventory sub-buckets, supervisor approval queues, and 20-digit LPR freight receiving.",
-          "• Financial Integrity & Immutable Auditing: Fixed-point integer cent arithmetic (`Money int64`), dynamic Canadian provincial tax rules (GST/PST/HST), last-4-only card storage, and transaction-atomic audit ledger logging.",
+          "Radius started as a stock lookup app and grew into something that covers most of what a retail store does in a day, from receiving freight to handing over pickup orders.",
+          "Here is everything that ended up in the Go backend and the React Native (Expo SDK 54) app:",
+          "• A three-layer Go backend: Dependencies are wired by hand in `main.go`, layers talk through interfaces, and queries are canceled when a device drops off Wi-Fi.",
+          "• A PostgreSQL database: 45 versioned UP/DOWN schema migrations, composite covering indexes, pg_trgm trigram search, and 70,000+ seeded synthetic records stress-tested under load.",
+          "• Live updates over WebSockets: Gorilla WebSocket hubs, single-use 30-second handshake tickets, dropping clients that fall too far behind, and saving battery when the app is in the background.",
+          "• One device per login: Token bucket IP rate limiting, SHA-256 refresh token hashing, and IP-aware takeover prompts that stop duplicate handheld logins.",
+          "• Safe concurrent work: Assignment-locked cycle counts, shift ownership handovers, mutual-exclusion BOPIS order assignment locks, and background expiration goroutines.",
+          "• Restocking: In-Stock For The Customer (IS4TC) empty hole floor scans combined with live POS sales velocity to generate aisle-by-aisle warehouse pick lists.",
+          "• Caching at several levels: Negative caching, Go singleflight stampede suppression, and mobile Stale-While-Revalidate (SWR) screen loads.",
+          "• Multi-store logistics: Dynamic branch switching with cache partitioning, 9-digit warehouse coordinates (Aisle-Bay-Shelf-Position), 11 inventory sub-buckets, supervisor approval queues, and 20-digit LPR freight receiving.",
+          "• Exact money and audit trails: Fixed-point integer cent arithmetic (`Money int64`), dynamic Canadian provincial tax rules (GST/PST/HST), last-4-only card storage, and transaction-atomic audit ledger logging.",
           "Modern software development often pushes teams toward over-complicated microservice meshes and bloated libraries. Building Radius convinced me that a single well-structured service on top of a relational database goes a long way. It stays fast and predictable, and it's much easier to reason about than a pile of microservices."
         ]
       }

@@ -24,23 +24,34 @@ export const experience: {
   title: string;
   company: string;
   date: string;
+  logo: string;
   tech?: string[];
   bullets?: string[];
 }[] = [
   {
     title: "Academic Initiatives and Student Support Developer",
     company: "Toronto Metropolitan University",
-    date: "Sep 2026 – Present"
+    date: "Sep 2026 – Present",
+    logo: "/assets/images/logos/tmu.svg"
   },
   {
-    title: "AI-Driven Bookkeeping Automation",
-    company: "Go Fig Bookz (via Riipen)",
-    date: "Oct 2026 – Present"
+    title: "Software Developer, AI Bookkeeping Automation",
+    company: "Go Fig (via Riipen Level UP)",
+    date: "Oct 2026 – Present",
+    logo: "/assets/images/logos/riipen.svg",
+    tech: ["Python", "PyTorch", "ROCm", "TrOCR", "Tesseract", "OpenCV"],
+    bullets: [
+      "Replaced a manual spreadsheet workflow with an offline Python OCR pipeline that turns bank statements, handwritten cheques and receipts into ledger-ready CSVs. It gets through 29 documents and 80 transactions in about 30 seconds instead of 2.5+ hours of data entry, roughly 250x faster.",
+      "Ran Microsoft's TrOCR models locally on an AMD GPU with PyTorch and ROCm to read handwritten cheques, going from 14 to 2.6 seconds per cheque (5x faster). Each amount is checked against its written-out value, so misreads get flagged before they reach the books.",
+      "Got all 54 statement transactions and the totals on all 16 receipts exactly right against hand-checked answers, by reconciling every statement balance and checking line items, 13% HST and totals to the cent.",
+      "Built the matching and duplicate detection. It matched 75% of receipts to bank and credit card records on its own and flagged every duplicate and refund mismatch, so reviewers only check flagged items instead of every row."
+    ]
   },
   {
     title: "Software Developer",
     company: "Population Health Research Institute (PHRI)",
     date: "May 2024 – Apr 2025",
+    logo: "/assets/images/logos/phri.png",
     tech: ["C#", "ASP.NET Core", "Entity Framework", "SQL Server", "JavaScript", "Bootstrap", "Azure"],
     bullets: [
       "Fixed 15+ critical full-stack bugs across the C# ASP.NET Core backend and JavaScript frontend, which cut down support tickets from the medical researchers using the app.",
@@ -61,7 +72,7 @@ export const projects: {
   title: string;
   tech: string[];
   description: string;
-  bullets?: string[];
+  bullets: string[];
   github: string;
   accent: Accent;
   image: string;
@@ -119,7 +130,13 @@ export const projects: {
     id: "faultkeeper",
     title: "Faultkeeper",
     tech: ["Python", "Django", "Celery", "PostgreSQL", "Redis", "WebSockets", "React", "TypeScript", "Docker"],
-    description: "A self-hosted error monitoring platform that works with the official Sentry SDKs. It groups duplicate errors into issues, shows them on a live dashboard as they happen, and can use a local LLM to suggest the root cause and a fix.",
+    description: "A self-hosted error monitoring platform that works with the official Sentry SDKs, so apps can send it their crashes without a custom client.",
+    bullets: [
+      "The backend is Django with Celery workers, on top of PostgreSQL and Redis. It speaks the Sentry envelope protocol, and the ingest endpoint handles DSN key auth, rate limits and size limits.",
+      "Errors are grouped by a fingerprint of their stack trace that ignores line numbers and IDs. In a load test, 5,000 events from 25 different bugs became exactly 25 issues.",
+      "I moved ingest to async Django with native asyncio Redis, which doubled throughput to about 200 events per second.",
+      "The React and TypeScript dashboard updates over WebSockets as errors come in, and a local LLM can suggest the root cause and a fix for any issue."
+    ],
     github: "https://github.com/juderozario08/Faultkeeper",
     accent: "blue",
     image: "/assets/images/projects/faultkeeper.jpg"
@@ -128,7 +145,13 @@ export const projects: {
     id: "stylus-cast",
     title: "Stylus-Cast",
     tech: ["C++", "Kotlin", "CMake", "Android", "macOS"],
-    description: "Turns a Samsung phone with an S-Pen into a wireless drawing tablet for macOS, with pressure, tilt and an eraser. An Android app streams pen input over UDP on a direct hotspot, and a C++ server on the Mac smooths out Wi-Fi jitter and passes it on as native tablet events.",
+    description: "An Android app and a C++ server that turn a Samsung phone with an S-Pen into a wireless drawing tablet for my Mac.",
+    bullets: [
+      "The Android app is Kotlin. It captures every S-Pen sample, ignores palm and finger touches, and sends 16-byte UDP packets from a lock-free ring buffer that doesn't allocate while you draw.",
+      "The phone and Mac talk over the phone's own 5 GHz hotspot, so there's no router in between and it works with no internet.",
+      "Wi-Fi delivers packets unevenly, so the C++ server replays them at the pen's original timing behind a small delay that adapts between 6 and 45 ms. Gaps from lost packets are filled with a curve.",
+      "On the Mac, strokes come through as native tablet events with pressure, tilt, the eraser and the barrel button."
+    ],
     github: "https://github.com/juderozario08/stylus-cast",
     accent: "purple",
     image: "/assets/images/projects/stylus-cast.jpg"

@@ -3,7 +3,7 @@ import {
   SiCplusplus, SiC, SiGo, SiRust, SiTypescript, SiPython, SiLinux, SiCmake, SiDotnet, SiGin,
   SiNodedotjs, SiPostgresql, SiRedis, SiMongodb, SiReact, SiTailwindcss, SiBootstrap, SiHtml5,
   SiPytorch, SiScikitlearn, SiPandas, SiGit, SiNeovim, SiJavascript, SiNumpy,
-  SiDjango, SiCelery, SiDocker, SiKotlin, SiAndroid, SiApple,
+  SiDjango, SiCelery, SiDocker, SiKotlin, SiAndroid, SiApple, SiOpencv,
 } from 'react-icons/si';
 import { FaJava, FaDatabase } from 'react-icons/fa';
 import { TbBrandCSharp, TbPlugConnected, TbSql } from 'react-icons/tb';
@@ -50,6 +50,7 @@ const ICONS: Record<string, IconType> = {
   Docker: SiDocker,
   Kotlin: SiKotlin,
   Android: SiAndroid,
+  OpenCV: SiOpencv,
   macOS: SiApple,
 };
 
