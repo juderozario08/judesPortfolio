@@ -48,12 +48,7 @@ const Projects = ({ onOpenBlog }: ProjectsProps) => (
                   <GithubIcon size={22} />
                 </a>
               </div>
-              <p className="text-tokyo-muted leading-relaxed mb-4">{project.description}</p>
-              <ul className="list-disc pl-5 space-y-2 text-sm text-tokyo-muted leading-relaxed marker:text-tokyo-comment mb-5">
-                {project.bullets.map((bullet, i) => (
-                  <li key={i}>{bullet}</li>
-                ))}
-              </ul>
+              <p className="text-tokyo-muted leading-relaxed mb-5">{project.description}</p>
               <div className="flex flex-wrap gap-2 mb-5">
                 {project.tech.map((tech) => (
                   <TechChip key={tech} name={tech} accent={project.accent} />

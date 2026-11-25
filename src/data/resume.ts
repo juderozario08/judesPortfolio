@@ -77,7 +77,6 @@ export const projects: {
   title: string;
   tech: string[];
   description: string;
-  bullets: string[];
   github: string;
   accent: Accent;
   image: string;
@@ -87,14 +86,7 @@ export const projects: {
     blogSlug: "radius-system-architecture",
     title: "Radius",
     tech: ["React Native", "TypeScript", "Go", "PostgreSQL", "Redis", "WebSockets", "Python"],
-    description: "A mobile inventory app for retail stores. Employees use it to look up stock, run audits and handle pickup orders, and managers can see what's happening across every store as it happens.",
-    bullets: [
-      "The app is React Native and TypeScript, talking to a REST API that I tested endpoint by endpoint in Postman, so stock lookups feel quick and responsive.",
-      "The backend is Go, split into small modules, on top of a normalized 34-table PostgreSQL database. Redis caches the hot data, so lookups across 70,000+ records come back instantly.",
-      "Managers get a live dashboard across all their stores. A WebSocket hub pushes order and store-activity updates to everyone connected and drops clients that fall too far behind, so nobody has to refresh or poll.",
-      "Logins use JWTs and bcrypt-hashed passwords, with role-based access across 4 roles so each person only gets to what they actually need.",
-      "I used AI tools for boilerplate and test scaffolding, but designed the architecture and reviewed all the generated code myself. To load-test it, I wrote Python scripts that seed 340,000+ records across a 7-store network."
-    ],
+    description: "Radius is a mobile inventory app for retail stores, and it's the biggest thing I've built so far. Employees use it to look up stock, run audits and handle pickup orders, and a WebSocket hub keeps managers up to date on every store live, with no refreshing. Behind the React Native app is a Go backend on a 34-table PostgreSQL database, and with Redis caching the hot data, lookups across 70,000+ records come back instantly. Logins use JWTs and bcrypt, with 4 roles so people only get to what they need. My favourite part was trying to break it: I wrote Python scripts that seed 340,000+ records across a 7-store network to load-test it. I used AI tools for boilerplate and test scaffolding, but I designed the architecture and reviewed all the generated code myself.",
     github: "https://github.com/juderozario08/radius",
     accent: "purple",
     image: "/assets/images/projects/radius.jpg"
@@ -104,13 +96,7 @@ export const projects: {
     blogSlug: "blip-text-editor-piece-table",
     title: "Blip",
     tech: ["C++", "SDL2", "CMake"],
-    description: "I wanted to understand how text editors actually work, so I'm building one from scratch in C++.",
-    bullets: [
-      "It's built with C++, SDL2 and CMake, with text rendering, input handling and the OS-specific code each kept in their own layer.",
-      "Text lives in a piece table, so inserting or deleting is instant no matter how big the file is. Undo/redo is built on top of it, with memory managed by hand.",
-      "A background thread watches files using the OS's own event APIs and tells the main thread about changes through lock-free atomic flags instead of mutexes. Changes show up right away, and the editor sits near 0% CPU when idle.",
-      "Characters are pre-rendered into a texture atlas in video memory, which keeps it at a locked 60 FPS with sub-millisecond input latency, even on multi-megabyte files."
-    ],
+    description: "I've always wanted to know how text editors actually work, so I'm building one from scratch in C++ and SDL2, and I'm having a blast with it. Text lives in a piece table, so inserting and deleting stay instant no matter how big the file is, and undo/redo is built right on top with memory I manage by hand. Characters are pre-rendered into a texture atlas in video memory, which keeps it at a locked 60 FPS with sub-millisecond input latency, even on multi-megabyte files. A background thread watches files through the OS's own event APIs and passes changes over with lock-free atomic flags, so edits show up right away and the editor still sits near 0% CPU when idle.",
     github: "https://github.com/juderozario08/blip",
     accent: "cyan",
     image: "/assets/images/projects/blip.jpg"
@@ -120,13 +106,7 @@ export const projects: {
     blogSlug: "creditguardai-credit-default-prediction",
     title: "CreditGuard AI",
     tech: ["Python", "Pandas", "NumPy", "scikit-learn", "PyTorch", "Matplotlib", "Seaborn"],
-    description: "A machine learning pipeline that predicts which credit card customers are likely to default, comparing classical models with a PyTorch neural network.",
-    bullets: [
-      "A Python, Pandas and NumPy pipeline turns 30,000 raw credit card records into 47 financial risk features, to separate real delinquency trends from noise.",
-      "I trained and benchmarked several scikit-learn models, then built a GPU-accelerated PyTorch model to see if deep learning could catch more defaults.",
-      "Only 22% of the records were defaults, so I rebalanced the classes and used 5-fold cross-validation to make sure the model was learning real risk patterns. It reached a 0.78 ROC-AUC.",
-      "Tuning the decision threshold got it catching 80% of the people who actually defaulted. I used Matplotlib and Seaborn charts to see where it was right and where it wasn't."
-    ],
+    description: "Can you tell who's about to miss their credit card payments? I built CreditGuard AI to find out. It turns 30,000 raw credit card records into 47 financial risk features, then compares classical scikit-learn models with a GPU-accelerated PyTorch network. The tricky part was that only 22% of the records were defaults, so I rebalanced the classes and used 5-fold cross-validation to make sure the model was learning real risk patterns. It reached a 0.78 ROC-AUC, and what I'm happiest about is that tuning the decision threshold got it catching 80% of the people who actually defaulted.",
     github: "https://github.com/juderozario08/CreditGuardAI",
     accent: "green",
     image: "/assets/images/projects/creditguard.jpg"
@@ -135,13 +115,7 @@ export const projects: {
     id: "faultkeeper",
     title: "Faultkeeper",
     tech: ["Python", "Django", "Celery", "PostgreSQL", "Redis", "WebSockets", "React", "TypeScript", "Docker"],
-    description: "A self-hosted error monitoring platform that works with the official Sentry SDKs, so apps can send it their crashes without a custom client.",
-    bullets: [
-      "The backend is Django with Celery workers, on top of PostgreSQL and Redis. It speaks the Sentry envelope protocol, and the ingest endpoint handles DSN key auth, rate limits and size limits.",
-      "Errors are grouped by a fingerprint of their stack trace that ignores line numbers and IDs. In a load test, 5,000 events from 25 different bugs became exactly 25 issues.",
-      "I moved ingest to async Django with native asyncio Redis, which doubled throughput to about 200 events per second.",
-      "The React and TypeScript dashboard updates over WebSockets as errors come in, and a local LLM can suggest the root cause and a fix for any issue."
-    ],
+    description: "I was curious how tools like Sentry work under the hood, so I built my own error monitoring platform. It speaks the Sentry protocol, so you can point an official Sentry SDK at it and watch errors show up on a live React dashboard. The really fun problem was grouping: each error gets a fingerprint from its stack trace that ignores line numbers and IDs, and in a load test 5,000 events from 25 different bugs became exactly 25 issues. Moving ingest to async Django with native asyncio Redis doubled its throughput to about 200 events per second. It can even ask a local LLM for the root cause and a suggested fix.",
     github: "https://github.com/juderozario08/Faultkeeper",
     accent: "blue",
     image: "/assets/images/projects/faultkeeper.jpg"
@@ -150,13 +124,7 @@ export const projects: {
     id: "stylus-cast",
     title: "Stylus-Cast",
     tech: ["C++", "Kotlin", "CMake", "Android", "macOS"],
-    description: "An Android app and a C++ server that turn a Samsung phone with an S-Pen into a wireless drawing tablet for my Mac.",
-    bullets: [
-      "The Android app is Kotlin. It captures every S-Pen sample, ignores palm and finger touches, and sends 16-byte UDP packets from a lock-free ring buffer that doesn't allocate while you draw.",
-      "The phone and Mac talk over the phone's own 5 GHz hotspot, so there's no router in between and it works with no internet.",
-      "Wi-Fi delivers packets unevenly, so the C++ server replays them at the pen's original timing behind a small delay that adapts between 6 and 45 ms. Gaps from lost packets are filled with a curve.",
-      "On the Mac, strokes come through as native tablet events with pressure, tilt, the eraser and the barrel button."
-    ],
+    description: "I turned a Samsung phone and its S-Pen into a wireless drawing tablet for my Mac, with pressure, tilt, the eraser and even the barrel button. A Kotlin app captures every pen sample and fires it off in 16-byte UDP packets over the phone's own 5 GHz hotspot, so it works with no router and no internet. The hard part, and the part I loved figuring out, was that Wi-Fi delivers packets unevenly, which makes strokes look jagged. My C++ server replays them at the pen's original timing behind a small delay that adapts between 6 and 45 ms, and fills any gaps with a curve so the lines stay smooth.",
     github: "https://github.com/juderozario08/stylus-cast",
     accent: "purple",
     image: "/assets/images/projects/stylus-cast.jpg"
