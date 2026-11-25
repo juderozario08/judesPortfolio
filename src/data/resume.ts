@@ -29,17 +29,6 @@ export const experience: {
   bullets?: string[];
 }[] = [
   {
-    title: "Academic Initiatives and Student Support Developer",
-    company: "Toronto Metropolitan University",
-    date: "Sep 2026 – Present",
-    logo: "/assets/images/logos/tmu.svg",
-    tech: ["JavaScript", "React", "Tailwind", "HTML/CSS", "Google Apps Script"],
-    bullets: [
-      "Worked on web calculators that help engineering students with their grades, course planning and assignment timelines.",
-      "Wrote Google Apps Script tools that create weekly and monthly stats trackers for the office and total them up."
-    ]
-  },
-  {
     title: "Software Developer, AI Bookkeeping Automation",
     company: "Go Fig (via Riipen Level UP)",
     date: "Oct 2026 – Present",
@@ -50,6 +39,17 @@ export const experience: {
       "Ran Microsoft's TrOCR models locally on an AMD GPU with PyTorch and ROCm to read handwritten cheques, going from 14 to 2.6 seconds per cheque (5x faster). Each amount is checked against its written-out value, so misreads get flagged before they reach the books.",
       "Got all 54 statement transactions and the totals on all 16 receipts exactly right against hand-checked answers, by reconciling every statement balance and checking line items, 13% HST and totals to the cent.",
       "Built the matching and duplicate detection. It matched 75% of receipts to bank and credit card records on its own and flagged every duplicate and refund mismatch, so reviewers only check flagged items instead of every row."
+    ]
+  },
+  {
+    title: "Academic Initiatives and Student Support Developer",
+    company: "Toronto Metropolitan University",
+    date: "Sep 2026 – Present",
+    logo: "/assets/images/logos/tmu.svg",
+    tech: ["JavaScript", "React", "Tailwind", "HTML/CSS", "Google Apps Script"],
+    bullets: [
+      "Worked on web calculators that help engineering students with their grades, course planning and assignment timelines.",
+      "Wrote Google Apps Script tools that create weekly and monthly stats trackers for the office and total them up."
     ]
   },
   {
