@@ -32,7 +32,12 @@ export const experience: {
     title: "Academic Initiatives and Student Support Developer",
     company: "Toronto Metropolitan University",
     date: "Sep 2026 – Present",
-    logo: "/assets/images/logos/tmu.svg"
+    logo: "/assets/images/logos/tmu.svg",
+    tech: ["JavaScript", "React", "Tailwind", "HTML/CSS", "Google Apps Script"],
+    bullets: [
+      "Worked on web calculators that help engineering students with their grades, course planning and assignment timelines.",
+      "Wrote Google Apps Script tools that create weekly and monthly stats trackers for the office and total them up."
+    ]
   },
   {
     title: "Software Developer, AI Bookkeeping Automation",
