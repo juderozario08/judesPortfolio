@@ -13,7 +13,7 @@ interface BlogTopBarProps {
 /** Shared top bar for the blog index and individual posts. */
 export const BlogTopBar = ({ onNavigateHome, onNavigateBlogIndex, right, readProgress, wide }: BlogTopBarProps) => (
   <header className="sticky top-0 z-40 bg-tokyo-base/95 backdrop-blur border-b border-tokyo-border">
-    <div className={`${wide ? 'max-w-6xl 3xl:max-w-[86rem]' : 'max-w-3xl 3xl:max-w-[63rem]'} mx-auto px-6 h-14 flex items-center justify-between gap-4 text-sm`}>
+    <div className={`${wide ? 'max-w-6xl 3xl:max-w-[86rem]' : 'max-w-3xl 3xl:max-w-[63rem]'} mx-auto px-6 h-14 flex items-center justify-between gap-4 text-[15px]`}>
       <div className="flex items-center gap-2 min-w-0">
         <button
           onClick={() => onNavigateHome('home')}

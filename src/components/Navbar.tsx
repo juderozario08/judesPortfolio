@@ -87,7 +87,7 @@ const Navbar = ({ onOpenBlog }: NavbarProps) => {
           {personalInfo.name}
         </a>
 
-        <div className="hidden md:flex items-center gap-7 text-sm">{links}</div>
+        <div className="hidden md:flex items-center gap-7 text-[15px]">{links}</div>
 
         <button
           onClick={() => setIsOpen(!isOpen)}
